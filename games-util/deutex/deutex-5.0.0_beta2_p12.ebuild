@@ -15,12 +15,12 @@ SLOT="0"
 KEYWORDS="-* ~amd64"
 IUSE="png"
 
-RDEPEND="png? ( media-libs/libpng )"
+RDEPEND="png? ( media-libs/libpng:0/16 )"
 DEPEND="sys-devel/automake app-text/asciidoc ${RDEPEND}"
 
 src_prepare() {
 	awk -v "gitvers=${PVR}-git Built on $(date +%F)" '{if (/^AC_INIT\(/) $2 = "[" gitvers "],"; print}' configure.ac > configure.ac.new
-        mv -f configure.ac{.new,}
+	mv -f configure.ac{.new,}
 	default
 }
 
