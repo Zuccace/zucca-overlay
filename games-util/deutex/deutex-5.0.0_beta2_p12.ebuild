@@ -5,7 +5,7 @@ EAPI=6
 
 inherit git-r3
 
-DESCRIPTION="WAD file utility for Doom, Freedoom, Heretic, Hexen, and Strife. Live git version."
+DESCRIPTION="WAD file utility for Doom, Freedoom, Heretic, Hexen, and Strife."
 HOMEPAGE="https://github.com/Doom-Utils/deutex"
 EGIT_REPO_URI="${HOMEPAGE}.git"
 EGIT_COMMIT="89a523654333c751b6f59c2b38c1529e1ae49363"
