@@ -23,8 +23,7 @@ src_prepare() {
 }
 
 src_install() {
-	emake -j1 PREFIX="${D}usr" install
+	emake PREFIX="${D}usr" install
 	mv "${D}usr/man/*" "${D}usr/share/man/"
-	dodoc COPYING{,.LIB} FAQ INSTALL README TODO VERSION LICENCE CHANGES
-
+	dodoc COPYING{,.LIB} FAQ INSTALL README TODO VERSION CHANGES
 }

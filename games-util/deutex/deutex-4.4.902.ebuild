@@ -16,7 +16,9 @@ DEPEND="sys-devel/automake app-text/asciidoc"
 RDEPEND=""
 
 src_configure() {
+        # econf didn't do it... Why?
 	#econf --prefix="${D}usr"
+
 	./configure --prefix="${D}usr"
 
 	awk '{if (/^\s*install -p -m /) {sub("install -p","install -D -p"); print $0 "/" $(NF-1)} else print}' Makefile > Makefile.new
@@ -24,7 +26,7 @@ src_configure() {
 }
 
 src_install() {
-	emake -j1 PREFIX="${D}usr" install
+	emake PREFIX="${D}usr" install
 	mv "${D}usr/man/*" "${D}usr/share/man/"
-	dodoc COPYING{,.LIB} FAQ INSTALL README TODO VERSION LICENCE CHANGES
+	dodoc COPYING{,.LIB} FAQ INSTALL README TODO VERSION CHANGES
 }
