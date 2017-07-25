@@ -16,7 +16,7 @@ DEPEND="sys-devel/automake app-text/asciidoc"
 RDEPEND=""
 
 src_configure() {
-        # econf didn't do it... Why?
+	# econf didn't do it... Why?
 	#econf --prefix="${D}usr"
 
 	./configure --prefix="${D}usr"
