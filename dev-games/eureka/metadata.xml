@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara (Zucca)</name>
+	</maintainer>
+	<longdescription>From http://eureka-editor.sourceforge.net/?n=Main.About
+
+”Eureka is a map editor for the classic DOOM games, and a few related games such as Heretic and Hexen. The supported operating systems are: Linux (and other Unices), Windows and OS X.
+Eureka is free software under the GNU General Public License (GPL). Please note that it comes with absolutely NO WARRANTY of any kind.”</longdescription>
+</pkgmetadata>

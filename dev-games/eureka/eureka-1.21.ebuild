@@ -3,7 +3,7 @@
 
 EAPI=6
 
-DESCRIPTION="A map editor for the classic DOOM games, and others alike such as Heretic and Hexen."
+DESCRIPTION="A map editor for the classic DOOM games, and others such as Heretic and Hexen."
 HOMEPAGE="http://eureka-editor.sourceforge.net"
 
 # I never got the mirror://sourceforge to work. :( However the URL below will take any mirror.
@@ -18,7 +18,7 @@ RDEPEND="
 	xinerama? ( x11-libs/libXinerama )
 	sys-libs/zlib
 	media-libs/libpng:0/16
-	virtual/jpeg
+	virtual/jpeg:*
 	x11-misc/xdg-utils
 	x11-libs/fltk
 	x11-libs/libXft"
