@@ -10,7 +10,7 @@ SRC_URI="https://github.com/freedoom/freedoom/releases/download/v${PV}/freedoom-
 
 LICENSE="BSD"
 SLOT="$PV"
-KEYWORDS="~amd64 ~x86 ~arm ~aarch64"
+KEYWORDS="~amd64 ~x86 ~arm ~arm64"
 IUSE=""
 
 DEPEND="app-arch/unzip"
@@ -22,7 +22,7 @@ src_install() {
 	doins */*.wad
 	DOCS="${P}/CREDITS ${P}/COPYING"
 	HTML_DOCS="${P}/README.html"
-        einstalldocs
+	einstalldocs
 }
 
 pkg_postinst() {
