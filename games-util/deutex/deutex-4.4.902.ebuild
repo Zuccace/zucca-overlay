@@ -19,12 +19,12 @@ src_configure() {
 	#econf --prefix="${D}usr"
 	./configure --prefix="${D}usr"
 
-        awk '{if (/^\s*install -p -m /) {sub("install -p","install -D -p"); print $0 "/" $(NF-1)} else print}' Makefile > Makefile.new
-        mv -f Makefile{.new,}
+	awk '{if (/^\s*install -p -m /) {sub("install -p","install -D -p"); print $0 "/" $(NF-1)} else print}' Makefile > Makefile.new
+	mv -f Makefile{.new,}
 }
 
 src_install() {
 	emake -j1 PREFIX="${D}usr" install
-        mv "${D}usr/man/*" "${D}usr/share/man/"
-        dodoc COPYING{,.LIB} FAQ INSTALL README TODO VERSION LICENCE CHANGES
+	mv "${D}usr/man/*" "${D}usr/share/man/"
+	dodoc COPYING{,.LIB} FAQ INSTALL README TODO VERSION LICENCE CHANGES
 }
