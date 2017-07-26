@@ -10,7 +10,7 @@ SRC_URI="https://github.com/freedoom/freedoom/releases/download/v${PV}/freedoom-
 
 LICENSE="BSD"
 SLOT="$PV"
-KEYWORDS="~amd64 ~x86 ~arm ~arm64"
+KEYWORDS="amd64 x86 ~arm ~arm64"
 IUSE="freedoom1 freedoom2 freedm"
 REQUIRED_USE="|| ( ${IUSE} )"
 DEPEND="app-arch/unzip"
