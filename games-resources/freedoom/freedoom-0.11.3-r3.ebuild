@@ -22,7 +22,7 @@ src_install() {
 
 	for w in free{doom{1,2},dm}
 	do
-		use ${w} && doins wads/${w}.wad
+		use ${w} && doins */${w}.wad
 	done
 
 	DOCS="${P}/CREDITS.txt ${P}/COPYING.txt"
