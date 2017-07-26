@@ -6,8 +6,8 @@
 		<name>Ilja Sara (Zucca)</name>
 	</maintainer>
 	<use>
-		<flag name="freedoom1">foo bar 1</flag>
-		<flag name="freedoom2">foo bar 2</flag>
-		<flag name="freedm">foo bar 3</flag>
+		<flag name="freedoom1">Compile (if needed) and install Freedoom Phase 1. This contains for episodes, each with nine levels.</flag>
+		<flag name="freedoom2">>Compile (if needed) and install Freedoom Phase 2. This contains one 30+2 level episode.</flag>
+		<flag name="freedm">>Compile (if needed) and install Freedm - 32 level deathmatch wad.</flag>
 	</use>
 </pkgmetadata>
