@@ -12,8 +12,8 @@ EGIT_COMMIT="6bef5963f27805819a065b16667edbe66482380d"
 LICENSE="BSD"
 SLOT="$PV"
 KEYWORDS=""
-IUSE="freedoom1 freedoom2 freedm"
-REQUIRED_USE="|| ( ${IUSE} )"
+IUSE="+freedoom1 +freedoom2 +freedm"
+REQUIRED_USE="|| ( ${IUSE//+/} )"
 
 DEPEND="
 virtual/imagemagick-tools
