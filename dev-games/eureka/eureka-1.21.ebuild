@@ -11,7 +11,7 @@ SRC_URI="https://downloads.sourceforge.net/project/eureka-editor/Eureka/1.21/eur
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="~amd64 ~x86 ~ppc ~ppc64 ~arm ~arm64"
+KEYWORDS="~amd64 ~x86 ~ppc ~ppc64 ~arm"
 IUSE="xinerama"
 
 RDEPEND="

@@ -5,4 +5,9 @@
 		<email>ilja.sara@kahvipannu.com</email>
 		<name>Ilja Sara (Zucca)</name>
 	</maintainer>
+	<use>
+		<flag name="freedoom1">foo bar 1</flag>
+		<flag name="freedoom2">foo bar 2</flag>
+		<flag name="freedm">foo bar 3</flag>
+	</use>
 </pkgmetadata>

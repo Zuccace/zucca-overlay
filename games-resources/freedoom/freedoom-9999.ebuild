@@ -10,7 +10,7 @@ HOMEPAGE="https://freedoom.github.io"
 EGIT_REPO_URI="https://github.com/freedoom/freedoom.git"
 LICENSE="BSD"
 SLOT="$PV"
-KEYWORDS="-*"
+KEYWORDS=""
 IUSE="freedoom1 freedoom2 freedm"
 REQUIRED_USE="|| ( ${IUSE} )"
 

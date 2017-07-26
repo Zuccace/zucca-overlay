@@ -11,7 +11,7 @@ EGIT_REPO_URI="${HOMEPAGE}.git"
 
 LICENSE="GPL-2+ LGPL-2+ HPND"
 SLOT="0"
-KEYWORDS="-*"
+KEYWORDS=""
 IUSE="png"
 
 RDEPEND="png? ( media-libs/libpng:0/16 )"
