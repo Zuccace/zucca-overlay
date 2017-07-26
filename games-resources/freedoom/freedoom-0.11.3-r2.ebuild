@@ -8,8 +8,9 @@ HOMEPAGE="https://freedoom.github.io"
 SRC_URI="https://github.com/freedoom/freedoom/archive/v${PV}.zip -> freedoom-source-v${PV}.zip"
 LICENSE="BSD"
 SLOT="$PV"
-KEYWORDS=""
+KEYWORDS="~amd64 ~x86 ~arm64 ~arm"
 IUSE="freedoom1 freedoom2 freedm"
+REQUIRED_USE="|| ( ${IUSE} )"
 
 DEPEND="
 virtual/imagemagick-tools
