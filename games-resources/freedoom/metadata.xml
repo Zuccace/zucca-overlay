@@ -6,8 +6,8 @@
 		<name>Ilja Sara (Zucca)</name>
 	</maintainer>
 	<use>
-		<flag name="freedoom1">Compile (if needed) and install Freedoom Phase 1. This contains for episodes, each with nine levels.</flag>
-		<flag name="freedoom2">>Compile (if needed) and install Freedoom Phase 2. This contains one 30+2 level episode.</flag>
-		<flag name="freedm">>Compile (if needed) and install Freedm - 32 level deathmatch wad.</flag>
+		<flag name="freedoom1">Compile (if needed) and install Freedoom Phase 1 - Four chapters, nine levels each, totalling 36 levels. This game aims for compatibility with The Ultimate Doom mods, also known as plain Doom or Doom 1.</flag>
+		<flag name="freedoom2">Compile (if needed) and install Freedoom Phase 2 - 32 levels in one long chapter, featuring extra monsters and a double-barrelled shotgun. This project aims for compatibility with Doom II mods.</flag>
+		<flag name="freedm">Compile (if needed) and install Freedm - A 32-level game designed for competitive deathmatch play.</flag>
 	</use>
 </pkgmetadata>
