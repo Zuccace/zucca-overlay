@@ -3,14 +3,12 @@
 
 EAPI=6
 
-inherit git-r3
-
 DESCRIPTION="Freedoom - Open Source Doom resources"
 HOMEPAGE="https://freedoom.github.io"
-EGIT_REPO_URI="https://github.com/freedoom/freedoom.git"
+SRC_URI="https://github.com/freedoom/freedoom/archive/v${PV}.zip -> freedoom-source-v${PV}.zip"
 LICENSE="BSD"
 SLOT="$PV"
-KEYWORDS=""
+KEYWORDS="~amd64 ~x86 ~arm64 ~arm"
 IUSE="freedoom1 freedoom2 freedm"
 REQUIRED_USE="|| ( ${IUSE} )"
 
@@ -26,15 +24,14 @@ src_compile() {
 }
 
 src_install() {
-	insinto "usr/share/games/doom/freedoom/latest"
-	( cat VERSION && git describe && git rev-parse HEAD ) > git_version.txt
+	insinto "usr/share/games/doom/freedoom/${PV}"
 
 	for w in free{doom{1,2},dm}
 	do
 		use ${w} && doins wads/${w}.wad
 	done
 
-	DOCS="CREDITS README.adoc git_version.txt"
+	DOCS="CREDITS README.adoc"
 	einstalldocs
 }
 

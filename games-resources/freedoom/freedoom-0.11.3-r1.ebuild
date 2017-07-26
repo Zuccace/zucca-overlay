@@ -13,6 +13,7 @@ LICENSE="BSD"
 SLOT="$PV"
 KEYWORDS=""
 IUSE="freedoom1 freedoom2 freedm"
+REQUIRED_USE="|| ( ${IUSE} )"
 
 DEPEND="
 virtual/imagemagick-tools
