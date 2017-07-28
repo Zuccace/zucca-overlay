@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara (Zucca)</name>
+	</maintainer>
+	<longdescription>In the year 2579, the intergalactic weapons corporation, WEAPCO, has dominated the galaxy. Guide Chris Bainfield and his friend Sid Wilson on their quest to 
+liberate the galaxy from the clutches of WEAPCO. Along the way, you will encounter new foes, make new allies, and assist local rebels in strikes against the evil corporation.
+
+Originally developed by Parallel Realities in 2003, Project: Starfighter is a side-scrolling shoot 'em up space game, released under the GNU GPL. Consisting of 26 engaging levels 
+spanning four planetary systems, this classic game will entertain for hours.
+
+Unfortunately, the original Project: Starfighter used images, sound effects, and music which were not properly licensed. As such, this version of the game replaces those art assets with 
+libre art assets.</longdescription>
+</pkgmetadata>
