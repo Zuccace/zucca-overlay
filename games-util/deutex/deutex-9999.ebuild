@@ -3,15 +3,12 @@
 
 EAPI=6
 
-inherit git-r3
-
 DESCRIPTION="WAD file utility for Doom, Freedoom, Heretic, Hexen, and Strife."
 HOMEPAGE="https://github.com/Doom-Utils/deutex"
-EGIT_REPO_URI="${HOMEPAGE}.git"
 
 LICENSE="GPL-2+ LGPL-2+ HPND"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="~amd64 ~x86"
 IUSE="png"
 
 RDEPEND="png? ( media-libs/libpng:0/16 )"
@@ -35,9 +32,39 @@ pkg_info() {
 	einfo "“tech” (not “tex”!), owing from its namesake."
 }
 
+case "${PV}" in
+	5.0.0_beta2_p12)
+		COMMIT="89a523654333c751b6f59c2b38c1529e1ae49363"
+	;;
+	5.0.0_beta2_p25)
+		COMMIT="89ef343ad2761fc967cf2146395b92b2b6cd0333"
+	;;
+	9999)
+	unset KEYWORDS
+		inherit git-r3
+		EGIT_REPO_URI="${HOMEPAGE}.git"
+	;;
+	*)
+		die "Not implemented yet!"
+	;;
+esac
+
+if [ "$COMMIT" ]
+then
+	SRC_URI="${HOMEPAGE}/archive/${COMMIT}.zip -> ${P}.zip"
+	S="${WORKDIR}/${PN}-${COMMIT}"
+fi
+
 src_prepare() {
-	# "git rev-parse HEAD" or "git describe"
-	awk -v "gitvers=$(git describe)-git Built on $(date +%F)" '{if (/^AC_INIT\(/) $2 = "[" gitvers "],"; print}' configure.ac > configure.ac.new
+	if [ "$COMMIT" ]
+	then
+		GITVERS="$PV"
+	elif [ "$EGIT_REPO_URI" ]
+	then
+		GITVERS="$(git describe)"
+	fi
+
+	awk -v "gitvers=${GITVERS}-git Built on $(date +%F)" '{if (/^AC_INIT\(/) $2 = "[" gitvers "],"; print}' configure.ac > configure.ac.new
 	mv -f configure.ac{.new,}
 	default
 }
@@ -48,7 +75,14 @@ src_configure() {
 }
 
 src_install() {
-	git rev-parse HEAD > git_commit.sha1
-	dodoc git_commit.sha1
 	default
+
+	if [ "$COMMIT" ]
+	then
+		echo "$COMMIT" > git_commit.sha1
+	elif [ "$EGIT_REPO_URI" ]
+	then
+		git rev-parse HEAD > git_commit.sha1
+	fi
+	dodoc git_commit.sha1
 }
