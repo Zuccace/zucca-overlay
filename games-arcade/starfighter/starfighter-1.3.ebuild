@@ -1,0 +1,1 @@
+./starfighter-1.7.ebuild
