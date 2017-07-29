@@ -7,8 +7,8 @@ DESCRIPTION="Freedoom - Open Source Doom resources"
 HOMEPAGE="https://freedoom.github.io"
 LICENSE="BSD"
 SLOT="$PV"
-IUSE="freedoom1 freedoom2 freedm"
-REQUIRED_USE="|| ( ${IUSE} )"
+IUSE="+freedoom1 +freedoom2 +freedm"
+REQUIRED_USE="|| ( ${IUSE//+/} )"
 
 DEPEND="
 app-arch/unzip
