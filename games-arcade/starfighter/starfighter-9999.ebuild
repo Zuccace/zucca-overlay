@@ -32,3 +32,9 @@ case "$PV" in
 		EGIT_REPO_URI="git://git.savannah.gnu.org/${PN}.git"
 	;;
 esac
+
+src_install() {
+	default
+	# The default 'make install' puts some Makefiles into doc directory. O.o
+	#find "$DOCDIR" -type d -name 'Makefile*' -exec rm {} +
+}

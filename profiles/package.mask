@@ -1,0 +1,10 @@
+# Version 1.5.1 installs files into illegal locations.
+# A patch or manual src_install() is needed.
+=games-arcade/starfighter-1.5.1
+
+# As of 29-07-2017 no ./confugure is generated.
+# Possibly an error in configure.ac.
+# 'make install' only installs README.
+# Masked until upstream fixes or when
+# a proper workaround is found.
+=games-arcade/starfighter-9999
