@@ -71,7 +71,7 @@ src_prepare() {
 
 src_configure() {
 	./bootstrap
-	use png && ./configure --prefix="/usr" --with-libpng || ./configure --prefix="/usr" --without-libpng
+	./configure --prefix="/usr" $(use_with {,lib}png)
 }
 
 src_install() {
