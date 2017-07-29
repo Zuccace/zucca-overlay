@@ -18,7 +18,7 @@ DEPEND="
 RDEPEND="${DEPEND}"
 S="${WORKDIR}/${P}-src"
 
-inherit autotools
+#inherit autotools
 
 # (Literally) Cases for certain versions.
 case "$PV" in
