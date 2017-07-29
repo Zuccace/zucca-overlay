@@ -18,6 +18,8 @@ DEPEND="
 RDEPEND="${DEPEND}"
 S="${WORKDIR}/${P}-src"
 
+inherit autotools
+
 # (Literally) Cases for certain versions.
 case "$PV" in
 	1.5.1)
@@ -31,8 +33,15 @@ case "$PV" in
 	;;
 esac
 
+# Patch Makefile.am - needs custom src_configure too...
+#src_prepare() {
+#	sed -i -e 's/^\s*dist_doc_DATA = .*$/dist_doc_DATA = LICENSES/' -e 's/^\s*nobase_dist_doc_DATA = .*$/nobase_dist_doc_DATA = html\/\*/' Makefile.am
+#	mv docs html
+#	default
+#}
+
 src_install() {
 	default
 	# The default 'make install' puts some Makefiles into doc directory. O.o
-	#find "$DOCDIR" -type d -name 'Makefile*' -exec rm {} +
+	find "$D" -type d -name 'Makefile*' -exec rm {} +
 }
