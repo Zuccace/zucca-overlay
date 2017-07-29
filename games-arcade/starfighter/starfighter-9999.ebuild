@@ -21,9 +21,7 @@ S="${WORKDIR}/${P}-src"
 # (Literally) Cases for certain versions.
 case "$PV" in
 	1.5.1)
-		# 1.5.1 tries put files to illegal locations.
-		# 1.5.1 might then need manual src_install() or a patch.
-		KEYWORDS="-*"
+		KEYWORDS="-* ~amd64 ~x86"
 	;;
 	9999)
 		unset SRC_URI KEYWORDS
