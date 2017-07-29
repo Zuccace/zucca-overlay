@@ -26,7 +26,7 @@ case "$PV" in
 		KEYWORDS="-*"
 	;;
 	9999)
-		unset SRC_URI
+		unset SRC_URI KEYWORDS
 		inherit git-r3
 		S="${S%-src}"
 		EGIT_REPO_URI="git://git.savannah.gnu.org/${PN}.git"
