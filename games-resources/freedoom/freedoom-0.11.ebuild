@@ -5,8 +5,7 @@ EAPI=6
 
 DESCRIPTION="Freedoom - Open Source Doom resources"
 HOMEPAGE="https://freedoom.github.io"
-SRC_URI="https://github.com/freedoom/freedoom/releases/download/v${PV}/freedoom-${PV}.zip
-	https://github.com/freedoom/freedoom/releases/download/v${PV}/freedm-${PV}.zip"
+SRC_URI=(https://github.com/freedoom/freedoom/releases/download/v${PV}/freed{oo,}m-${PV}.zip)
 
 LICENSE="BSD"
 SLOT="$PV"
