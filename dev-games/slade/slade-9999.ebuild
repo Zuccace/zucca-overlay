@@ -7,12 +7,11 @@ inherit wxwidgets
 
 DESCRIPTION="A modern editor for Doom-engine based games and source ports"
 HOMEPAGE="http://slade.mancubus.net/"
-KEYWORDS="-amd64 -x86"
 SLOT="0"
 LICENSE="GPL-2"
 
 # Cases for special (testing/unoffical) versions.
-case "$PV" in
+case "$PVR" in
 	"9999")
 		inherit git-r3
 		unset KEYWORDS
@@ -27,13 +26,17 @@ esac
 # set SRC_URI if not already set.
 if [ "$COMMIT" ]
 then
+	# An unoffical release.
+	: ${KEYWORDS:="-amd64 -x86"}
 	SRC_URI="https://github.com/sirjuddington/SLADE/archive/${COMMIT}.zip -> ${P}.zip"
 	S="${WORKDIR}/${PN^^}-${COMMIT}"
 elif [ "$PV" != "9999" ]
 then
 	# An offical release.
+	: ${KEYWORDS:="~amd64 ~x86"}
 	# Needs some adjustment to $S. $PN to UPPERCASE.
 	# beta = b on offical package filenames.
+	einfo "Preparing for offical release..."
 	MY_PV="${PV//beta/b}"
 	S="${WORKDIR}/${PN^^}-${MY_PV}"
 	SRC_URI="https://github.com/sirjuddington/SLADE/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
