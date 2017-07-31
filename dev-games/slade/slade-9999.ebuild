@@ -20,7 +20,6 @@ case "$PV" in
 	;;
 	"3.1.2_beta3")
 		# Offical release, unoffical SRC_URI.
-		KEYWORDS="~amd64 ~x86"
 		COMMIT="ec9b2ffd776d078acd8f5c338d6825e35c3bbcc0"
 	;;
 esac
