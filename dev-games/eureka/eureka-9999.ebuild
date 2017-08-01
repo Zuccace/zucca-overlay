@@ -6,6 +6,8 @@ EAPI=6
 DESCRIPTION="A map editor for the classic DOOM games, and others such as Heretic and Hexen."
 HOMEPAGE="http://eureka-editor.sourceforge.net"
 
+inherit eutils xdg
+
 case "${PVR}" in
 	1.21-r1)
 		COMMIT="2c43e820d58f0e97efa1e4c2967e06657fa6a32e"
@@ -77,6 +79,9 @@ src_install() {
 	fi
 
 	[ -f VERSION.nfo ] && dodoc VERSION.nfo
+
+	doicon -s 32 misc/eureka.xpm
+	domenu misc/eureka.desktop
 
 	usr="${D}/usr"
 	mkdir -p "${usr}/share/eureka"
