@@ -42,7 +42,6 @@ then
 	: ${KEYWORDS:="~amd64 ~x86"}
 	# Needs some adjustment to $S. $PN to UPPERCASE.
 	# beta = b on offical package filenames.
-	einfo "Preparing for offical release..."
 	MY_PV="${PV//beta/b}"
 	S="${WORKDIR}/${PN^^}-${MY_PV}"
 	SRC_URI="https://github.com/sirjuddington/SLADE/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
