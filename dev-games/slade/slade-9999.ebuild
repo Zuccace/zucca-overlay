@@ -21,6 +21,9 @@ case "$PVR" in
 		# Offical release, unoffical SRC_URI.
 		COMMIT="ec9b2ffd776d078acd8f5c338d6825e35c3bbcc0"
 	;;
+	"3.1.2_beta3_p2")
+		COMMIT="9da08eacffd257807590cb053b1c5a051aa4d803"
+	;;
 esac
 
 # set SRC_URI if not already set.
@@ -57,4 +60,19 @@ CXXFLAGS="${CXXFLAGS} -std=c++11"
 
 src_configure() {
 	cmake  -DCMAKE_INSTALL_PREFIX=/usr || die "cmake failed"
+}
+
+src_install() {
+	if [ "$COMMIT" ]
+	then
+		echo "$COMMIT" > VERSION.nfo
+	elif [ "$EGIT_REPO_URI" ]
+	then
+		git describe --tags > VERSION.nfo
+		git rev-parse HEAD >> VERSION.nfo
+	fi
+
+	[ -f VERSION.nfo ] && dodoc VERSION.nfo
+
+	default
 }
