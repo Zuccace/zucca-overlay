@@ -9,7 +9,14 @@ MY_PV="${PV//beta/b}"
 SRC_URI="https://github.com/sirjuddington/SLADE/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
 DESCRIPTION="A modern editor for Doom-engine based games and source ports"
 HOMEPAGE="http://slade.mancubus.net/"
-KEYWORDS="~amd64 ~x86"
+case "$PV" in
+	3.1.2_beta2)
+		KEYWORDS="~amd64 ~x86"
+	;;
+	*)
+		KEYWORDS="-amd64 -x86"
+	;;
+esac
 SLOT="0"
 LICENSE="GPL-2"
 
