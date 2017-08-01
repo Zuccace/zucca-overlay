@@ -6,9 +6,16 @@ EAPI=6
 DESCRIPTION="A map editor for the classic DOOM games, and others such as Heretic and Hexen."
 HOMEPAGE="http://eureka-editor.sourceforge.net"
 
-# I never got the mirror://sourceforge to work. :( However the URL below will take any mirror.
-SRC_URI="https://downloads.sourceforge.net/project/eureka-editor/Eureka/1.21/eureka-121-source.tar.gz"
-
+# Versions after 1.07 don't have dot in version string in their source package filename.
+case "${PV}" in
+	0.*|1.07)
+		PKGV="${PV}"
+	;;
+	*)
+		PKGV="${PV//./}"
+	;;
+esac
+SRC_URI="https://downloads.sourceforge.net/project/eureka-editor/${PN^}/${PV}/${PN}-${PKGV}-source.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~x86 ~ppc ~ppc64 ~arm"
@@ -23,13 +30,22 @@ RDEPEND="
 	x11-libs/fltk
 	x11-libs/libXft"
 
-DEPEND="${RDEPEND} sys-devel/make"
+DEPEND="${RDEPEND} sys-devel/make
+>=sys-apps/gawk-4.1.0"
 
-S="${S}-source"
+src_unpack() {
+	default
+	[ ! -d "$S" ] && S="${S}-source"
+}
 
-src_configure() {
-	awk -v "prefix=${D}/usr" '{if ($1 ~ "^PREFIX=") {print "PREFIX=" prefix; next} else if ($1 ~ /^xdg-/) next; else if ($1 ~ /^[a-z]+:$/ && seen != "1") {printf "CFLAGS  += -I/usr/include/fltk\nCXXFLAGS  += -I/usr/include/fltk\nLDFLAGS += -L/usr/lib/fltk/\n\n"; seen="1"} print}' Makefile > Makefile.new \
-	&& mv -f Makefile.new Makefile
+src_prepare() {
+	einfo "Patching Makefile on-the-fly..."
+	# Modify PREFIX, drop lines using xdg (for now) and adjust few compiler flags.
+	gawk -i inplace -v "prefix=${D}/usr" '{if ($1 ~ "^(INSTALL_)?PREFIX=") sub(/=.+$/,"=" prefix); else if ($1 ~ /^xdg-/) next; else if ($1 ~ /^[a-z]+:$/ && seen != "1") {printf "CFLAGS  += -I/usr/include/fltk\nCXXFLAGS  += -I/usr/include/fltk\nLDFLAGS += -L/usr/lib/fltk/\n\n"; seen="1"} print}' Makefile || die "gawk patching failed."
+	# Remove owner settings from install -lines.
+	gawk -i inplace '{if ($1 == "install") gsub(/[[:space:]]-o[[:space:]][^[:space:]]+/,""); print}' Makefile || die "gawk patching failed."
+	einfo "Makefile patching done."
+	default
 }
 
 src_install() {
@@ -37,4 +53,5 @@ src_install() {
 	mkdir -p "${usr}/share/eureka"
 	mkdir -p "${usr}/bin"
 	emake INSTALL_DIR="${usr}/share/eureka" install
+	find "${usr}/share/eureka" -type f -exec chmod 664 {} + -or -type d -exec chmod 775 {} +
 }
