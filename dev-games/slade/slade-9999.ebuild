@@ -21,6 +21,9 @@ case "$PVR" in
 		# Offical release, unoffical SRC_URI.
 		COMMIT="ec9b2ffd776d078acd8f5c338d6825e35c3bbcc0"
 	;;
+	"3.1.2_beta3_p1")
+		COMMIT="2268446c940a8e2b875fc638b625d2d5f148cf64"
+	;;
 	"3.1.2_beta3_p2")
 		COMMIT="9da08eacffd257807590cb053b1c5a051aa4d803"
 	;;
