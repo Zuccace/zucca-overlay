@@ -40,12 +40,14 @@ case "${PV}" in
 		COMMIT="89ef343ad2761fc967cf2146395b92b2b6cd0333"
 	;;
 	9999)
-	unset KEYWORDS
+		unset KEYWORDS
 		inherit git-r3
 		EGIT_REPO_URI="${HOMEPAGE}.git"
 	;;
 	*)
-		die "Not implemented yet!"
+		# Offical release
+		# Does NOT work with beta releases. So... TODO
+		SRC_URI="https://github.com/Doom-Utils/deutex/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	;;
 esac
 
@@ -64,7 +66,7 @@ src_prepare() {
 		GITVERS="$(git describe)"
 	fi
 
-	awk -v "gitvers=${GITVERS}-git Built on $(date +%F)" '{if (/^AC_INIT\(/) $2 = "[" gitvers "],"; print}' configure.ac > configure.ac.new
+	awk -v "vers=$([ "$GITVERS" ] && echo -n "${GITVERS}-git" || echo -n "$PV") Built on $(date +%F)" '{if (/^AC_INIT\(/) $2 = "[" vers "],"; print}' configure.ac > configure.ac.new
 	mv -f configure.ac{.new,}
 	default
 }
@@ -84,5 +86,5 @@ src_install() {
 	then
 		git rev-parse HEAD > git_commit.sha1
 	fi
-	dodoc git_commit.sha1
+	[ -f git_commit.sha1 ] && dodoc git_commit.sha1
 }
