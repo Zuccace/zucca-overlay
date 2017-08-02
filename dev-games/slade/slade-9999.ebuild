@@ -60,6 +60,10 @@ ${RDEPEND}"
 # Fix compilation errors on newer versions.
 CXXFLAGS="${CXXFLAGS} -std=c++11"
 
+pkg_pretend() {
+	test-flag-CXX -std=c++11 || die "You need GCC >= 4.7 or Clang >= 3.0 for C++11 -specific compiler flags, whicha are needed to build ${P^}. Upgrade or change your compiler accordingly."
+}
+
 src_configure() {
 	cmake  -DCMAKE_INSTALL_PREFIX=/usr || die "cmake failed"
 }
