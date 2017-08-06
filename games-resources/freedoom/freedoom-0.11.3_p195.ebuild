@@ -38,7 +38,6 @@ vers_cmd() {
 	echo "$C"
 }
 
-
 src_compile() {
 	for w in free{doom{1,2},dm}
 	do
