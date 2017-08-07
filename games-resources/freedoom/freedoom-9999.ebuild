@@ -15,6 +15,7 @@ app-arch/unzip
 dev-python/pillow
 >games-util/deutex-4.9999"
 
+# Use 'case' instead...
 #declare -A COMMIT
 #COMMIT=(
 #	[0.11.3_p191]="9ba4d3c4fdecd412a53c1e82b67c504909be5712"

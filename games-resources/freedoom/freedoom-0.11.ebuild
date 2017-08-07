@@ -19,7 +19,7 @@ S=${WORKDIR}
 src_install() {
 	insinto "usr/share/games/doom/freedoom/${PV}"
 	doins */*.wad
-	DOCS="${P}/CREDITS ${P}/COPYING"
+	DOCS="$(find "$P" -name 'CREDITS*' -or -name 'COPYING*')"
 	HTML_DOCS="${P}/README.html"
 	einstalldocs
 }
