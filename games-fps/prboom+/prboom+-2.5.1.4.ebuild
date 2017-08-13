@@ -55,10 +55,6 @@ src_configure() {
 		$(use_with portmidi)
 }
 
-src_compile() {
-	( default ) > /dev/null
-}
-
 src_install() {
 	emake DESTDIR="${D}" install
 	GBIN="${D}/usr/games/bin"
