@@ -56,7 +56,6 @@ src_configure() {
 			use_with fluidsynth; use_with portmidi ) \
 			|| echo --without-fluidsynth --without-portmidi \
 		)
-		epause 10s
 }
 
 src_install() {
