@@ -16,17 +16,19 @@ SLOT="0"
 KEYWORDS="-* ~amd64"
 IUSE="
 	opengl -debug pcre
-	$(echo +sdl_{mixer,net,image})
+	hi-res +midi multiplayer
 	fluidsynth -portmidi
 	+vorbis mp3 +png
 "
 REQUIRED_USE="
-	|| ( fluidsynth portmidi )
+	midi? ( || ( fluidsynth portmidi ) )
+	hi-res? ( opengl )
 "
 
-DEPEND="media-libs/libsdl[joystick,video]
-	sdl_mixer? ( media-libs/sdl-mixer )
-	sdl_net? ( media-libs/sdl-net )
+DEPEND="media-libs/libsdl2[joystick,video]
+	hi-res? ( media-libs/sdl2-image )
+	midi? ( media-libs/sdl2-mixer )
+	multiplayer? ( media-libs/sdl2-net )
 	fluidsynth? ( media-sound/fluidsynth )
 	portmidi? ( media-libs/portmidi )
 	pcre? ( dev-libs/libpcre )
@@ -41,18 +43,20 @@ src_configure() {
 		--disable-cpu-opt \
 		--enable-option-checking \
 		--with-waddir="/usr/share/games/doom" \
-		#--docdir="${T}/docs" \
 		$(use_enable debug) \
 		$(use_with pcre) \
 		$(use_enable opengl gl) \
-		$(use_with {sdl_,}mixer) \
-		$(use_with {sdl_,}net) \
-		$(use_with {sdl_,}image) \
+		$(use_with hi-res image) \
+		$(use_with midi mixer) \
+		$(use_with multiplayer net) \
 		$(use_with png) \
 		$(use_with vorbis vorbisfile) \
 		$(use_with mp3 mad) \
-		$(use_with fluidsynth) \
-		$(use_with portmidi)
+		$(use midi && ( \
+			use_with fluidsynth; use_with portmidi )\
+			|| echo --without-fluidsynth --without-portmidi\
+		)
+		epause 10s
 }
 
 src_install() {

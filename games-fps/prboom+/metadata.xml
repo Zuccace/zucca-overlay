@@ -6,12 +6,12 @@
 		<name>Ilja Sara (Zucca)</name>
 	</maintainer>
 	<use>
-		<flag name="opengl">Also build, optional, user selectable,  OpenGL renderer</flag>
+		<flag name="opengl">Also build, optional, user selectable, OpenGL renderer</flag>
 		<flag name="fluidsynth">Use fluidsynth as midi backend</flag>
 		<flag name="portmidi">Use portmidi as midi backend</flag>
-		<flag name="sdl_image">Support for SDL image</flag>
-		<flag name="sdl_mixer">Support for SDL audio mixer</flag>
-		<flag name="sdl_net">Support for SDL net (networking)</flag>
+		<flag name="hi-res">Support for high-resolution textures on OpenGL -mode</flag>
+		<flag name="midi">Support for midi playback</flag>
+		<flag name="multiplayer">Support for network play</flag>
 	</use>
 	<longdescription>PrBoom+ is a Doom source port developed from the original PrBoom project by Andrey Budko (Андрей Будько).
 
