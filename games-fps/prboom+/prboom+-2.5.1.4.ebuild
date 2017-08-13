@@ -53,8 +53,8 @@ src_configure() {
 		$(use_with vorbis vorbisfile) \
 		$(use_with mp3 mad) \
 		$(use midi && ( \
-			use_with fluidsynth; use_with portmidi )\
-			|| echo --without-fluidsynth --without-portmidi\
+			use_with fluidsynth; use_with portmidi ) \
+			|| echo --without-fluidsynth --without-portmidi \
 		)
 		epause 10s
 }
