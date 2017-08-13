@@ -9,6 +9,7 @@
 		<flag name="opengl">Also build, optional, user selectable, OpenGL renderer</flag>
 		<flag name="fluidsynth">Use fluidsynth as midi backend</flag>
 		<flag name="portmidi">Use portmidi as midi backend</flag>
+		<flag name="png">Support for (png) screenshots</flag>
 		<flag name="hi-res">Support for high-resolution textures on OpenGL -mode</flag>
 		<flag name="midi">Support for midi playback</flag>
 		<flag name="multiplayer">Support for network play</flag>

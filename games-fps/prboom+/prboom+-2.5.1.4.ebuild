@@ -16,17 +16,17 @@ SLOT="0"
 KEYWORDS="-* ~amd64"
 IUSE="
 	opengl -debug pcre
-	hi-res +midi multiplayer
+	hi-res +midi -multiplayer
 	fluidsynth -portmidi
-	+vorbis mp3 +png
+	vorbis mp3 +png
 "
 REQUIRED_USE="
 	midi? ( || ( fluidsynth portmidi ) )
-	hi-res? ( opengl )
 "
 
 DEPEND="media-libs/libsdl2[joystick,video]
 	hi-res? ( media-libs/sdl2-image )
+	png? ( media-libs/sdl2-image )
 	midi? ( media-libs/sdl2-mixer )
 	multiplayer? ( media-libs/sdl2-net )
 	fluidsynth? ( media-sound/fluidsynth )
@@ -46,7 +46,7 @@ src_configure() {
 		$(use_enable debug) \
 		$(use_with pcre) \
 		$(use_enable opengl gl) \
-		$(use_with hi-res image) \
+		$((use hi-res || use png) && echo --with-image || echo --without-image) \
 		$(use_with midi mixer) \
 		$(use_with multiplayer net) \
 		$(use_with png) \
