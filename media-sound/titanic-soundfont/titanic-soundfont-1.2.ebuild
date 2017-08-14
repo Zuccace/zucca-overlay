@@ -22,8 +22,9 @@ RDEPEND=""
 S="${WORKDIR}"
 
 src_unpack() {
+	AA=($A)
 	pushd "$DISTDIR" || die
-	cp "${A[@]}" "${S}/" || die
+	cp "${AA[@]}" "${S}/" || die
 	popd || die
 	mv *.LICENSE LICENSE || die
 }
