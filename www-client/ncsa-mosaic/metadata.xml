@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<longdescription>NCSA's Mosaic™ wasn't the first Web browser. But it was the first to make a major splash. In November 1993, Mosaic v 1.0 broke away from the small pack of existing browsers by including features—like icons, bookmarks, a more attractive interface, and pictures—that made the software easy to use and appealing to "non-geeks."
+
+NCSA offered Mosaic free from its website, and soon more than 5,000 copies were being downloaded each month; the center was receiving hundreds of thousands of email inquiries a week, and Internet traffic was dramatically rising. NCSA Mosaic won multiple technology awards, including being named 1993 Product of the Year by InfoWorld magazine and 1994 Technology of the Year by IndustryWeek magazine.
+
+The technology was quickly transferred to the private sector, with Marc Andreessen and several other Mosaic developers launching Netscape and more than 100 companies, including Microsoft, licensing the software through start-up Spyglass, Inc. NCSA discontinued support for Mosaic in 1997, shifting its focus to other research and development projects. </longdescription>
+</pkgmetadata>
