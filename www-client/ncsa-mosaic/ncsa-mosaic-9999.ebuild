@@ -29,7 +29,7 @@ DEPEND="
 "
 
 case "$PV" in
-	2.7_beta6_p20130128)
+	2.7_beta6_p25)
 		COMMIT="af942b933275782ae8403d67a2d84a3df0ffb6fd"
 	;;
 	9999*)
@@ -51,7 +51,7 @@ src_prepare() {
 		die "Patching Makefile failed."
 	gawk -i inplace '{if (/^Exec=/) $0 = "Exec=mosaic"; print}' desktop/Mosaic.desktop
 
-	[ "$PV" = '9999' ] && echo -e "$(git rev-parse HEAD)\n$(git log --pretty=format:'%h' -n 1) $(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F)" > git.version
+	[ "$PV" = '9999' ] && echo -e "$(git rev-parse HEAD)\n$(git log --pretty=format:'%h' -n 1) r$(git rev-list --count HEAD) $(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F)" > git.version
 
 	default
 }
