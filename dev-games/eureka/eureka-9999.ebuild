@@ -11,7 +11,7 @@ inherit eutils xdg
 case "${PVR}" in
 	1.21-r1)
 		COMMIT="2c43e820d58f0e97efa1e4c2967e06657fa6a32e"
-		KEYWORDS="-amd64 -x86"
+		KEYWORDS="~amd64 -x86"
 		S="${WORKDIR}/eureka-editor-git-${COMMIT}"
 		pkg_info() {
 			einfo "This unoffical version has new 3D view implementation:"

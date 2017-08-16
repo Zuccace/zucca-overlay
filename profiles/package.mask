@@ -1,3 +1,13 @@
 # Version 1.5.1 installs files into illegal locations.
 # A patch or manual src_install() is needed.
 =games-arcade/starfighter-1.5.1
+
+# beta3 versions may crash when opening the script window.
+# See commit:
+# https://github.com/sirjuddington/SLADE/commit/ae282cbc05bc7777b3ab3a2113ccc0072432d4bd
+=dev-games/slade-3.1.2_beta3*
+
+# While these work, these are from "unoffical"
+# source and in fact older than the offical ck version.
+=www-client/ncsa-mosaic-ck-2.7.9_p2
+=www-client/ncsa-mosaic-ck-9999
