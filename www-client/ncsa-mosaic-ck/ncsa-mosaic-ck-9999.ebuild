@@ -30,8 +30,8 @@ DEPEND="
 "
 
 case "$PV" in
-	2.7_beta6_p25)
-		COMMIT="af942b933275782ae8403d67a2d84a3df0ffb6fd"
+	2.7.9_p2)
+		COMMIT="32eb14ee8d65616c953e965c6a8b1d754eedc7a0"
 	;;
 	9999*)
 		inherit git-r3
@@ -43,7 +43,7 @@ esac
 if [ "$COMMIT" ]
 then
 	SRC_URI="${HOMEPAGE[0]}/archive/${COMMIT}.zip -> ${PF}-${COMMIT}.zip"
-	S="$WORKDIR/${PN}-${COMMIT}"
+	S="$WORKDIR/${PN#ncsa-}-${COMMIT}"
 fi
 
 src_prepare() {
@@ -64,6 +64,9 @@ src_prepare() {
 			REV="$(git rev-list --count HEAD)"
 			echo -e "$(git rev-parse HEAD)\n$(git log --pretty=format:'%h' -n 1) r${REV} $(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F)" > git.version
 			gawk -i inplace -v "versext=-${GITHUB_USER}-r${REV}-gentoo-9999" '{if (/^\s*#define MO_VERSION_STRING/) sub(/"$/,versext "\"",$3); print}' src/MOSAIC_VERSION.h
+		;;
+		*)
+			gawk -i inplace -v "versext=-${GITHUB_USER}-r${PV//##*-p}-gentoo" '{if (/^\s*#define MO_VERSION_STRING/) sub(/"$/,versext "\"",$3); print}' src/MOSAIC_VERSION.h
 		;;
 	esac
 
