@@ -33,7 +33,7 @@ case "$PVR" in
 	2.7_beta9-r2)
 		COMMIT="32eb14ee8d65616c953e965c6a8b1d754eedc7a0"
 	;;
-	9999*)
+	*-r9999*)
 		inherit git-r3
 		EGIT_REPO_URI="${HOMEPAGE[0]}.git"
 		KEYWORDS="-amd64 -x86"

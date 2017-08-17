@@ -1,1 +1,1 @@
-./ncsa-mosaic-ck-9999.ebuild
+./ncsa-mosaic-ck-2.7_beta9-r9999.ebuild
