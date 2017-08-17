@@ -12,7 +12,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="png"
 
 RDEPEND="png? ( media-libs/libpng:0/16 )"
-DEPEND="sys-devel/automake app-text/asciidoc ${RDEPEND}"
+DEPEND="sys-devel/automake app-text/asciidoc sys-apps/gawk ${RDEPEND}"
 
 pkg_info() {
 	einfo "DeuTex can do many things with Doom, Freedoom, Heretic, Hexen, and Strife "
@@ -39,6 +39,9 @@ case "${PV}" in
 	5.0.0_beta2_p25)
 		COMMIT="89ef343ad2761fc967cf2146395b92b2b6cd0333"
 	;;
+	5.1.0_p165)
+		COMMIT="8129d1538de941f9f1c290d20aa8d00d172ed3d1"
+	;;
 	9999)
 		unset KEYWORDS
 		inherit git-r3
@@ -61,13 +64,18 @@ src_prepare() {
 	if [ "$COMMIT" ]
 	then
 		GITVERS="$PV"
+		echo -e "$GITVERS\n$COMMIT - $(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F)" > git.version
 	elif [ "$EGIT_REPO_URI" ]
 	then
 		GITVERS="$(git describe)"
+		(
+			echo "$GITVERS"
+			echo "rev $(git rev-list --count HEAD) - $(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F)"
+			git rev-parse HEAD
+		) > git.version
 	fi
 
-	awk -v "vers=$([ "$GITVERS" ] && echo -n "${GITVERS}-git" || echo -n "$PV") Built on $(date +%F)" '{if (/^AC_INIT\(/) $2 = "[" vers "],"; print}' configure.ac > configure.ac.new
-	mv -f configure.ac{.new,}
+	awk -i inplace -v "vers=$([ "$GITVERS" ] && echo -n "${GITVERS}-git" || echo -n "$PV") Built on $(date +%F)" '{if (/^AC_INIT\(/) $2 = "[" vers "],"; print}' configure.ac
 	default
 }
 
@@ -78,13 +86,5 @@ src_configure() {
 
 src_install() {
 	default
-
-	if [ "$COMMIT" ]
-	then
-		echo "$COMMIT" > git_commit.sha1
-	elif [ "$EGIT_REPO_URI" ]
-	then
-		git rev-parse HEAD > git_commit.sha1
-	fi
-	[ -f git_commit.sha1 ] && dodoc git_commit.sha1
+	[ -f git.version ] && echo "Built on $(date +%F)" >> git.version && dodoc git.version
 }
