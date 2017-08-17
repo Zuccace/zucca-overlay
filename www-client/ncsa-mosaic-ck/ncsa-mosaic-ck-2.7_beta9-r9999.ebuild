@@ -42,7 +42,7 @@ esac
 
 if [ "$COMMIT" ]
 then
-	SRC_URI="${HOMEPAGE[0]}/archive/${COMMIT}.zip -> ${PF}-${GITHUBUSER}-${COMMIT}.zip"
+	SRC_URI="${HOMEPAGE[0]}/archive/${COMMIT}.zip -> ${PF}-${GITHUB_USER}-${COMMIT}.zip"
 	S="$WORKDIR/${PN#ncsa-}-${COMMIT}"
 fi
 

@@ -8,7 +8,7 @@ inherit eutils
 DESCRIPTION="NCSA Mosaic web browser. Cameron Kaiser's fork."
 HOMEPAGE="http://www.floodgap.com/retrotech/machten/mosaic/"
 SRCZIP='mosaic27ck11-src.zip'
-PIXZIP="ncsa-mosaic-ck-2.7.9_p2-32eb14ee8d65616c953e965c6a8b1d754eedc7a0.zip"
+PIXZIP="ncsa-mosaic-ck-2.7_beta9-r2-mistydemeo-32eb14ee8d65616c953e965c6a8b1d754eedc7a0.zip"
 SRC_URI="
 	${HOMEPAGE}mosaic27ck11-src.zip
 	https://github.com/mistydemeo/mosaic-ck/archive/32eb14ee8d65616c953e965c6a8b1d754eedc7a0.zip -> ${PIXZIP}
