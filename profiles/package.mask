@@ -7,7 +7,11 @@
 # https://github.com/sirjuddington/SLADE/commit/ae282cbc05bc7777b3ab3a2113ccc0072432d4bd
 =dev-games/slade-3.1.2_beta3*
 
-# While these work, these are from "unoffical"
-# source and in fact older than the offical ck version.
-=www-client/ncsa-mosaic-ck-2.7.9_p2
-=www-client/ncsa-mosaic-ck-9999
+# This "offical" version does not currently compile.
+# May need png code to be patched.
+# Also I get "blaclisted" http status from the server
+# when trying to download the source.
+# Can be downloaded manually of by faking user-agent.
+#
+# Feel free to submit a patch. ;)
+=www-client/ncsa-mosaic-ck-2.7_beta11

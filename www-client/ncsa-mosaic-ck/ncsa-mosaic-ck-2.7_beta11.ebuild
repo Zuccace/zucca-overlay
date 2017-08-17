@@ -6,12 +6,13 @@ EAPI=6
 inherit eutils
 
 DESCRIPTION="NCSA Mosaic web browser. Cameron Kaiser's fork."
-GITHUB_USER="mistydemeo"
-HOMEPAGE=(
-	https://github.com/"${GITHUB_USER}"/mosaic-ck
-	http://www.floodgap.com/retrotech/machten/mosaic/
-)
-
+HOMEPAGE="http://www.floodgap.com/retrotech/machten/mosaic/"
+SRCZIP='mosaic27ck11-src.zip'
+PIXZIP="ncsa-mosaic-ck-2.7.9_p2-32eb14ee8d65616c953e965c6a8b1d754eedc7a0.zip"
+SRC_URI="
+	${HOMEPAGE}mosaic27ck11-src.zip
+	https://github.com/mistydemeo/mosaic-ck/archive/32eb14ee8d65616c953e965c6a8b1d754eedc7a0.zip -> ${PIXZIP}
+"
 LICENSE="UoI-NCSA"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
@@ -29,22 +30,21 @@ DEPEND="
 	sys-apps/gawk
 "
 
-case "$PVR" in
-	2.7_beta9-r2)
-		COMMIT="32eb14ee8d65616c953e965c6a8b1d754eedc7a0"
-	;;
-	9999*)
-		inherit git-r3
-		EGIT_REPO_URI="${HOMEPAGE[0]}.git"
-		KEYWORDS="-amd64 -x86"
-	;;
-esac
+S="${WORKDIR}/mosaic-ck"
 
-if [ "$COMMIT" ]
-then
-	SRC_URI="${HOMEPAGE[0]}/archive/${COMMIT}.zip -> ${PF}-${GITHUBUSER}-${COMMIT}.zip"
-	S="$WORKDIR/${PN#ncsa-}-${COMMIT}"
-fi
+pkg_nofetch() {
+	einfo "You need to download '${SRCZIP}' manually."
+	einfo "The next command (for example) should do it."
+	einfo "wget -c --referer='$HOMEPAGE' -U 'mosaic-ck' -O '${DISTDIR}/${SRCZIP}' '${SRC_URI%% *}'"
+}
+
+src_unpack() {
+	unpack "$SRCZIP"
+	for d in {pix,bit}maps
+	do
+		unzip --nj "${DISTDIR}/${PIXZIP}" "mosaic-ck-32eb14ee8d65616c953e965c6a8b1d754eedc7a0/src/${d}/*" -d "${S}/src/${d}/"
+	done
+}
 
 src_prepare() {
 	gawk -i inplace -v "cflags=${CFLAGS} -DDOCS_DIRECTORY_DEFAULT=\\\\\\\\\\\\\"/usr/share/doc/${PF}/\\\\\\\\\\\\\" -DHOME_PAGE_DEFAULT=\\\\\\\\\\\\\"${HOMEPAGE[1]}\\\\\\\\\\\\\"" \
@@ -58,17 +58,7 @@ src_prepare() {
 		else if (seenjpeg == 1 && /^\s*$/) {seenjpeg=0; print "jpeglibs = -ljpeg\njpegflags = -DHAVE_JPEG\n"}
 		else print
 	}' makefiles/Makefile.linux && einfo "Patched Makefile.linux." || die "Makefile-linux patchinf failed."
-
-	case "$PV" in
-		9999*)
-			REV="$(git rev-list --count HEAD)"
-			echo -e "$(git rev-parse HEAD)\n$(git log --pretty=format:'%h' -n 1) r${REV} $(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F)" > git.version
-			gawk -i inplace -v "versext=-${GITHUB_USER}-r${REV}-gentoo-9999" '{if (/^\s*#define MO_VERSION_STRING/) sub(/"$/,versext "\"",$3); print}' src/MOSAIC_VERSION.h
-		;;
-		*)
-			gawk -i inplace -v "versext=-${GITHUB_USER}-r${PV//##*-p}-gentoo" '{if (/^\s*#define MO_VERSION_STRING/) sub(/"$/,versext "\"",$3); print}' src/MOSAIC_VERSION.h
-		;;
-	esac
+	gawk -i inplace -v "versext=-gentoo" '{if (/^\s*#define MO_VERSION_STRING/) sub(/"$/,versext "\"",$3); print}' src/MOSAIC_VERSION.h
 
 	default
 }
