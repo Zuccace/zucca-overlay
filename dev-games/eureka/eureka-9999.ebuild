@@ -49,16 +49,11 @@ RDEPEND="
 	x11-libs/fltk
 	x11-libs/libXft"
 
-DEPEND="${RDEPEND} sys-devel/make
+DEPEND="${RDEPEND}
 >=sys-apps/gawk-4.1.0"
 
-#src_unpack() {
-#	default
-#	[ ! -d "$S" ] && S="${S}-source"
-#}
-
 src_prepare() {
-	[ "$PV" = "9999" ] && PATCH_VERS="git-$(git log --pretty=format:'%h' -n 1)-gentoo-$(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F) "
+	[ "$PV" = "9999" ] && PATCH_VERS="git-p$(git rev-list --count HEAD)-gentoo-$(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F) "
 
 	einfo "Patching Makefile on-the-fly..."
 	# Modify PREFIX, drop lines using xdg and adjust few compiler flags.
@@ -86,7 +81,7 @@ src_install() {
 		git rev-parse HEAD >> VERSION.nfo
 	fi
 
-	[ -f VERSION.nfo ] && dodoc VERSION.nfo
+	[ -f VERSION.nfo ] && echo "rev $(git rev-list --count HEAD || echo -n "-")" >> VERSION.nfo && dodoc VERSION.nfo
 
 	doicon -s 32 misc/eureka.xpm
 	domenu misc/eureka.desktop
