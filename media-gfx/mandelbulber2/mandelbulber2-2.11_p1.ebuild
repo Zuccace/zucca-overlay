@@ -3,31 +3,35 @@
 
 EAPI=6
 
-inherit eutils
+inherit eutils #cmake-utils
 
 DESCRIPTION="3D fractal explorer"
 HOMEPAGE="http://mandelbulber.com"
 BASE_SRC="https://github.com/buddhi1980/${PN}"
-MY_PV="${PV/_p/-}"
-case "$PVR" in
-	9999*)
-		inherit git-r3
-		EGIT_URI="${BASE_SRC}.git"
-	;;
-	*)
-		# Offical release.
-		S="${WORKDIR}/${PN}-${MY_PV}"
-	;;
-esac
-: ${SRC_URI:="${BASE_SRC}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"}
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="-amd64 -x86"
 IUSE="examples"
+[ "${PV%%_*}" = "2.12" ] && IUSE="${IUSE opencl}"
+
+MY_PV="${PV/_p/-}"
+MY_PV="${MY_PV/_alpha/-alpha}"
+S="${WORKDIR}/${PN}-${MY_PV}/${PN}"
+
+case "$PVR" in
+	9999*)
+		inherit git-r3
+		EGIT_URI="${BASE_SRC}.git"
+	;;
+	2.11_p1)
+		KEYWORDS="~amd64 ~x86"
+	;;
+esac
+: ${SRC_URI:="${BASE_SRC}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"}
 
 DEPEND="
-	virtual/jpeg
+	virtual/jpeg:62
 	media-libs/libpng:0/16
 	>=dev-qt/qtcore-5.0
 	dev-qt/qtmultimedia:5
@@ -40,30 +44,54 @@ RDEPEND="${DEPEND}
 	sys-cluster/openmpi
 "
 
+#src_prepare() { die on purpose; }
+
 src_configure() {
-	cd "${PN}/Release/"
-	/usr/lib64/qt5/bin/qmake "${PN%2}.pro" 2> "${T}/qmake_error.log" || die "$(cat "${T}/qmake_error.log")"
+	if [ -d "Release" ]
+	then
+		export RELDIR="Release"
+		cd "$RELDIR" || die "Couldn't cd to $RELDIR"
+		/usr/lib64/qt5/bin/qmake "${PN%2}.pro" 2> "${T}/qmake_error.log" || die "$(cat "${T}/qmake_error.log")"
+	elif [ -d "qmake" ]
+	then
+		export RELDIR="qmake"
+		cd "$RELDIR" || die "Couldn't cd to $RELDIR"
+		#cmake CMakeLists.txt
+		/usr/lib64/qt5/bin/qmake "${PN%2}$(use opencl && echo -n '-opencl').pro" 2> "${T}/qmake_error.log" || die "$(cat "${T}/qmake_error.log")"
+	fi
 }
 
 src_compile() {
-	cd "./${PN}/Release/"
+	cd "$RELDIR" || die "Couldn't cd to $RELDIR"
+	# LD_LIBRARY_PATH="/usr/include/"
 	default
 }
 
 src_install() {
-	dodoc "${PN}/deploy/share/${PN}/doc/"*
-	domenu "${PN}/deploy/linux/${PN}.desktop"
-	doicon -s 256 "${PN}/deploy/share/${PN}/icons/${PN%2}.png"
-	for d in icons textures toolbar
+	dodoc "deploy/share/${PN}/doc/"*
+	insinto "/usr/share/${PN}/doc"
+	PDFDOC="${PN%2}"
+	PDFDOC="${PDFDOC^}_Manual.pdf"
+	ln -s "${ROOT%/}/usr/share/doc/${P}/${PDFDOC}" "$PDFDOC"
+	doins "$PDFDOC"
+
+	domenu "deploy/linux/${PN}.desktop"
+	doicon -s 256 "deploy/share/${PN}/icons/${PN%2}.png"
+
+	for d in data qt_data language \
+	"deploy/share/${PN}/"{icons,textures,toolbar} \
+	"$(use examples && echo -n "deploy/share/${PN}/examples")"
 	do
-		insinto "/usr/share/${PN}/${d}" 
-		doins "${PN}/deploy/share/${PN}/${d}/"*
+		test -d "$d" || continue
+		insinto "/usr/share/${PN}/${d##*/}"
+		doins "${d}/"*
 	done
-	if use examples
+
+	if [ -d formula ]
 	then
-		insinto "/usr/share/${PN}/examples"
-		doins "${PN}/deploy/share/${PN}/examples/"*
+		dodir "/usr/share/${PN}/formula"
+		cp -a formula/* "${D}/usr/share/${PN}/formula" || die "Installing formula -directory failed."
 	fi
 
-	dobin "${PN}/Release/mandelbulber2"
+	dobin "${RELDIR}/mandelbulber2"
 }
