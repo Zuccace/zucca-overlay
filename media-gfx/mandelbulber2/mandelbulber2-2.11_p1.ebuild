@@ -13,7 +13,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="-amd64 -x86"
 IUSE="examples"
-[ "${PV%%_*}" = "2.12" ] && IUSE="${IUSE opencl}"
+[ "${PV%%_*}" = "2.12" ] && IUSE="${IUSE} +opencl"
 
 MY_PV="${PV/_p/-}"
 MY_PV="${MY_PV/_alpha/-alpha}"
