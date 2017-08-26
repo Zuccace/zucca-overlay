@@ -3,6 +3,8 @@
 
 EAPI=6
 
+inherit eutils
+
 DESCRIPTION="3D fractal explorer"
 HOMEPAGE="http://mandelbulber.com"
 BASE_SRC="https://github.com/buddhi1980/${PN}"
@@ -51,10 +53,17 @@ src_compile() {
 src_install() {
 	dodoc "${PN}/deploy/share/${PN}/doc/"*
 	domenu "${PN}/deploy/linux/${PN}.desktop"
+	doicon -s 256 "${PN}/deploy/share/${PN}/icons/${PN%2}.png"
+	for d in icons textures toolbar
+	do
+		insinto "/usr/share/${PN}/${d}" 
+		doins "${PN}/deploy/share/${PN}/${d}/"*
+	done
 	if use examples
 	then
 		insinto "/usr/share/${PN}/examples"
-		einstall "${PN}/deploy/share/${PN}/examples/"*
+		doins "${PN}/deploy/share/${PN}/examples/"*
 	fi
+
 	dobin "${PN}/Release/mandelbulber2"
 }
