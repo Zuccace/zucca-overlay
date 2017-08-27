@@ -13,7 +13,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="-amd64 -x86"
 IUSE="examples"
-[ "${PV%%_*}" = "2.12" ] && IUSE="${IUSE} opencl"
+[ "${PV%%_*}" = "2.12" ] && IUSE="${IUSE} opencl" && OCL_DEP="opencl? ( dev-libs/opencl-clhpp )"
 
 MY_PV="${PV/_p/-}"
 MY_PV="${MY_PV/_alpha/-alpha}"
@@ -38,6 +38,7 @@ DEPEND="
 	dev-qt/designer:5
 	dev-qt/qttest:5
 	sci-libs/gsl
+	${OCL_DEP}
 
 "
 RDEPEND="${DEPEND}
@@ -50,20 +51,25 @@ src_configure() {
 	if [ -d "Release" ]
 	then
 		export RELDIR="Release"
-		cd "$RELDIR" || die "Couldn't cd to $RELDIR"
+		pushd "$RELDIR" || die "Couldn't cd to $RELDIR"
 		/usr/lib64/qt5/bin/qmake "${PN%2}.pro" 2> "${T}/qmake_error.log" || die "$(cat "${T}/qmake_error.log")"
 	elif [ -d "qmake" ]
 	then
 		export RELDIR="qmake"
-		cd "$RELDIR" || die "Couldn't cd to $RELDIR"
-		#cmake CMakeLists.txt
+		pushd "$RELDIR" || die "Couldn't cd to $RELDIR"
 		/usr/lib64/qt5/bin/qmake "${PN%2}$(use opencl && echo -n '-opencl').pro" 2> "${T}/qmake_error.log" || die "$(cat "${T}/qmake_error.log")"
+	fi
+	popd
+
+	# workaround for buggy dev-libs/opencl-clhpp
+	if use opencl
+	then
+		find src/ -type f -name '*.hpp' -execdir sh -c 'grep -qE "^\s*#include +<CL/" {} && gawk -i inplace "sub(/^\s*#include <CL\//,\"#include </usr/CL/\")" {}' \;
 	fi
 }
 
 src_compile() {
 	cd "$RELDIR" || die "Couldn't cd to $RELDIR"
-	# LD_LIBRARY_PATH="/usr/include/"
 	default
 }
 
@@ -87,11 +93,11 @@ src_install() {
 		doins "${d}/"*
 	done
 
-	if [ -d formula ]
-	then
-		dodir "/usr/share/${PN}/formula"
-		cp -a formula/* "${D}/usr/share/${PN}/formula" || die "Installing formula -directory failed."
-	fi
+	for d in formula "$(use opencl && echo -n "opencl")"
+	do
+		dodir "/usr/share/${PN}/${d}"
+		cp -a "${d}"/* "${D}/usr/share/${PN}/${d}/" || die "Installing ${d} -directory failed."
+	done
 
 	dobin "${RELDIR}/mandelbulber2"
 }
