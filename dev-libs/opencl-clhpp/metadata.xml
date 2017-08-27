@@ -5,5 +5,5 @@
 		<email>ilja.sara@kahvipannu.com</email>
 		<name>Ilja Sara</name>
 	</maintainer>
-	<longdescription>OpenCL C++ header files</longdescription>
+	<longdescription>OpenCL Host API C++ bindings (cl.hpp and cl2.hpp)</longdescription>
 </pkgmetadata>
