@@ -27,8 +27,6 @@ src_install() {
 pkg_postinst() {
 	games_pkg_postinst
 	elog "A Doom engine is required to play the wad"
-	elog "but games-fps/doomsday doesn't count since it doesn't"
-	elog "have the necessary features."
 	echo
 	ewarn "To play freedoom with Doom engines which do not support"
 	ewarn "subdirectories, create symlinks by running the following:"
