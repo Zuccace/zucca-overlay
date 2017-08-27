@@ -62,10 +62,10 @@ src_configure() {
 	popd
 
 	# workaround for buggy dev-libs/opencl-clhpp
-	if use opencl
-	then
-		find src/ -type f -name '*.hpp' -execdir sh -c 'grep -qE "^\s*#include +<CL/" {} && gawk -i inplace "sub(/^\s*#include <CL\//,\"#include </usr/CL/\")" {}' \;
-	fi
+	#if use opencl
+	#then
+	#	find src/ -type f -name '*.hpp' -execdir sh -c 'grep -qE "^\s*#include +<CL/" {} && gawk -i inplace "sub(/^\s*#include <CL\//,\"#include </usr/CL/\")" {}' \;
+	#fi
 }
 
 src_compile() {
