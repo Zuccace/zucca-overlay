@@ -37,7 +37,7 @@ esac
 
 src_prepare() {
 	MY_VERS=" - Built on $(date +%F)"
-	[ "$PV" == "9999" ] && MY_VERS=" commit: $(git rev-parse HEAD)${MY_VERS}"
+	[ "$PV" == "9999" ] && MY_VERS=" commit #$(git rev-list --count HEAD): $(git rev-parse HEAD)${MY_VERS}"
 	# No luck patching configure.ac to insert version. Results in program crashing at the start.
 	#awk -v "myvers=${MY_VERS}" 'BEGIN {FS="\\], \\["; OFS="], ["} {if (/^AC_INIT\(/) {$2 = "\"" $2 myvers "\""; gsub(" ","_",$2)} print}' configure.ac > configure.ac.new
 	#mv -f configure.ac{.new,}
