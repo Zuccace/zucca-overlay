@@ -9,19 +9,12 @@ LICENSE="BSD"
 SLOT="$PV"
 IUSE="+freedoom1 +freedoom2 +freedm"
 REQUIRED_USE="|| ( ${IUSE//+/} )"
+KEYWORDS="-amd64 -x86 -arm -arm64"
 
 DEPEND="
 app-arch/unzip
 dev-python/pillow
 >games-util/deutex-4.9999"
-
-# Use 'case' instead...
-#declare -A COMMIT
-#COMMIT=(
-#	[0.11.3_p191]="9ba4d3c4fdecd412a53c1e82b67c504909be5712"
-#	[0.11.3_p194]="617a15354f296601421b96ebf01888cdbbddb710"
-#	[0.11.3_p195]="d3038fad309789c3add9a6ec01367794f87bef10"
-#)
 
 SLOTNAME="$PV"
 case "$PV" in
@@ -31,18 +24,35 @@ case "$PV" in
 		vers_cmd() {
 			cat VERSION
 			git describe
+			git rev-list --count HEAD
 			git rev-parse HEAD
 		}
 	;;
 	*)
-		KEYWORDS="~amd64 ~x86 ~arm ~arm64"
-		C="${COMMIT[$PV]}"
-		S="${WORKDIR}/${PN}-${C}"
-		[ "${C}" ] || die "No commit found for version ${PV}."
-		SRC_URI="https://github.com/freedoom/freedoom/archive/${C}.zip -> ${P}.zip"
+		case "$PV" in
+			0.11.3_p191)
+				COMMIT="9ba4d3c4fdecd412a53c1e82b67c504909be5712"
+			;;
+			0.11.3_p194)
+				COMMIT="617a15354f296601421b96ebf01888cdbbddb710"
+			;;
+			0.11.3_p195)
+				COMMIT="d3038fad309789c3add9a6ec01367794f87bef10"
+				KEYWORDS="~amd64 ~x86 ~arm ~arm64"
+			;;
+			0.11.3_p220)
+				COMMIT="d4b25ee4ea72aab47ab0dea05cbe2029d68eec2d"
+			;;
+			*)
+				die "No commit found for version ${PV}."
+			;;
+		esac
+		S="${WORKDIR}/${PN}-${COMMIT}"
+		[ "${COMMIT}" ] || die "No commit found for version ${PV}."
+		SRC_URI="https://github.com/freedoom/freedoom/archive/${COMMIT}.zip -> ${P}.zip"
 		vers_cmd() {
 			cat VERSION
-			echo "$C"
+			echo "$COMMIT"
 		}
 	;;
 esac
