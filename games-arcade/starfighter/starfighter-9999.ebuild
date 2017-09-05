@@ -10,7 +10,7 @@ HOMEPAGE="http://starfighter.nongnu.org"
 DIR_V="$(grep -Eo '^[0-9]+\.[0-9]+' <<< "$PV")" # Didn't find any bash internal way to accomplish this.
 SRC_URI=(http://download{-mirror,}.savannah.gnu.org/releases/${PN}/${DIR_V}/${P}-src.tar.gz)
 LICENSE="GPL-3+"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~x86 -arm -arm64"
 SLOT="0"
 IUSE=""
 DEPEND="
@@ -26,6 +26,9 @@ S="${WORKDIR}/${P}-src"
 case "$PV" in
 	1.5.1)
 		KEYWORDS="-* ~amd64 ~x86"
+	;;
+	1.7)
+		KEYWORDS="~amd64 ~x86 ~arm64 -arm"
 	;;
 	9999)
 		unset SRC_URI KEYWORDS
