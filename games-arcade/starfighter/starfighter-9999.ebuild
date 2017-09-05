@@ -8,7 +8,7 @@ inherit autotools
 DESCRIPTION="Project: Starfighter is a side-scrolling shoot 'em up space game"
 HOMEPAGE="http://starfighter.nongnu.org"
 DIR_V="$(grep -Eo '^[0-9]+\.[0-9]+' <<< "$PV")" # Didn't find any bash internal way to accomplish this.
-SRC_URI=(http://{,download-}mirror.savannah.gnu.org/releases/${PN}/${DIR_V}/${P}-src.tar.gz)
+SRC_URI=(http://download{-mirror,}.savannah.gnu.org/releases/${PN}/${DIR_V}/${P}-src.tar.gz)
 LICENSE="GPL-3+"
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
