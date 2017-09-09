@@ -57,7 +57,7 @@ src_prepare() {
 
 	einfo "Patching Makefile on-the-fly..."
 	# Modify PREFIX, drop lines using xdg and adjust few compiler flags.
-	gawk -i inplace -v "prefix=${D}/usr" '{if ($1 ~ "^(INSTALL_)?PREFIX=") sub(/=.+$/,"=" prefix); else if ($1 ~ /^xdg-/) next; else if ($1 ~ /^[a-z]+:$/ && seen != "1") {printf "CFLAGS  += -I/usr/include/fltk\nCXXFLAGS  += -I/usr/include/fltk\nLDFLAGS += -L/usr/lib/fltk/\n\n"; seen="1"} print}' Makefile || die "gawk patching failed."
+	gawk -i inplace -v "prefix=${D}/usr" -v "libdir=$(get_libdir)" '{if ($1 ~ "^(INSTALL_)?PREFIX=") sub(/=.+$/,"=" prefix); else if ($1 ~ /^xdg-/) next; else if ($1 ~ /^[a-z]+:$/ && seen != "1") {printf "CFLAGS  += -I/usr/include/fltk\nCXXFLAGS  += -I/usr/include/fltk\nLDFLAGS += -L/usr/" libdir "/fltk/\n\n"; seen="1"} print}' Makefile || die "gawk patching failed."
 	# Remove owner settings from install -lines.
 	gawk -i inplace '{if ($1 == "install") gsub(/[[:space:]]-o[[:space:]][^[:space:]]+/,""); print}' Makefile || die "gawk patching failed."
 	einfo "Makefile patching done."
@@ -68,6 +68,10 @@ src_prepare() {
 	fi
 	default
 }
+
+#src_compile() {
+#	emake FLTK_PREFIX="/usr/include/fltk"
+#}
 
 src_install() {
 
