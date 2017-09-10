@@ -13,11 +13,11 @@ SRC_URI="mirror://sourceforge/${MY_PN}/${MY_P}.tar.gz mirror://gentoo/${PN%+}.pn
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="-* ~amd64"
+KEYWORDS="~amd64 -arm64"
 IUSE="
 	opengl -debug pcre
 	hi-res +midi -multiplayer
-	fluidsynth -portmidi
+	+fluidsynth -portmidi
 	vorbis mp3 +png
 "
 REQUIRED_USE="
