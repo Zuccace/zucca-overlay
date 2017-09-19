@@ -19,6 +19,7 @@ dev-python/pillow
 SLOTNAME="$PV"
 case "$PV" in
 	9999*)
+		KEYWORDS=""
 		inherit git-r3
 		EGIT_REPO_URI="https://github.com/freedoom/freedoom.git"
 		vers_cmd() {
@@ -42,6 +43,7 @@ case "$PV" in
 			;;
 			0.11.3_p220)
 				COMMIT="d4b25ee4ea72aab47ab0dea05cbe2029d68eec2d"
+				KEYWORDS="-amd64 ~arm64"
 			;;
 			*)
 				die "No commit found for version ${PV}."
