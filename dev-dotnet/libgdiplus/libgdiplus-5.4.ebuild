@@ -19,32 +19,32 @@ SRC_URI="https://github.com/mono/libgdiplus/archive/5.4.tar.gz"
 IUSE="cairo"
 
 RDEPEND=">=dev-libs/glib-2.2.3:2
-  >=media-libs/freetype-2.3.7
-  >=media-libs/fontconfig-2.6
-  >=media-libs/libpng-1.4:0
-  x11-libs/libXrender
-  x11-libs/libX11
-  x11-libs/libXt
-  >=x11-libs/cairo-1.8.4[X]
-  media-libs/libexif
-  >=media-libs/giflib-5.1.2
-  virtual/jpeg:0
-  media-libs/tiff:0
-  !cairo? ( >=x11-libs/pango-1.20 )"
+	>=media-libs/freetype-2.3.7
+	>=media-libs/fontconfig-2.6
+	>=media-libs/libpng-1.4:0
+	x11-libs/libXrender
+	x11-libs/libX11
+	x11-libs/libXt
+	>=x11-libs/cairo-1.8.4[X]
+	media-libs/libexif
+	>=media-libs/giflib-5.1.2
+	virtual/jpeg:0
+	media-libs/tiff:0
+	!cairo? ( >=x11-libs/pango-1.20 )"
 DEPEND="${RDEPEND}"
 
 src_configure() {
-  ./autogen.sh
+	./autogen.sh
 }
 
 src_install () {
-  default
+	default
 
-  dotnet_multilib_comply
-  local commondoc=( AUTHORS ChangeLog README TODO )
-  for docfile in "${commondoc[@]}"; do
-    [[ -e "${docfile}" ]] && dodoc "${docfile}"
-  done
-  [[ "${DOCS[@]}" ]] && dodoc "${DOCS[@]}"
-  prune_libtool_files
+	dotnet_multilib_comply
+	local commondoc=( AUTHORS ChangeLog README TODO )
+	for docfile in "${commondoc[@]}"; do
+		[[ -e "${docfile}" ]] && dodoc "${docfile}"
+	done
+	[[ "${DOCS[@]}" ]] && dodoc "${DOCS[@]}"
+	prune_libtool_files
 }
