@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara (but don't expect any quick updates)</name>
+	</maintainer>
+	<longdescription>Library for using System.Drawing with mono</longdescription>
+</pkgmetadata>

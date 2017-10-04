@@ -12,7 +12,8 @@ HOMEPAGE="http://www.mono-project.com"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="amd64 ~arm64 ppc ppc64 x86 ~amd64-linux ~x86-linux ~x86-solaris"
+KEYWORDS="~amd64"
+#KEYWORDS="~amd64 ~arm64 ~ppc ~ppc64 ~x86"
 SRC_URI="https://github.com/mono/libgdiplus/archive/5.4.tar.gz"
 
 IUSE="cairo"
