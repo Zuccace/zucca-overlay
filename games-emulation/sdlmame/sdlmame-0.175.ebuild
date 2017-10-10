@@ -16,7 +16,6 @@ SRC_URI="https://github.com/mamedev/mame/archive/mame${MY_PV}.tar.gz -> mame-${P
 LICENSE="XMAME"
 SLOT="0"
 KEYWORDS="-*"
-#KEYWORDS="amd64 x86"
 IUSE="+X +alsa +arcade debug +mess opengl tools verbose_compilation"
 REQUIRED_USE="|| ( arcade mess )
 		debug? ( X )"
@@ -76,6 +75,11 @@ pkg_setup() {
 #	unpack ./mame.zip
 #	rm -f mame.zip || die
 #}
+
+case "$PV" in
+	0.190)
+		KEYWORDS="${KEYWORDS} ~amd64"
+esac
 
 src_prepare() {
 	# Disable using bundled libraries
