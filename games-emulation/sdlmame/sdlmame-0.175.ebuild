@@ -1,6 +1,7 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# TODO: Change to EAPI 6.
 EAPI=5
 PYTHON_COMPAT=( python2_7 )
 inherit eutils python-any-r1 toolchain-funcs games
@@ -16,7 +17,7 @@ LICENSE="XMAME"
 SLOT="0"
 KEYWORDS="-*"
 #KEYWORDS="amd64 x86"
-IUSE="X alsa +arcade debug +mess opengl tools verbose_compilation"
+IUSE="+X +alsa +arcade debug +mess opengl tools verbose_compilation"
 REQUIRED_USE="|| ( arcade mess )
 		debug? ( X )"
 
@@ -53,6 +54,7 @@ S="${WORKDIR}/mame-mame${MY_PV}"
 
 S_DOCDIR="docs/"
 S_MANDIR="${S_DOCDIR}man/"
+S_KEYMAPDIR="keymaps/"
 
 # Function to disable a makefile option
 disable_feature() {
@@ -129,14 +131,14 @@ src_compile() {
 			emake "$@" \
 				AR=$(tc-getAR)
 	}
-	my_emake -j1 generate
+	my_emake generate
 
 	my_emake ${targetargs} \
 		SDL_INI_PATH="\$\$\$\$HOME/.sdlmame;${GAMES_SYSCONFDIR}/${PN}" \
 		USE_QTDEBUG=${qtdebug}
 
 	if use tools ; then
-		my_emake -j1 TARGET=ldplayer USE_QTDEBUG=${qtdebug}
+		my_emake TARGET=ldplayer USE_QTDEBUG=${qtdebug}
 	fi
 }
 
@@ -168,7 +170,7 @@ src_install() {
 	dosym ${MAMEBIN} "${GAMES_BINDIR}/${PN}"
 
 	insinto "${GAMES_DATADIR}/${PN}"
-	doins -r src/osd/sdl/keymaps $(use mess && echo hash)
+	doins -r "${S_KEYMAPDIR}" $(use mess && echo hash)
 
 	# Create default mame.ini and inject Gentoo settings into it
 	#  Note that '~' does not work and '$HOME' must be used
@@ -194,9 +196,9 @@ src_install() {
 	sed -i \
 		-e "s:\(keymap_file\)[ \t]*\(.*\):\1 \t\t\$HOME/.${PN}/\2:" \
 		"${T}/mame.ini" || die
-	for f in src/osd/sdl/keymaps/km*.txt ; do
+	for f in $(find "$S_KEYMAPDIR" -maxdepth 1 -name 'km*.txt' -or -name 'km*.map' -printf '%f '); do
 		sed -i \
-			-e "/^keymap_file/a \#keymap_file \t\t${GAMES_DATADIR}/${PN}/keymaps/${f##*/}" \
+			-e "/^keymap_file/a \#keymap_file \t\t${GAMES_DATADIR}/${PN}/keymaps/${f}" \
 			"${T}/mame.ini" || die
 	done
 	insinto "${GAMES_SYSCONFDIR}/${PN}"
@@ -205,7 +207,6 @@ src_install() {
 	insinto "${GAMES_SYSCONFDIR}/${PN}"
 	doins "${FILESDIR}/vector.ini"
 
-	dodoc "${S_DOCDIR}"{config,mame,newvideo}.txt
 	keepdir \
 		"${GAMES_DATADIR}/${PN}"/{ctrlr,cheat,roms,samples,artwork,crosshair} \
 		"${GAMES_SYSCONFDIR}/${PN}"/{ctrlr,cheat}
@@ -218,6 +219,8 @@ src_install() {
 		newgamesbin ldplayer${suffix} ${PN}-ldplayer
 		newman "${S_MANDIR}ldplayer.1" ${PN}-ldplayer.1
 	fi
+
+	# TODO: install documentation
 
 	prepgamesdirs
 }
