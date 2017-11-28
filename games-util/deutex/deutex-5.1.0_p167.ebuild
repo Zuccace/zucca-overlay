@@ -1,1 +1,1 @@
-deutex-9999.ebuild
+./deutex-9999.ebuild
