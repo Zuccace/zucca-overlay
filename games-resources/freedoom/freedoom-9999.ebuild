@@ -49,6 +49,10 @@ case "$PV" in
 				COMMIT="08664b9587433265974425085547341a884f2751"
 				KEYWORDS=""
 			;;
+			0.11.3_p263)
+				COMMIT="0411e49acd415fee01ce0dc1f6ee57a7e23c7148"
+				KEYWORDS=""
+			;;
 			*)
 				die "No commit found for version ${PV}."
 			;;
