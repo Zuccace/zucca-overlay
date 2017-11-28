@@ -41,6 +41,10 @@ case "${PV}" in
 	;;
 	5.1.0_p165)
 		COMMIT="8129d1538de941f9f1c290d20aa8d00d172ed3d1"
+		KEYWORDS="amd64 ~x86"
+	;;
+	5.1.0_p167)
+		COMMIT="0c68487448317a73d30588c849ada065491b337a"
 	;;
 	9999)
 		unset KEYWORDS
@@ -50,7 +54,7 @@ case "${PV}" in
 	*)
 		# Offical release
 		# Does NOT work with beta releases. So... TODO
-		SRC_URI="https://github.com/Doom-Utils/deutex/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+		SRC_URI="${HOMEPAGE}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	;;
 esac
 
@@ -61,12 +65,13 @@ then
 fi
 
 src_prepare() {
+	# Add version information to identify installed version if bugs arise.
 	if [ "$COMMIT" ]
 	then
 		GITVERS="$PV"
 		echo -e "$GITVERS\n$COMMIT - $(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F)" > git.version
 	elif [ "$EGIT_REPO_URI" ]
-	then
+	then # We are here if version is 9999
 		GITVERS="$(git describe)"
 		(
 			echo "$GITVERS"
