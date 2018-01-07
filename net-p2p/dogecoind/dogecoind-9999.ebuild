@@ -20,8 +20,7 @@ DEPEND="
 	sys-libs/db:5.1[cxx]
 	dev-libs/leveldb
 	>=dev-libs/boost-1.41.0
-	dev-libs/openssl[-bindist]
-	net-libs/miniupnpc"
+	dev-libs/openssl[-bindist]"
 
 RDEPEND="${DEPEND}"
 
