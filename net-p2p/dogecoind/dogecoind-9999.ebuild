@@ -15,7 +15,6 @@ EGIT_REPO_URI='https://github.com/dogecoin/dogecoin.git'
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS=""
-#IUSE="ipv6 upnp"
 
 DEPEND="
 	sys-libs/db:5.1[cxx]
