@@ -9,7 +9,6 @@ HOMEPAGE="http://dogecoin.com/"
 EGIT_REPO_URI='https://github.com/dogecoin/dogecoin.git'
 
 LICENSE="MIT"
-#KEYWORDS=""
 
 if [ "$PV" != "9999" ]
 then
@@ -17,6 +16,8 @@ then
 	unset EGIT_REPO_URI
 	KEYWORDS="~amd64 ~x86 ~arm64 ~arm"
 	S="${WORKDIR}/${PN%d}-${PVR}"
+else
+	inherit git-r3
 fi
 
 SLOT="0"
@@ -42,9 +43,5 @@ src_compile() {
 }
 
 src_install() {
-#	dobin src/${PN}
-#	dodoc doc/README
 	emake DESTDIR="$D" install
 }
-
-pkg_multilib_strict_check() { true; }
