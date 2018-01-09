@@ -4,17 +4,22 @@
 
 EAPI=6
 
-DB_VER="4.8"
-
-inherit db-use git-r3
-
 DESCRIPTION="Very scrypt! Such random! No such GUI. Much profit! Wow! Many coin!"
 HOMEPAGE="http://dogecoin.com/"
 EGIT_REPO_URI='https://github.com/dogecoin/dogecoin.git'
 
 LICENSE="MIT"
+#KEYWORDS=""
+
+if [ "$PV" != "9999" ]
+then
+	SRC_URI="${EGIT_REPO_URI%.git}/archive/v${PV}.tar.gz -> ${PF}.tar.gz"
+	unset EGIT_REPO_URI
+	KEYWORDS="~amd64 ~x86 ~arm64 ~arm"
+	S="${WORKDIR}/${PN%d}-${PVR}"
+fi
+
 SLOT="0"
-KEYWORDS=""
 
 DEPEND="
 	sys-libs/db:5.1[cxx]
