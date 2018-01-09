@@ -26,7 +26,8 @@ DEPEND="
 	dev-libs/boost
 	dev-libs/openssl[-bindist]"
 
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	net-libs/libbitcoinconsensus"
 
 src_configure() {
 	./autogen.sh || die "autogen.sh failed"
@@ -42,5 +43,6 @@ src_compile() {
 
 src_install() {
 	emake DESTDIR="$D" install
+	find "${D}" -depth -name '*bitcoinconsensus.*' -delete
 }
 
