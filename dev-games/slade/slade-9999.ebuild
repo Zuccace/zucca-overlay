@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -26,6 +26,9 @@ case "$PVR" in
 	;;
 	"3.1.2_beta3_p2")
 		COMMIT="9da08eacffd257807590cb053b1c5a051aa4d803"
+	;;
+	"3.1.2_beta5_p24")
+		COMMIT="1e3a5966bdf46d06f7dbc777453fe89052c25996"
 	;;
 esac
 
