@@ -50,6 +50,6 @@ src_install() {
 	else
 		echo "$COMMIT" > "${T}/git_commit.txt"
 	fi
-	
+
 	dodoc "${T}/"*.txt
 }
