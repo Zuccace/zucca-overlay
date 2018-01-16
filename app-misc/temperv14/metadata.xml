@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<longdescription>Utility to read temperature values from TEMPer USB temperature sensor.</longdescription>
+</pkgmetadata>
