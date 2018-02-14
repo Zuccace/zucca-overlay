@@ -24,7 +24,7 @@ SLOT="0"
 DEPEND="
 	sys-libs/db:4.8[cxx]
 	dev-libs/boost
-	dev-libs/openssl[-bindist]"
+	dev-libs/openssl:0[-bindist]"
 
 RDEPEND="${DEPEND}
 	net-libs/libbitcoinconsensus"
@@ -32,7 +32,6 @@ RDEPEND="${DEPEND}
 src_configure() {
 	./autogen.sh || die "autogen.sh failed"
 	CFLAGS="${CFLAGS} -I /usr/include/db4.8/" CXXFLAGS="${CXXFLAGS} -I /usr/include/db4.8/" ./configure --libdir="/usr/$(get_libdir)" --enable-cxx --prefix=/usr --with-gui=no --disable-tests --without-miniupnpc --with-incompatible-bdb || die "configure failed"
- 
 }
 
 src_compile() {
@@ -45,4 +44,3 @@ src_install() {
 	emake DESTDIR="$D" install
 	find "${D}" -depth -name '*bitcoinconsensus.*' -delete
 }
-
