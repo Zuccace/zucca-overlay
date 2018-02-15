@@ -12,7 +12,7 @@ BASE_SRC="https://github.com/buddhi1980/${PN}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="-amd64 -x86"
-IUSE="examples"
+IUSE="examples pie"
 [ "${PV%%_*}" = "2.12" ] && IUSE="${IUSE} opencl" && OCL_DEP="opencl? ( dev-libs/opencl-clhpp )"
 
 MY_PV="${PV/_p/-}"
@@ -39,8 +39,8 @@ DEPEND="
 	dev-qt/qttest:5
 	sci-libs/gsl
 	${OCL_DEP}
-
 "
+
 RDEPEND="${DEPEND}
 	sys-cluster/openmpi
 "
@@ -48,6 +48,7 @@ RDEPEND="${DEPEND}
 #src_prepare() { die on purpose; }
 
 src_configure() {
+
 	if [ -d "Release" ]
 	then
 		export RELDIR="Release"
@@ -70,7 +71,7 @@ src_configure() {
 
 src_compile() {
 	cd "$RELDIR" || die "Couldn't cd to $RELDIR"
-	default
+	emake CFLAGS="${CFLAGS} -I/usr/include/ $(use pie && echo "-fPIC -fPIE")" CXXFLAGS="${CXXFLAGS} -I/usr/include/ $(use pie && echo "-fPIC -fPIE")"
 }
 
 src_install() {
