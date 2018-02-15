@@ -1,0 +1,3 @@
+move net-p2p/myriadcoind cryptocurrency/myriadcoind
+move net-p2p/dogecoind cryptocurrency/dogecoind
+move net-p2p/gridcoin cryptocurrency/gridcoin
