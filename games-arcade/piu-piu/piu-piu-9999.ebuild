@@ -30,6 +30,9 @@ case "$PV" in
 			208)
 				COMMIT="d6f9697b0184579ba41aeb9d6436950a421ac794"
 			;;
+			237)
+				COMMIT="b7bd10624c56b2432d245b3ad1c3b0041b405bd5"
+			;;
 		esac
 	;;
 esac
