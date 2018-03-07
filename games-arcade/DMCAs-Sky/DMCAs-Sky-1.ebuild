@@ -12,7 +12,7 @@ RESTRICT="mirror fetch strip"
 
 LICENSE="ASMB_Free-to-play"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE=""
 
 DEPEND="app-arch/unzip"
