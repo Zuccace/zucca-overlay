@@ -21,15 +21,20 @@ RDEPEND="virtual/opengl"
 S="${SRC_URI%.zip}"
 S="${WORKDIR%/}/${S##*/}"
 
+pkg_nofetch() {
+	einfo "You need to download the game manually fron ${HOMEPAGE} and place the '${SRC_URI}' into '${DISTDIR}'"
+}
+
 src_install() {
 	BINNAME="${PKG_BASE}.$(uname -m)"
 	OPTDIR="/opt/${PN}/"
+
 	exeinto "$OPTDIR"
 	insinto "$OPTDIR"
 	into "/usr/games/"
+
 	doexe "$BINNAME"
 	doins -r "${PKG_BASE}_Data"
-	#dosym "${EPRFIX%/}${OPTDIR}${BINNAME}" /usr/games/bin/dmcas-sky
 	newbin <(
 		echo '#!/bin/sh'
 		echo "cd \"${OPTDIR}\" || exit \"\$?\""
@@ -37,9 +42,5 @@ src_install() {
 		echo 'ESTATUS="$?"'
 		echo 'exit "$ESTATUS"'
 	) dmcas-sky
-
 	dodoc readme.txt
-
-	#die on purpose
-
 }
