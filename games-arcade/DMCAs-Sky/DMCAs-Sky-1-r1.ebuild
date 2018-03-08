@@ -49,8 +49,7 @@ src_install() {
 		echo '#!/bin/sh'
 		echo "cd \"${OPTDIR}\" || exit \"\$?\""
 		echo "./${BINNAME}" '"$@"'
-		echo 'ESTATUS="$?"'
-		echo 'exit "$ESTATUS"'
+		echo 'exit "$?"'
 	) dmcas-sky
 	dodoc readme.txt
 	doicon "${DISTDIR%/}/${ICON}"
