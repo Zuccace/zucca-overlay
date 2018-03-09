@@ -10,10 +10,10 @@ HOMEPAGE="https://asmb.itch.io/dmcas-sky"
 PKG_BASE="DMCAsSky"
 ARCHIVE_NAME="${PKG_BASE}-linux.zip"
 ICON="dmcas-sky.png"
-SRC_URI="${ARCHIVE_NAME}
-https://img.itch.zone/aW1hZ2UvODM2MzgvMzk0MjYyLnBuZw==/315x250%23c/ipWepf.png -> $ICON"
+SRC_URI="${ARCHIVE_NAME}"
+# ICON is from https://img.itch.zone/aW1hZ2UvODM2MzgvMzk0MjYyLnBuZw==/315x250%23c/ipWepf.png
 
-RESTRICT="mirror strip"
+RESTRICT="mirror strip fetch"
 
 LICENSE="ASMB_Free-to-play"
 SLOT="0"
@@ -36,6 +36,7 @@ pkg_nofetch() {
 
 src_install() {
 	BINNAME="${PKG_BASE}.$(uname -m)"
+	DATADIR="${PKG_BASE}_Data"
 	OPTDIR="/opt/${PN}/"
 
 	exeinto "$OPTDIR"
@@ -43,7 +44,17 @@ src_install() {
 	into "/usr/games/"
 
 	doexe "$BINNAME"
+
+	case "${BINNAME##*.}" in
+		x86_64)
+			find "$DATADIR" -type d -name x86 -execdir rm -fr {} +
+	    ;;
+		x86)
+			find "$DATADIR" -type d -name x86_64 -execdir rm -fr {} +
+		;;
+	esac
 	doins -r "${PKG_BASE}_Data"
+
 	use extras && newbin "$FILESDIR/run-dmcas-sky.sh" dmcas-sky || \
 	newbin <(
 		echo '#!/bin/sh'
@@ -52,6 +63,6 @@ src_install() {
 		echo 'exit "$?"'
 	) dmcas-sky
 	dodoc readme.txt
-	doicon "${DISTDIR%/}/${ICON}"
+	doicon "${FILESDIR%/}/${ICON}"
 	make_desktop_entry dmcas-sky "DMCA's Sky" "$ICON"
 }
