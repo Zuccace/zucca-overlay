@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<use><flag name="locale">Locale support</flag></use>
+	<longdescription>Generates a Perl script containing all the applications from the /usr/share/applications directory, ordered on categories. It also provides a schema file for customization.</longdescription>
+</pkgmetadata>
