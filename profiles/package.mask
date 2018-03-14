@@ -15,3 +15,8 @@
 #
 # Feel free to submit a patch. ;)
 =www-client/ncsa-mosaic-ck-2.7_beta11
+
+# All ebuilds are broken. :(
+# wxwidgets isn't playing nice with us.
+# You're welcome to submit your fix. ;)
+dev-games/slade
