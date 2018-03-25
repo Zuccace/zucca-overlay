@@ -11,6 +11,6 @@
 Eureka is free software under the GNU General Public License (GPL). Please note that it comes with absolutely NO WARRANTY of any kind.”</longdescription>
 	<use>
 		<flag name="verify-git-pull">Verify files pulled from git using sha512.</flag>
-		<flag name="create-sums">Create sha512 hashes for each file (for ebuild creation).
+		<flag name="create-sums">Create sha512 hashes for each file (for ebuild creation).</flag>
 	</use>
 </pkgmetadata>
