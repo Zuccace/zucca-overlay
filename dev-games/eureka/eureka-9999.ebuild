@@ -2,17 +2,19 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+inherit eutils xdg git-r3
 
 DESCRIPTION="A map editor for the classic DOOM games, and others such as Heretic and Hexen."
 HOMEPAGE="http://eureka-editor.sourceforge.net"
-
-inherit eutils xdg
+EGIT_REPO_URI="https://git.code.sf.net/p/eureka-editor/git eureka-editor-git"
+LICENSE="GPL-2+"
+SLOT="0"
+IUSE="xinerama +verify-git-pull +create-sums"
 
 case "${PVR}" in
 	1.21-r1)
-		COMMIT="2c43e820d58f0e97efa1e4c2967e06657fa6a32e"
+		EGIT_COMMIT="2c43e820d58f0e97efa1e4c2967e06657fa6a32e"
 		KEYWORDS="~amd64 -x86"
-		S="${WORKDIR}/eureka-editor-git-${COMMIT}"
 		pkg_info() {
 			einfo "This unoffical version has new 3D view implementation:"
 			einfo
@@ -27,18 +29,13 @@ case "${PVR}" in
 		PATCH_VERS="r1-gentoo"
 	;;
 	9999)
-		inherit git-r3
-		EGIT_REPO_URI="https://git.code.sf.net/p/eureka-editor/git"
+		# placeholder
+		true
 	;;
 	*)
 		die "${PN} ebuild doesn't support the requested version of ${PVR}"
 	;;
 esac
-
-[ ! "$EGIT_REPO_URI" ] && SRC_URI="https://sourceforge.net/code-snapshots/git/e/eu/eureka-editor/git.git/eureka-editor-git-${COMMIT}.zip -> ${P}_${COMMIT}.zip"
-LICENSE="GPL-2+"
-SLOT="0"
-IUSE="xinerama"
 
 RDEPEND="
 	xinerama? ( x11-libs/libXinerama )
@@ -53,7 +50,23 @@ DEPEND="${RDEPEND}
 >=sys-apps/gawk-4.1.0"
 
 src_prepare() {
-	[ "$PV" = "9999" ] && PATCH_VERS="git-p$(git rev-list --count HEAD)-gentoo-$(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F) "
+
+	[ -z "$EGIT_COMMIT" ] && EGIT_COMMIT="$(git rev-parse HEAD)"
+
+	if [ ${PV} != "9999" ] && use verify-git-pull
+	then
+		sha512sum -c "${FILESDIR}/${EGIT_COMMIT}.sha512" || die "sha512 verification FAILED!"
+		einfo "sha512 sums match."
+	elif use create-sums
+	then
+		einfo "Creating sha512 sums..."
+		find -type f -not -regex '.*/\.git/.*' -not -name '*.sha512' -not -name '.git*' -exec sha512sum {} + | tee "${T}/${EGIT_COMMIT}.sha512" | cut -d ' ' -f 2- | while read line; do einfo "$line"; done; unset line
+	elif [ ${PV} != "9999" ]
+	then
+		ewarn "verify-git-pull is DISABLED."
+	fi
+
+	[ -z "$PATCH_VERS" ] && PATCH_VERS="git-p$(git rev-list --count HEAD)-gentoo-$(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F) "
 
 	einfo "Patching Makefile on-the-fly..."
 	# Modify PREFIX, drop lines using xdg and adjust few compiler flags.
@@ -75,11 +88,10 @@ src_prepare() {
 
 src_install() {
 
-	if [ "$COMMIT" ]
+	if [ "$EGIT_COMMIT" ]
 	then
-		echo "$COMMIT" > VERSION.nfo
-	elif [ "$EGIT_REPO_URI" ]
-	then
+		echo "$EGIT_COMMIT" > VERSION.nfo
+	else
 		# Cannot git describe ;(
 		#git describe --tags > VERSION.nfo
 		git rev-parse HEAD >> VERSION.nfo
@@ -94,4 +106,12 @@ src_install() {
 	mkdir -p "${usr}/share/eureka"
 	mkdir -p "${usr}/bin"
 	emake INSTALL_DIR="${usr}/share/eureka" install
+
+	if [ -f "${T}/${EGIT_COMMIT}.sha512" ]
+	then
+		sum_location="/usr/share/${PN}/${EGIT_COMMIT}.sha512"
+		insinto "${sum_location%/*}/"
+		doins "${T}/${EGIT_COMMIT}.sha512"
+		einfo "sha512 sums stored at '${sum_location}'"
+	fi
 }
