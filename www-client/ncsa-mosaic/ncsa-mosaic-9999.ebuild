@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -21,8 +21,9 @@ RDEPEND="
 	virtual/jpeg:62
 	x11-libs/motif[png,jpeg]
 	x11-libs/libXmu
-	x11-proto/printproto
 "
+#x11-proto/printproto
+
 DEPEND="
 	${DEPEND}
 	sys-apps/gawk
@@ -41,7 +42,7 @@ esac
 
 if [ "$COMMIT" ]
 then
-	SRC_URI="${HOMEPAGE[0]}/archive/${COMMIT}.zip -> ${PF}-${COMMIT}.zip"
+	SRC_URI="${HOMEPAGE[0]}/archive/${COMMIT}.zip -> ${PN}-${PV}-${COMMIT}.zip"
 	S="$WORKDIR/${PN}-${COMMIT}"
 fi
 
@@ -61,8 +62,7 @@ src_compile() {
 }
 
 src_install() {
-	mv "src/Mosaic" mosaic
-	dobin mosaic
+	newbin "src/Mosaic" mosaic
 	dohtml docs/resources.html
 	mv README.old README
 	dodoc CHANGES ChangeLog COPYRIGHT FEATURES TODO README
