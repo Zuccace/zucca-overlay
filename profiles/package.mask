@@ -20,3 +20,9 @@
 # wxwidgets isn't playing nice with us.
 # You're welcome to submit your fix. ;)
 dev-games/slade
+
+# I'm no longer maintaining mandelbulber2
+# since mandelbulber on ::gentoo is already
+# at v2.
+media-gfx/mandelbulber
+media-gfx/mandelbulber2
