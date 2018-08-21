@@ -57,6 +57,12 @@ case "$PV" in
 				COMMIT="caa6f46a59ba1fd9d10b3bdf1fa9bc0094ba564c"
 				KEYWORDS="~amd64 ~x86 ~arm ~arm64"
 			;;
+			0.11.3_p285)
+				COMMIT="bb2fef4f0252039862e5be05af90e56903c8e8f0"
+			;;
+			0.11.3_p290)
+				COMMIT="cd6e7924d6e62559f50045626bb160d3109d4a9a"
+			;;
 			*)
 				die "No commit found for version ${PV}."
 			;;
