@@ -63,6 +63,12 @@ case "$PV" in
 			0.11.3_p290)
 				COMMIT="cd6e7924d6e62559f50045626bb160d3109d4a9a"
 			;;
+			0.11.3_p294)
+				COMMIT="2f520543d36591dcf000b5a607b2bd57dfb96903"
+			;;
+			0.11.3_p295)
+				COMMIT="1b57c6c14db9d7dc0abc37e496884e91f76895c4"
+			;;
 			*)
 				die "No commit found for version ${PV}."
 			;;
