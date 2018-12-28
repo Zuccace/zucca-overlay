@@ -33,6 +33,9 @@ case "$PV" in
 			237)
 				COMMIT="b7bd10624c56b2432d245b3ad1c3b0041b405bd5"
 			;;
+			247)
+				COMMIT="b68b3c85b3a55b71153b65148c80b3a62a98dc7b"
+			;;
 		esac
 	;;
 esac
