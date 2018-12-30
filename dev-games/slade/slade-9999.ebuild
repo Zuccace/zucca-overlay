@@ -63,16 +63,9 @@ DEPEND="dev-util/cmake
 app-portage/gentoolkit
 ${RDEPEND}"
 
-# Please ignore. Only for testing. Will be removed in final.
-#CC="clang"
-#CXX="clang++"
-
-# Some source suggested that -fno-strict-aliasing could fix things...
-#CXXFLAGS="${CXXFLAGS} -fno-strict-aliasing"
-
-#pkg_pretend() {
-#	test-flag-CXX -std=c++14 || die "Your compiler needs to support -std=c++14 to be able to build ${P^}. Upgrade or change your compiler accordingly."
-#}
+pkg_pretend() {
+	test-flag-CXX -std=c++14 || die "Your compiler needs to support -std=c++14 to be able to build ${P^}. Upgrade or change your compiler accordingly."
+}
 
 src_configure() {
 
@@ -104,10 +97,25 @@ src_configure() {
 	cmake-utils_src_configure
 }
 
-src_compile() {
-	#cmake  -DCMAKE_INSTALL_PREFIX=/usr || die "cmake failed"
-	cmake-utils_src_compile
-}
+
+# It would be nice if one could tell emake etc to NOT die when compilation fails.
+# This way we could get neat compilation output, but in case of failure split out all (non-grepped) output.
+#src_compile() {
+#	COMPILELOG="${T}/compile.log"
+#	if cmake-utils_src_compile 2>&1 | tee "$COMPILELOG" | grep -E '^\s*\['
+#	then
+#		einfo "Compilation succesful."
+#	else
+#		eerror "Compilation of ${P^} failed."
+#		eerror "COMPILE LOG:"
+#		while read L
+#		do
+#			eerror "$L"
+#		done
+#		die "Compilation failed."
+#   fi
+#
+#}
 
 src_install() {
 	if [ "$COMMIT" ]
@@ -121,6 +129,5 @@ src_install() {
 
 	[ -f VERSION.nfo ] && dodoc VERSION.nfo
 
-	#default
 	cmake-utils_src_install
 }
