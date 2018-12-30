@@ -1,1 +1,1 @@
-./slade-9999.ebuild
+./slade-3.1.2_beta5_p24.ebuild

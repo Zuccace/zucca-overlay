@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit wxwidgets
+inherit wxwidgets cmake-utils
 
 DESCRIPTION="A modern editor for Doom-engine based games and source ports"
 HOMEPAGE="http://slade.mancubus.net/"
@@ -50,7 +50,9 @@ then
 	SRC_URI="https://github.com/sirjuddington/SLADE/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
 fi
 
-RDEPEND="x11-libs/wxGTK:3.0[gstreamer]
+WX_GTK_VER="3.0-gtk3"
+
+RDEPEND="
 	media-libs/libsfml
 	x11-libs/fltk
 	media-libs/ftgl
@@ -58,17 +60,53 @@ RDEPEND="x11-libs/wxGTK:3.0[gstreamer]
 	media-libs/freeimage"
 
 DEPEND="dev-util/cmake
+app-portage/gentoolkit
 ${RDEPEND}"
 
-# Fix compilation errors on newer versions.
-CXXFLAGS="${CXXFLAGS} -std=c++11"
+# Please ignore. Only for testing. Will be removed in final.
+#CC="clang"
+#CXX="clang++"
 
-pkg_pretend() {
-	test-flag-CXX -std=c++11 || die "You need GCC >= 4.7 or Clang >= 3.0 for C++11 -specific compiler flags, which is needed to build ${P^}. Upgrade or change your compiler accordingly."
-}
+# Some source suggested that -fno-strict-aliasing could fix things...
+#CXXFLAGS="${CXXFLAGS} -fno-strict-aliasing"
+
+#pkg_pretend() {
+#	test-flag-CXX -std=c++14 || die "Your compiler needs to support -std=c++14 to be able to build ${P^}. Upgrade or change your compiler accordingly."
+#}
 
 src_configure() {
-	cmake  -DCMAKE_INSTALL_PREFIX=/usr || die "cmake failed"
+
+	# Patches to disables webkit startup screen. Will get an USE flag eventually.
+	find "${WORKDIR}" -type f -name 'CMakeLists.txt' -exec awk -i inplace '{
+		if (/^\s*if \(NO_WEBVIEW\)/) {
+			del=1; next
+		} else if (/^\s*endif \(NO_WEBVIEW\)/) {
+			del=0
+			print "SET(WX_LIBS ${WX_LIBS} html)"
+			next
+		} else if (del==1) next
+		print
+	}' {} \;
+
+	WX_INCLUDE_DIRS="$(equery -qC f -f dir wxGTK:${WX_GTK_VER} | awk '/\/wx$/ {sub(/wx$/,""); printf "%s ",$0}')"
+	find "${WORKDIR}" -type f -name 'CMakeLists.txt' -exec awk -v "wxinclude=${WX_INCLUDE_DIRS}" -i inplace '{
+		if (/^\s*find_package\(wxWidgets/) {
+			print "include_directories(" wxinclude ")"
+			print "set(wxWidgets_CONFIG_OPTIONS --toolkit=gtk3)"
+			print
+		} else if (/^foo\s*include\(\$\{wxWidgets_USE_FILE\}\)/) next
+		else print
+	}' {} \;
+
+	einfo "wxGTK:${WX_GTK_VER}"
+	einfo "Running setup-wxwidgets..."
+	setup-wxwidgets
+	cmake-utils_src_configure
+}
+
+src_compile() {
+	#cmake  -DCMAKE_INSTALL_PREFIX=/usr || die "cmake failed"
+	cmake-utils_src_compile
 }
 
 src_install() {
@@ -83,5 +121,6 @@ src_install() {
 
 	[ -f VERSION.nfo ] && dodoc VERSION.nfo
 
-	default
+	#default
+	cmake-utils_src_install
 }

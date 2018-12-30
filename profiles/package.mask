@@ -19,7 +19,7 @@
 # All ebuilds are broken. :(
 # wxwidgets isn't playing nice with us.
 # You're welcome to submit your fix. ;)
-dev-games/slade
+#dev-games/slade
 
 # I'm no longer maintaining mandelbulber2
 # since mandelbulber on ::gentoo is already
