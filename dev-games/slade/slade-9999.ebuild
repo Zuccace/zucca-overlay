@@ -81,14 +81,14 @@ src_configure() {
 		print
 	}' {} \;
 
+	# A (dirty) hack to patch CMakeLists.txt -files to use (wx)gtk3.
 	WX_INCLUDE_DIRS="$(equery -qC f -f dir wxGTK:${WX_GTK_VER} | awk '/\/wx$/ {sub(/wx$/,""); printf "%s ",$0}')"
 	find "${WORKDIR}" -type f -name 'CMakeLists.txt' -exec awk -v "wxinclude=${WX_INCLUDE_DIRS}" -i inplace '{
 		if (/^\s*find_package\(wxWidgets/) {
 			print "include_directories(" wxinclude ")"
 			print "set(wxWidgets_CONFIG_OPTIONS --toolkit=gtk3)"
 			print
-		} else if (/^foo\s*include\(\$\{wxWidgets_USE_FILE\}\)/) next
-		else print
+		} else print
 	}' {} \;
 
 	einfo "wxGTK:${WX_GTK_VER}"
@@ -96,7 +96,6 @@ src_configure() {
 	setup-wxwidgets
 	cmake-utils_src_configure
 }
-
 
 # It would be nice if one could tell emake etc to NOT die when compilation fails.
 # This way we could get neat compilation output, but in case of failure split out all (non-grepped) output.
