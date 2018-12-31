@@ -91,8 +91,6 @@ src_configure() {
 		} else print
 	}' {} \;
 
-	einfo "wxGTK:${WX_GTK_VER}"
-	einfo "Running setup-wxwidgets..."
 	setup-wxwidgets
 	cmake-utils_src_configure
 }
