@@ -128,5 +128,6 @@ src_install() {
 	mkdir -p "$MY_D"
 	mkdir -p "${usr}/bin"
 	emake PREFIX="$usr" INSTALL_DIR="$MY_D" install
+	dodoc "${FILESDIR%/}/cheatsheet.pdf" docs/*
 
 }
