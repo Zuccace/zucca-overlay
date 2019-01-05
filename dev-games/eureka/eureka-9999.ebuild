@@ -1,15 +1,39 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit eutils xdg git-r3
+inherit eutils xdg
 
 DESCRIPTION="A map editor for the classic DOOM games, and others such as Heretic and Hexen."
 HOMEPAGE="http://eureka-editor.sourceforge.net"
-EGIT_REPO_URI="https://git.code.sf.net/p/eureka-editor/git eureka-editor-git"
 LICENSE="GPL-2+"
 SLOT="0"
-IUSE="xinerama +verify-git-pull +create-sums"
+IUSE="xinerama"
+
+set_dl_type() {
+	case "${1,,}" in
+		pkg)
+			DL_TYPE="pkg"
+			# Versions after 1.07 don't have dot in version string in their source package filename.
+			case "${PV}" in
+				0.*|1.07)
+					PKGV="${PV}"
+				;;
+				*)
+					PKGV="${PV//./}"
+				;;
+			esac
+			SRC_URI="https://downloads.sourceforge.net/project/eureka-editor/${PN^}/${PV}/${PN}-${PKGV}-source.tar.gz -> ${P}.tar.gz"
+			S="${WORKDIR%/}/${P}-source"
+			KEYWORDS="~amd64 ~x86 ~arm64"
+		;;
+		git)
+			inherit git-r3
+			EGIT_REPO_URI="https://git.code.sf.net/p/eureka-editor/git eureka-editor-git"
+			DL_TYPE="git"
+		;;
+	esac
+}
 
 case "${PVR}" in
 	1.21-r1)
@@ -28,14 +52,18 @@ case "${PVR}" in
 		}
 		PATCH_VERS="r1-gentoo"
 	;;
+	1.24)
+		set_dl_type pkg
+	;;
 	9999)
-		# placeholder
-		true
+		set_dl_type git
 	;;
 	*)
 		die "${PN} ebuild doesn't support the requested version of ${PVR}"
 	;;
 esac
+
+[ "$EGIT_COMMIT" ] && set_dl_type git
 
 RDEPEND="
 	xinerama? ( x11-libs/libXinerama )
@@ -51,22 +79,12 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 
-	[ -z "$EGIT_COMMIT" ] && EGIT_COMMIT="$(git rev-parse HEAD)"
+	[ "$PV" == "9999" ] && EGIT_COMMIT="$(git rev-parse HEAD)"
 
-	if [ ${PV} != "9999" ] && use verify-git-pull
+	if [ "$DL_TYPE" == "git" ] && [ -z "$PATCH_VERS" ]
 	then
-		sha512sum -c "${FILESDIR}/${EGIT_COMMIT}.sha512" || die "sha512 verification FAILED!"
-		einfo "sha512 sums match."
-	elif use create-sums
-	then
-		einfo "Creating sha512 sums..."
-		find -type f -not -regex '.*/\.git/.*' -not -name '*.sha512' -not -name '.git*' -exec sha512sum {} + | tee "${T}/${EGIT_COMMIT}.sha512" | cut -d ' ' -f 2- | while read line; do einfo "$line"; done; unset line
-	elif [ ${PV} != "9999" ]
-	then
-		ewarn "verify-git-pull is DISABLED."
+		PATCH_VERS="git-p$(git rev-list --count HEAD)-gentoo-$(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F) "
 	fi
-
-	[ -z "$PATCH_VERS" ] && PATCH_VERS="git-p$(git rev-list --count HEAD)-gentoo-$(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F) "
 
 	einfo "Patching Makefile on-the-fly..."
 	# Modify PREFIX, drop lines using xdg and adjust few compiler flags.
@@ -74,11 +92,13 @@ src_prepare() {
 	# Remove owner settings from install -lines.
 	gawk -i inplace '{if ($1 == "install") gsub(/[[:space:]]-o[[:space:]][^[:space:]]+/,""); print}' Makefile || die "gawk patching failed."
 	einfo "Makefile patching done."
+
 	if [ "$PATCH_VERS" ]
 	then
 		einfo "Adding custom version number."
 		awk -i inplace -v "cvers=$PATCH_VERS" '{if (/^\s*#define\s+EUREKA_VERSION\s+/) {sub("\"$","",$3); $3=$3 "-" cvers "\""} print}' ./src/main.h
 	fi
+
 	default
 }
 
@@ -88,10 +108,11 @@ src_prepare() {
 
 src_install() {
 
-	if [ "$EGIT_COMMIT" ]
+	if [ "$DL_TYPE" == "git" ] && [ "$PV" != "9999" ]
 	then
 		echo "$EGIT_COMMIT" > VERSION.nfo
-	else
+	elif [ "$PV" == "9999" ]
+	then
 		# Cannot git describe ;(
 		#git describe --tags > VERSION.nfo
 		git rev-parse HEAD >> VERSION.nfo
@@ -103,15 +124,9 @@ src_install() {
 	domenu misc/eureka.desktop
 
 	usr="${D}/usr"
-	mkdir -p "${usr}/share/eureka"
+	MY_D="${usr}/share/eureka"
+	mkdir -p "$MY_D"
 	mkdir -p "${usr}/bin"
-	emake INSTALL_DIR="${usr}/share/eureka" install
+	emake PREFIX="$usr" INSTALL_DIR="$MY_D" install
 
-	if [ -f "${T}/${EGIT_COMMIT}.sha512" ]
-	then
-		sum_location="/usr/share/${PN}/${EGIT_COMMIT}.sha512"
-		insinto "${sum_location%/*}/"
-		doins "${T}/${EGIT_COMMIT}.sha512"
-		einfo "sha512 sums stored at '${sum_location}'"
-	fi
 }

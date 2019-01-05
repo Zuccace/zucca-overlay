@@ -9,8 +9,4 @@
 
 ”Eureka is a map editor for the classic DOOM games, and a few related games such as Heretic and Hexen. The supported operating systems are: Linux (and other Unices), Windows and OS X.
 Eureka is free software under the GNU General Public License (GPL). Please note that it comes with absolutely NO WARRANTY of any kind.”</longdescription>
-	<use>
-		<flag name="verify-git-pull">Verify files pulled from git using sha512.</flag>
-		<flag name="create-sums">Create sha512 hashes for each file (for ebuild creation). Does nothing if verify-git-pull is enabled.</flag>
-	</use>
 </pkgmetadata>
