@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -68,6 +68,9 @@ case "$PV" in
 			;;
 			0.11.3_p295)
 				COMMIT="1b57c6c14db9d7dc0abc37e496884e91f76895c4"
+			;;
+			0.11.3_p301)
+				COMMIT="257781dcd973ed81d8d1b9df0331e572224a2618"
 			;;
 			*)
 				die "No commit found for version ${PV}."
