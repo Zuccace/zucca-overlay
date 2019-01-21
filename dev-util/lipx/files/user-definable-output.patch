@@ -1,0 +1,76 @@
+--- ./lipx.py	2019-01-20 16:42:28.249912475 +0200
++++ ./lipx.py	2019-01-21 19:16:45.764611564 +0200
+@@ -8 +8 @@
+-VERSION = '1.1'
++VERSION = '1.1-zucca-r1'
+@@ -24,6 +24,8 @@
+-           '    lipx.py -a originalFile patchFile\n' +
+-           '    >[Apply a patch]\n\n' +
+-           '    lipx.py -ab originalFile patchFile\n' +
+-           '    >[Create a copy and apply the patch - original is untouched]\n\n' +
+-           '    lipx.py -c originalFile modifiedFile\n' +
+-           '    >[Create an IPS patch]\n')
++           '    lipx.py -a <originalFile> <patchFile>\n' +
++           '    == Apply a patch\n\n' +
++           '    lipx.py -ab <originalFile> <patchFile> [modifiedFile]\n' +
++           '    == Create a copy and apply the patch - original is untouched\n\n' +
++           '    lipx.py -c <originalFile> <modifiedFile> [patchFile]\n' +
++           '    == Create an IPS patch\n\n' +
++           '    <> are mandatory arguments\n' +
++           '    [] are optional arguments')
+@@ -176 +178 @@
+-            try:
++            try: 
+@@ -178 +180,10 @@
+-                open('Patched_'+file_to_patch, 'wb').write(org_file_cont)
++
++                # self.modified_file is always set, so let's look at its legth.
++                if len(self.modified_file) < 1:
++                    file_to_patch = 'Patched_'+self.original_file
++                else:
++                    # We have custom filename for patched file
++                    file_to_patch = self.modified_file
++
++                open(file_to_patch, 'wb').write(org_file_cont)
++
+@@ -180 +191 @@
+-                print('> Error - Cannot create Patched_%s' % file_to_patch)
++                print('> Error - Cannot create %s' % file_to_patch)
+@@ -183 +193,0 @@
+-            file_to_patch = 'Patched_'+self.original_file
+@@ -316,4 +326 @@
+-        if sys.argv[1] == '-a' or sys.argv[1] == '-ab':
+-            if arg_len != 4:
+-                usage()
+-
++        if sys.argv[1] == '-a' and arg_len == 4:
+@@ -321,0 +329,10 @@
++        elif sys.argv[1] == '-ab':
++            if arg_len == 4:
++                ips = IPS(sys.argv[1], sys.argv[2], '', sys.argv[3])
++            elif arg_len == 5:
++                # sys.argv[4] is user supplied _patched_ file name. 
++                # Keep the compability - note the order of arguments.
++                ips = IPS(sys.argv[1], sys.argv[2], sys.argv[4], sys.argv[3])
++            else:
++                usage()
++
+@@ -322,0 +340 @@
++
+@@ -324,2 +342,5 @@
+-            if arg_len != 4:
+-                usage()
++            if arg_len == 4 or arg_len == 5:
++                if len(sys.argv[4]) > 0:
++                    patch_file_name = sys.argv[4]
++                else:
++                    patch_file_name = sys.argv[3]+'.ips'
+@@ -327,2 +348 @@
+-            patch_file_name = sys.argv[3]+'.ips'
+-            ips = IPS(sys.argv[1], sys.argv[2], sys.argv[3], patch_file_name)
++                ips = IPS(sys.argv[1], sys.argv[2], sys.argv[3], patch_file_name)
+@@ -330 +350,3 @@
+-            ips()
++                ips()
++            else:
++                usage()
