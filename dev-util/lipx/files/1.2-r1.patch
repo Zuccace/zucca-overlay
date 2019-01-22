@@ -1,0 +1,70 @@
+--- ./lipx.py	2019-01-22 02:12:51.000000000 +0200
++++ ./lipx.py	2019-01-22 15:17:05.726666843 +0200
+@@ -3,11 +3,11 @@
+ import collections
+ import os
+ import struct
+ import sys
+ 
+-VERSION = '1.2'
++VERSION = '1.2-zucca-gentoo-r1'
+ _ntuple_diskusage = collections.namedtuple('usage', 'total used free')
+ 
+ 
+ def disk_usage(path):
+     st = os.statvfs(path)
+@@ -17,18 +17,19 @@
+ 
+     return _ntuple_diskusage(total, used, free)
+ 
+ 
+ def usage():
++    this = os.path.basename(sys.argv[0])
+     print('\nLipx v' + VERSION + ' - Linux IPS tool\n\n' +
+            'Usage:\n\n' +
+            '    == Apply patch\n' +
+-           '    lipx.py -a originalFile patchFile\n\n' +
++           '    ' + this + ' -a originalFile patchFile\n\n' +
+            '    == Create a copy and apply the patch - original is untouched\n' +
+-           '    lipx.py -ab originalFile patchFile [outputFile]\n\n' +
++           '    ' + this + ' -ab originalFile patchFile [outputFile]\n\n' +
+            '    == Create IPS patch\n' +
+-           '    lipx.py -c originalFile modifiedFile [outputFile]\n\n' +
++           '    ' + this + ' -c originalFile modifiedFile [outputFile]\n\n' +
+            'Arguments:\n' +
+            '    [] optional argument\n')
+ 
+     sys.exit(1)
+ 
+@@ -170,16 +171,20 @@
+         self.record_count += 1
+         self.patch_size += len(record_data) + 5
+ 
+     def apply_ips(self):
+         a = 5
+-        file_to_patch = self.original_file
+ 
+-        if self.cmd == '-ab':
++        if self.cmd == '-a':
++            file_to_patch = self.original_file
++
++        else:
++            # self.cmd == '-ab'
+             try:
+-                org_file_cont = bytearray(open(file_to_patch, 'rb').read())
++                org_file_cont = bytearray(open(self.original_file, 'rb').read())
+                 open(self.modified_file, 'wb').write(org_file_cont)
++
+             except:
+                 print('> Error - Cannot create %s' % self.modified_file)
+                 sys.exit(1)
+ 
+             file_to_patch = self.modified_file
+@@ -334,6 +339,7 @@
+         ips()
+ 
+     else:
+         usage()
+ 
++    print("> Done")
+     sys.exit(0)
