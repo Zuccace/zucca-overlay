@@ -5,5 +5,5 @@
 		<email>ilja.sara@kahvipannu.com</email>
 		<name>Ilja Sara</name>
 	</maintainer>
-	<longdescription>IPS patching utility written in python</longdescription>
+	<longdescription>IPS patching utility and module written in python</longdescription>
 </pkgmetadata>

@@ -26,11 +26,11 @@ case "$PV" in
 	;;
 esac
 
-#case "$PVR" in
-#	0.1_alpha-r1)
-#		PATCHES=("${FILESDIR%/}/${PVR}.patch")
-#	;;
-#esac
+case "$PVR" in
+	0.1_alpha-r1)
+		PATCHES=("${FILESDIR%/}/${PVR}.patch")
+	;;
+esac
 
 if [ "$COMMIT" ]
 then
@@ -42,7 +42,7 @@ fi
 
 src_prepare() {
 	default
-	sed "1s:^.*\$:#!$(which python3):" "$UP_PN" > "$MY_PN"
+	{ echo -ne "#!$(which python3)\n\n"; sed "1s:^#!:# Original shebang replaced automatically by ebuild script.:" "$UP_PN"; } > "$MY_PN"
 	eapply_user
 }
 

@@ -1,0 +1,24 @@
+--- ./ips.py	2018-10-18 04:30:26.000000000 +0300
++++ ./ips.py	2019-01-22 22:47:34.126689912 +0200
+@@ -9 +9 @@
+-VERSION      = '0.1'
++VERSION      = '0.1a-zucca-gentoo-r1'
+@@ -220 +220 @@
+-                        size[x] = len(record) >> (8 - x * 8)
++                        size[x] = (len(record) >> (8 - x * 8)) % 256
+@@ -232 +232 @@
+-                    size[x] = len(record) >> (8 - x * 8)
++                    size[x] = (len(record) >> (8 - x * 8)) % 256
+@@ -318 +318,2 @@
+-            print ('\r\nips.py v' + VERSION + ' / Create and apply IPS patches.\r\n'+
++            this = this = os.path.basename(sys.argv[0])
++            print ('\r\n' + this + ' v' + VERSION + ' / Create and apply IPS patches.\r\n'+
+@@ -321 +322 @@
+-                   '    ips apply path/to/original/file path/to/patch ' +
++                   '    ' + this + ' apply path/to/original/file path/to/patch ' +
+@@ -323 +324 @@
+-                   '    ips create path/to/original/file path/to/modified ' +
++                   '    ' + this + ' create path/to/original/file path/to/modified ' +
+@@ -325 +326 @@
+-                   '    ips help\r\n' +
++                   '    ' + this + ' help\r\n' +
