@@ -21,3 +21,8 @@
 # at v2.
 media-gfx/mandelbulber
 media-gfx/mandelbulber2
+
+# Every version seem to create faulty patches
+# or apply the patch incorrectly.
+# See: https://github.com/kylon/Lipx/issues/3
+dev-util/lipx
