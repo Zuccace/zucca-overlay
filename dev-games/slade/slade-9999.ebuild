@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit wxwidgets cmake-utils
+inherit wxwidgets
 
 DESCRIPTION="A modern editor for Doom-engine based games and source ports"
 HOMEPAGE="http://slade.mancubus.net/"
@@ -50,6 +50,8 @@ then
 	SRC_URI="https://github.com/sirjuddington/SLADE/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
 fi
 
+: "${IUSE:="+doc"}"
+
 WX_GTK_VER="3.0-gtk3"
 
 RDEPEND="
@@ -64,6 +66,10 @@ DEPEND="dev-util/cmake
 app-portage/gentoolkit
 ${RDEPEND}"
 
+BDEPEND="${DEPEND}"
+
+DESTDIR="${D%/}/usr/"
+
 pkg_pretend() {
 	test-flag-CXX -std=c++14 || die "Your compiler needs to support -std=c++14 to be able to build ${P^}. Upgrade or change your compiler accordingly."
 }
@@ -71,6 +77,7 @@ pkg_pretend() {
 src_configure() {
 
 	# Patches to disables webkit startup screen. Will get an USE flag eventually.
+	# TODO: to be removed soon. We can use -DNO_WEBVIEW=ON
 	find "${WORKDIR}" -type f -name 'CMakeLists.txt' -exec awk -i inplace '{
 		if (/^\s*if \(NO_WEBVIEW\)/) {
 			del=1; next
@@ -93,27 +100,45 @@ src_configure() {
 	}' {} \;
 
 	setup-wxwidgets
-	cmake-utils_src_configure
+	default
 }
 
-# It would be nice if one could tell emake etc to NOT die when compilation fails.
-# This way we could get neat compilation output, but in case of failure split out all (non-grepped) output.
-#src_compile() {
-#	COMPILELOG="${T}/compile.log"
-#	if cmake-utils_src_compile 2>&1 | tee "$COMPILELOG" | grep -E '^\s*\['
-#	then
-#		einfo "Compilation succesful."
-#	else
-#		eerror "Compilation of ${P^} failed."
-#		eerror "COMPILE LOG:"
-#		while read L
-#		do
-#			eerror "$L"
-#		done
-#		die "Compilation failed."
-#   fi
-#
-#}
+src_compile() {
+	COMPILELOG="${T}/compile.log"
+
+	pushd dist/
+	einfo "Running - cmake ../" >> "${COMPILELOG}" 2>&1
+	if ! cmake .. >> "${COMPILELOG}" 2>&1
+	then
+		eerror "Cmake failed."
+		einfo "Tail of ${COMPILELOG} ..."
+		tail "${COMPILELOG}" | while read L
+		do
+			eerror "$L"
+		done
+		die "Aborting... ${COMPILELOG} might reveal the cause."
+	fi
+
+	einfo "Running - emake" >> "${COMPILELOG}" 2>&1
+	if nonfatal emake VERBOSE=1 2>&1 | tee -a "$COMPILELOG" | awk '/^[^a-zA-Z0-9]*\[\s*[0-9]+\s*%\]/'
+	then
+		einfo "Compilation succesful."
+	else
+		eerror "Compilation of ${P^} failed."
+		einfo "COMPILE LOG tail:"
+		tail "$COMPILELOG" | while read L
+		do
+			eerror "$L"
+		done
+
+		einfo "The whole emake output is located at: ${COMPILELOG}"
+
+		die "Compilation failed."
+	fi
+
+	popd
+
+}
 
 src_install() {
 	if [ "$COMMIT" ]
@@ -125,7 +150,25 @@ src_install() {
 		git rev-parse HEAD >> VERSION.nfo
 	fi
 
-	[ -f VERSION.nfo ] && dodoc VERSION.nfo
+	[ -f VERSION.nfo ] && dodoc VERSION.info
 
-	cmake-utils_src_install
+	INSTALLLOG="${T}/install.log"
+	pushd dist/
+
+	# Keep your hands off my PREFIX!
+	# (I've tried to pass values for DESTDIR, PREFIX and CMAKE_INSTALL_PREFIX but _none_ worked.)
+	awk -i inplace -v "dest=${DESTDIR}" '{if (/^\s*string\(.*CMAKE_INSTALL_PREFIX/) $0 = "set(CMAKE_INSTALL_PREFIX \"" dest "\")"; print}' cmake_install.cmake || die "awk died"
+
+	if ! nonfatal emake install 2>&1 | tee -a "$INSTALLLOG" | awk '/^[^a-zA-Z0-9]*\[\s*[0-9]+\s*%\]/'
+	then
+	    local E="$?"
+		die "Installation failed. Error: $E"
+	fi
+	popd
+
+	if use doc
+	then
+		dodir "/usr/share/doc/${PN}-${PVR}"
+		cp -va docs "${D%/}/usr/share/doc/${PN}-${PVR}/scripting"
+	fi
 }
