@@ -1,6 +1,8 @@
 # Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Originally forked from: https://raw.githubusercontent.com/denix0/gentoo/34193ecece9f94c9ba3f337756ff5be4e3c36d1a/media-video/shotcut/shotcut-18.11.18.ebuild
+
 EAPI=6
 
 inherit desktop qmake-utils
@@ -58,8 +60,8 @@ src_configure() {
 src_install() {
 	emake INSTALL_ROOT="${D}" install
 
-	newicon "${S}/icons/shotcut-logo-64.png" "${PN}.png"
-	make_desktop_entry shotcut "Shotcut"
+	#newicon "${S}/icons/shotcut-logo-64.png" "${PN}.png"
+	#make_desktop_entry shotcut "Shotcut"
 
 	insinto "/usr/share/${PN}/translations"
 	doins share/shotcut/translations/*.qm
