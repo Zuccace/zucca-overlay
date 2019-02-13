@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<longdescription>
+A modern, simple to use, constantly evolving and hella fast MEDIA CUTTER + JOINER w/ frame-accurate SmartCut technology, chapter support, media stream selection for audio + subtitle channels and blackdetect video filter support to automatically detect scene changes or skip commercials in digital TV recordings.
+
+Features include:
+
+    OpenGL hardware accelerated playback (libmpv)
+    Lossless, super fast media cutting and joining (FFmpeg)
+    Detailed media metadata information (MediaInfo)
+    Timeline thumbnails for more accurate seeking
+    SmartCut frame-accurate cutting option (disabled by default)
+    Attractive, simple to use Qt5 based interface
+    Chapter support allowing scene chapter names to be included in final media metadata. NOTE: results will only work in media players that support chapters
+	</longdescription>
+</pkgmetadata>
