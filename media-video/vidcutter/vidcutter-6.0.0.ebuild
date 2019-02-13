@@ -17,14 +17,14 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="dev-python/PyQt5"
+DEPEND="dev-python/PyQt5
+		media-video/mpv[libmpv]"
 RDEPEND="
 	${PYTHON_DEPS}
 	${DEPEND}
 	dev-python/pyopengl
 	media-video/ffmpeg
-	media-video/mediainfo
-	media-video/mpv[libmpv]"
+	media-video/mediainfo"
 BDEPEND="
 	${DEPEND}"
 
