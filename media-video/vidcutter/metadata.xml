@@ -10,12 +10,12 @@ A modern, simple to use, constantly evolving and hella fast MEDIA CUTTER + JOINE
 
 Features include:
 
-    OpenGL hardware accelerated playback (libmpv)
-    Lossless, super fast media cutting and joining (FFmpeg)
-    Detailed media metadata information (MediaInfo)
-    Timeline thumbnails for more accurate seeking
-    SmartCut frame-accurate cutting option (disabled by default)
-    Attractive, simple to use Qt5 based interface
-    Chapter support allowing scene chapter names to be included in final media metadata. NOTE: results will only work in media players that support chapters
+	OpenGL hardware accelerated playback (libmpv)
+	Lossless, super fast media cutting and joining (FFmpeg)
+	Detailed media metadata information (MediaInfo)
+	Timeline thumbnails for more accurate seeking
+	SmartCut frame-accurate cutting option (disabled by default)
+	Attractive, simple to use Qt5 based interface
+	Chapter support allowing scene chapter names to be included in final media metadata. NOTE: results will only work in media players that support chapters
 	</longdescription>
 </pkgmetadata>
