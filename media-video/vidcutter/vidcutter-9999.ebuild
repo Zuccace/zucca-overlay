@@ -40,5 +40,5 @@ BDEPEND="
 src_prepare() {
 	default
 	# Fixing doc install directory path:
-	sed -i -e "s:doc/vidcutter[^/'\"]*:doc/vidcutter-${PV}:g" helpers.py
+	sed -i -e "s:doc/vidcutter[^/'\"]*:doc/vidcutter-${PV}:g" helpers.py || die 'sed failed to patch "helpers.py".'
 }
