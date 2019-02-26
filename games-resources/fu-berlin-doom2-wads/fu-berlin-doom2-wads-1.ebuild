@@ -111,7 +111,7 @@ pkg_pretend() {
 	# Yup.
 	CHECKREQS_DISK_BUILD="4G"
 
-	check-reqs_pkg_setup
+	check-reqs_pkg_pretend
 }
 
 pkg_setup() {
