@@ -9,6 +9,7 @@ inherit bash-completion-r1 distutils-r1 git-r3 readme.gentoo-r1
 DESCRIPTION="youtube-dl with yle (Finnish broadcasting company) support"
 HOMEPAGE="https://github.com/Hegezcc/youtube-dl"
 EGIT_REPO_URI="$HOMEPAGE"
+EGIT_BRANCH="yleareena"
 LICENSE="public-domain"
 
 KEYWORDS=""
