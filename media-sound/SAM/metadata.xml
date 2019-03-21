@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<use><flag name="wrapper">Installs a bash wrapper for sam to gain extra functionality, like mp3 and flac output and support for longer texts.</flag></use>
+	<longdescription>Sam is a very small Text-To-Speech (TTS) program written in C, that runs on most popular platforms. It is an adaption to C of the speech software SAM (Software Automatic Mouth) for the Commodore C64 published in the year 1982 by Don't Ask Software (now SoftVoice, Inc.). It includes a Text-To-Phoneme converter called reciter and a Phoneme-To-Speech routine for the final output. It is so small that it will work also on embedded computers. On my computer it takes less than 39KB (much smaller on embedded devices as the executable-overhead is not necessary) of disk space and is a fully stand alone program. For immediate output it uses the SDL-library, otherwise it can save .wav files.
+
+An online version and executables for Windows can be found on the web site: http://simulationcorner.net/index.php?page=sam</longdescription>
+</pkgmetadata>
