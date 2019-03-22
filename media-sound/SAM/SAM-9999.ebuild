@@ -16,15 +16,33 @@ case "$PV" in
 		inherit git-r3
 		EGIT_REPO_URI="${HOMEPAGE}.git"
 	;;
+	0_p145)
+		COMMIT="c86ea395743b8ea4ad071c2167fd1f7f96648f7b"
+	;;
 	*)
 		die
 	;;
 esac
 
+if [ "$COMMIT" ]
+then
+	: ${KEYWORDS:="~amd64 ~x86 ~arm ~arm64 ~ppc ~ppc64"}
+	S="${WORKDIR%/}/${PN}-${COMMIT}"
+	SRC_URI="${HOMEPAGE}/archive/${COMMIT}.zip -> ${P}.zip
+	${SRC_URI}"
+fi
+
 IUSE="+wrapper"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	media-libs/libsdl
+	wrapper? (
+		media-libs/flac
+		media-sound/opus-tools
+		media-sound/lame
+	)
+"
 BDEPEND="${DEPEND}"
 
 src_compile() {
