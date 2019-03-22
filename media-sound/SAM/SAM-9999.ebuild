@@ -26,7 +26,7 @@ esac
 
 if [ "$COMMIT" ]
 then
-	: ${KEYWORDS:="~amd64 ~x86 ~arm ~arm64 ~ppc ~ppc64"}
+	: ${KEYWORDS:="~amd64 ~x86 ~ppc ~ppc64"}
 	S="${WORKDIR%/}/${PN}-${COMMIT}"
 	SRC_URI="${HOMEPAGE}/archive/${COMMIT}.zip -> ${P}.zip
 	${SRC_URI}"
