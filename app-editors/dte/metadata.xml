@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<use><flag name="terminfo">Link dte to the system terminfo/curses library. If disabled use the built-in terminal support. Disabling this flag makes it much easier to build a portable, statically linked binary. The built-in terminal support currently works with tmux, screen, st, xterm (and many other xterm-compatible terminals) and falls back to ECMA-48 mode for other terminals.</flag></use>
+	<longdescription>dte is a small and easy to use console text editor.
+Features
+
+    Multiple buffers/tabs
+    Unlimited undo/redo
+    Regex search and replace
+    Syntax highlighting
+    Customizable color schemes
+    Customizable key bindings
+    Command language with auto-completion
+    Unicode 11 compatible text rendering
+    Support for multiple encodings (using iconv)
+    Jump to definition (using ctags)
+    Jump to compiler error
+</longdescription>
+</pkgmetadata>
