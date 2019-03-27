@@ -1,0 +1,42 @@
+# Theme by ilja.sara@kahvipannu.com
+
+hi
+hi linenumber lightblue darkgray
+hi selection default blue
+
+hi text green
+hi code lightgreen
+hi ident green
+hi keyword bold lightblue
+hi type green
+hi comment lightcyan
+hi numeric blue
+hi string yellow
+hi variable bold yellow
+hi constant bold cyan
+hi special magenta
+hi char magenta
+hi label bold red
+hi notice bold red
+hi error black yellow
+
+hi tex.macro bold yellow
+hi ini.section bold
+hi make.builtin bold magenta
+hi make.special-target green
+hi markdown.heading bold magenta
+hi markdown.emphasis italic cyan
+hi markdown.strong-emphasis bold cyan
+hi markdown.code-block yellow
+hi markdown.code-span yellow
+hi markdown.block-quote green
+hi markdown.reference bold blue
+hi markdown.url blue
+hi html.tag bold magenta
+hi html.attr magenta
+hi xml.tag bold magenta
+hi xml.attr magenta
+hi diff.header cyan
+hi diff.chunk magenta
+hi diff.added bold green
+hi diff.removed bold red

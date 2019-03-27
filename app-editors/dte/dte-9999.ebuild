@@ -10,28 +10,53 @@ HOMEPAGE="https://${GL_USER}.gitlab.io/${PN}/"
 LICENSE="GPL-3"
 SLOT="0"
 
+IUSE="+terminfo +extras"
+
+DEPEND="terminfo? ( sys-libs/ncurses )
+		shift-select? ( sys-apps/gawk )
+		virtual/libiconv"
+RDEPEND="${DEPEND}"
+BDEPEND="${DEPEND}"
+
 case "$PV" in
 	9999*)
 		inherit git-r3
 		EGIT_REPO_URI="https://gitlab.com/${GL_USER}/${PN}.git"
 	;;
-	*)
-		SRC_URI="https://${GL_USER}.gitlab.io/dist/${PN}/${P}.tar.gz"
-		: ${KEYWORDS:="~amd64 ~x86"}
+	1.6|1.7)
+		IUSE="${IUSE} +shift-select"
 	;;
 esac
 
-IUSE="+terminfo"
+if ! [ "$EGIT_REPO_URI" ]
+then
+	: ${SRC_URI:="https://${GL_USER}.gitlab.io/dist/${PN}/${P}.tar.gz"}
+	: ${KEYWORDS:="~amd64 ~x86"}
+fi
 
-DEPEND="terminfo? ( sys-libs/ncurses )
-		virtual/libiconv"
-RDEPEND="${DEPEND}"
-BDEPEND="${DEPEND}"
+src_prepare() {
+	default
+
+	if use shift-select
+	then
+		gawk -i inplace '{if ($3 ~ /(un)?select/) next; print}' config/binding/default || die
+		cat config/binding/shift-select >> config/binding/default || die
+		rm -f config/binding/shift-select || die
+	fi
+	#sed -i 's/BUILTIN_CONFIGS :=/BUILTIN_CONFIGS ?=/' mk/build.mk
+
+	if use extras
+	then
+		rsync -hav "${FILESDIR%/}/config" ./
+	fi
+
+	MAKE_VARS=(V=1 $(use terminfo || echo -n "TERMINFO_DISABLE=1") BUILTIN_CONFIGS="$(find config/ -type f -not -name '*.*' -printf "%p ")")
+}
 
 src_compile() {
-	emake V=1 $(use terminfo || echo -n "TERMINFO_DISABLE=1")
+	emake "${MAKE_VARS[@]}"
 }
 
 src_install() {
-	emake install V=1 prefix="${D%/}/usr"
+	emake install "${MAKE_VARS[@]}" prefix="${D%/}/usr"
 }
