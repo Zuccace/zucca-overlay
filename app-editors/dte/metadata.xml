@@ -7,7 +7,7 @@
 	</maintainer>
 	<use>
 		<flag name="terminfo">Link dte to the system terminfo/curses library. If disabled use the built-in terminal support. Disabling this flag makes it much easier to build a portable, statically linked binary. The built-in terminal support currently works with tmux, screen, st, xterm (and many other xterm-compatible terminals) and falls back to ECMA-48 mode for other terminals.</flag>
-		<flag name="shift-select">Enable shift-select to select text/code by holding shift and pressing arrow keys.</flag>
+		<flag name="shift-select">Enable shift-select by default - select text/code by holding shift and pressing arrow keys like in GUI editors.</flag>
 		<flag name="extras">Inserts more builtin configs into dte. To list them run: dte -B</flag>
 	</use>
 	<longdescription>dte is a small and easy to use console text editor.
