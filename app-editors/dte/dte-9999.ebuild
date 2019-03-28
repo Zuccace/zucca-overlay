@@ -12,19 +12,15 @@ SLOT="0"
 
 IUSE="+terminfo +extras"
 
-DEPEND="terminfo? ( sys-libs/ncurses )
-		shift-select? ( sys-apps/gawk )
-		virtual/libiconv"
-RDEPEND="${DEPEND}"
-BDEPEND="${DEPEND}"
-
 case "$PV" in
 	9999*)
 		inherit git-r3
 		EGIT_REPO_URI="https://gitlab.com/${GL_USER}/${PN}.git"
 	;;
 	1.6|1.7)
+		# Yeah. This is not very pretty.
 		IUSE="${IUSE} +shift-select"
+		DEPEND="shift-select? ( sys-apps/gawk )"
 	;;
 esac
 
@@ -34,20 +30,25 @@ then
 	: ${KEYWORDS:="~amd64 ~x86"}
 fi
 
+DEPEND="${DEPEND}
+	terminfo? ( sys-libs/ncurses:* )
+	virtual/libiconv"
+RDEPEND="${DEPEND}"
+BDEPEND="${DEPEND}"
+
 src_prepare() {
 	default
 
-	if use shift-select
+	if [[ "$PV" == "1.6" || "$PV" == "1.7" ]] && use shift-select
 	then
 		gawk -i inplace '{if ($3 ~ /(un)?select/) next; print}' config/binding/default || die
 		cat config/binding/shift-select >> config/binding/default || die
 		rm -f config/binding/shift-select || die
 	fi
-	#sed -i 's/BUILTIN_CONFIGS :=/BUILTIN_CONFIGS ?=/' mk/build.mk
 
 	if use extras
 	then
-		rsync -hav "${FILESDIR%/}/config" ./
+		rsync -haq "${FILESDIR%/}/config" ./ || die
 	fi
 
 	MAKE_VARS=(V=1 $(use terminfo || echo -n "TERMINFO_DISABLE=1") BUILTIN_CONFIGS="$(find config/ -type f -not -name '*.*' -printf "%p ")")
