@@ -7,7 +7,7 @@ DESCRIPTION="A small and easy to use console text editor"
 GL_USER="craigbarnes"
 GL_REPO="${PN}"
 HOMEPAGE="https://${GL_USER}.gitlab.io/${PN}/"
-LICENSE="GPL-3"
+LICENSE="GPL-2"
 SLOT="0"
 
 IUSE="+terminfo +extras"
