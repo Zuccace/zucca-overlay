@@ -13,19 +13,21 @@ SLOT="0"
 IUSE="+terminfo +extras"
 
 case "$PV" in
-	9999*)
-		inherit git-r3
-		EGIT_REPO_URI="https://gitlab.com/${GL_USER}/${PN}.git"
-	;;
 	1.6|1.7)
 		# Yeah. This is not very pretty.
 		IUSE="${IUSE} +shift-select"
 		DEPEND="shift-select? ( sys-apps/gawk )"
 	;;
+	1.7_p3398)
+		EGIT_COMMIT="18db93eb577d25efca6d151cf809dd95f9e3522a"
+	;;
 esac
 
-if ! [ "$EGIT_REPO_URI" ]
+if [[ "$EGIT_COMMIT" || "$PV" == "9999" ]]
 then
+	inherit git-r3
+	: "${EGIT_REPO_URI:="https://gitlab.com/${GL_USER}/${PN}.git"}"
+else
 	: ${SRC_URI:="https://${GL_USER}.gitlab.io/dist/${PN}/${P}.tar.gz"}
 	: ${KEYWORDS:="~amd64 ~x86"}
 fi
@@ -60,4 +62,9 @@ src_compile() {
 
 src_install() {
 	emake install "${MAKE_VARS[@]}" prefix="${D%/}/usr"
+	if [ "$PV" = "9999" ]
+	then
+		git rev-list --count HEAD > "${T%/}/rev.txt"
+		dodoc "${T%/}/rev.txt"
+	fi
 }
