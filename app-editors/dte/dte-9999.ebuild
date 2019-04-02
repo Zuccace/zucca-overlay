@@ -20,6 +20,7 @@ case "$PV" in
 	;;
 	1.7_p3398)
 		EGIT_COMMIT="18db93eb577d25efca6d151cf809dd95f9e3522a"
+		KEYWORDS="~amd64 ~x86"
 	;;
 esac
 
