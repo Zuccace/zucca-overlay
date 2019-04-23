@@ -88,6 +88,30 @@ then
 
 fi
 
+src_prepare() {
+	export V_FILE="${T%/}/VERSION.nfo"
+	case "$PV" in
+		9999)
+			TAG="$(git tag | tail -n 1)"
+			REV="$(git rev-list --count "${TAG}..HEAD")"
+			COMMIT="$(git rev-parse HEAD)"
+			echo -ne "${TAG}_p${REV}\n${COMMIT}" > "$V_FILE"
+			VERSION_STRING="${TAG}_p${REV} - ${COMMIT}"
+		;;
+		*_p[0-9]*)
+			VERSION_STRING="$PV"
+		;;
+	esac
+
+	if [ "$VERSION_STRING" ]
+	then
+		#gawk -v "version=${VERSION_STRING//_p/.}" -i inplace '{if (/^\s*AC_INIT\(/) {$2="[" version "],"} print}' ./configure.ac || die
+		echo "$VERSION_STRING" > "$V_FILE"
+	fi
+
+	eapply_user
+}
+
 src_configure() {
 	./autogen.sh || die
 	econf \
@@ -117,12 +141,8 @@ src_install() {
 	#for res in 16 32 64 128; do
 	#	newicon -s ${res} extras/logos/logo${res}.png naev.png
 	#done
-	case "$PV" in
-		9999)
-			TAG="$(git tag | tail -n 1)"
-			REV="$(git rev-list --count "${TAG}..HEAD")"
-			newdoc <(echo -ne "${TAG}_p${REV}\n$(git rev-parse HEAD)") VERSION.nfo
-		;;
-	esac
+
+	[ -f "$V_FILE" ] && dodoc "$V_FILE"
+	
 	rm -f "${D}"/usr/share/doc/${PF}/LICENSE
 }
