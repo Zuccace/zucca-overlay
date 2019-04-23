@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="project">
-		<email>games@gentoo.org</email>
-		<name>Gentoo Games Project</name>
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
 	</maintainer>
 	<use>
 		<flag name="mixer">
@@ -12,6 +12,6 @@
 	</flag>
 	</use>
 	<upstream>
-		<remote-id type="sourceforge">naev</remote-id>
+		<remote-id type="github">naev</remote-id>
 	</upstream>
 </pkgmetadata>
