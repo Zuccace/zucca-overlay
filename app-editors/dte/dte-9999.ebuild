@@ -19,19 +19,30 @@ case "$PV" in
 		DEPEND="shift-select? ( sys-apps/gawk )"
 	;;
 	1.7_p3398)
-		EGIT_COMMIT="18db93eb577d25efca6d151cf809dd95f9e3522a"
+		COMMIT="18db93eb577d25efca6d151cf809dd95f9e3522a"
 		KEYWORDS="amd64 ~x86"
+	;;
+	1.8)
+		KEYWORDS="amd64 ~x86"
+	;;
+	1.8.2_p5)
+		COMMIT="f6b39d8bb54f8a68208b212c721459d1839afa96"
 	;;
 esac
 
 if [[ "$EGIT_COMMIT" || "$PV" == "9999" ]]
 then
 	inherit git-r3
-	: "${EGIT_REPO_URI:="https://gitlab.com/${GL_USER}/${PN}.git"}"
+	EGIT_REPO_URI="https://gitlab.com/${GL_USER}/${PN}.git"
+elif [ "$COMMIT" ]
+then
+	S="${WORKDIR%/}/${PN}-${COMMIT}"
+	SRC_URI="https://gitlab.com/${GL_USER}/${PN}/-/archive/${COMMIT}/dte-${COMMIT}.tar.bz2 -> ${P}.tar.bz2"	
 else
 	: ${SRC_URI:="https://${GL_USER}.gitlab.io/dist/${PN}/${P}.tar.gz"}
-	: ${KEYWORDS:="~amd64 ~x86"}
 fi
+
+: ${KEYWORDS:="~amd64 ~x86"}
 
 DEPEND="${DEPEND}
 	terminfo? ( sys-libs/ncurses:* )
@@ -63,9 +74,15 @@ src_compile() {
 
 src_install() {
 	emake install "${MAKE_VARS[@]}" prefix="${D%/}/usr"
-	if [ "$PV" = "9999" ]
+	if [ "$EGIT_REPO_URI" ]
 	then
-		git rev-list --count HEAD > "${T%/}/rev.txt"
-		dodoc "${T%/}/rev.txt"
+		V_FILE="${T%/}/version.nfo"
+		TAG="$(git tag | tail -n 1)"
+		REV="$(git rev-list --count "${TAG}..HEAD")"
+		COMMIT="$(git rev-parse HEAD)"
+		echo -ne "${TAG}_p${REV}\nhttps://gitlab.com/${GL_USER}/${PN}/-/archive/${COMMIT}/dte-${COMMIT}.tar.bz2" > "$V_FILE"
+                #VERSION_STRING="${TAG}_p${REV} - ${COMMIT}"
+			
+		dodoc "$V_FILE"
 	fi
 }
