@@ -22,7 +22,7 @@ case "$PV" in
 		COMMIT="18db93eb577d25efca6d151cf809dd95f9e3522a"
 		KEYWORDS="amd64 ~x86"
 	;;
-	1.8)
+	1.8|1.8.2)
 		KEYWORDS="amd64 ~x86"
 	;;
 	1.8.2_p5)
@@ -32,7 +32,6 @@ esac
 
 : ${KEYWORDS:="~amd64 ~x86"}
 
-
 if [[ "$EGIT_COMMIT" || "$PV" == "9999" ]]
 then
 	inherit git-r3
@@ -41,7 +40,7 @@ then
 elif [ "$COMMIT" ]
 then
 	S="${WORKDIR%/}/${PN}-${COMMIT}"
-	SRC_URI="https://gitlab.com/${GL_USER}/${PN}/-/archive/${COMMIT}/dte-${COMMIT}.tar.bz2 -> ${P}.tar.bz2"	
+	SRC_URI="https://gitlab.com/${GL_USER}/${PN}/-/archive/${COMMIT}/dte-${COMMIT}.tar.bz2 -> ${P}.tar.bz2"
 else
 	: ${SRC_URI:="https://${GL_USER}.gitlab.io/dist/${PN}/${P}.tar.gz"}
 fi
@@ -83,8 +82,8 @@ src_install() {
 		REV="$(git rev-list --count "${TAG}..HEAD")"
 		COMMIT="$(git rev-parse HEAD)"
 		echo -ne "${TAG}_p${REV}\nhttps://gitlab.com/${GL_USER}/${PN}/-/archive/${COMMIT}/dte-${COMMIT}.tar.bz2" > "$V_FILE"
-                #VERSION_STRING="${TAG}_p${REV} - ${COMMIT}"
-			
+		#VERSION_STRING="${TAG}_p${REV} - ${COMMIT}"
+
 		dodoc "$V_FILE"
 	fi
 }
