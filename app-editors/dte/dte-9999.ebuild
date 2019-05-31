@@ -30,7 +30,7 @@ case "$PV" in
 	;;
 	1.8.2_p73)
 		COMMIT="6bbe3052c2f1ec8bd6ab61864c378d7faa9c56a7"
-		KEYWORDS=""
+		KEYWORDS=" "
 	;;
 esac
 
