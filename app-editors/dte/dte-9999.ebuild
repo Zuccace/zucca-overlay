@@ -30,9 +30,13 @@ case "$PV" in
 	;;
 esac
 
+: ${KEYWORDS:="~amd64 ~x86"}
+
+
 if [[ "$EGIT_COMMIT" || "$PV" == "9999" ]]
 then
 	inherit git-r3
+	unset KEYWORDS
 	EGIT_REPO_URI="https://gitlab.com/${GL_USER}/${PN}.git"
 elif [ "$COMMIT" ]
 then
@@ -41,8 +45,6 @@ then
 else
 	: ${SRC_URI:="https://${GL_USER}.gitlab.io/dist/${PN}/${P}.tar.gz"}
 fi
-
-: ${KEYWORDS:="~amd64 ~x86"}
 
 DEPEND="${DEPEND}
 	terminfo? ( sys-libs/ncurses:* )
