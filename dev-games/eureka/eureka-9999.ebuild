@@ -25,12 +25,13 @@ set_dl_type() {
 			esac
 			SRC_URI="https://downloads.sourceforge.net/project/eureka-editor/${PN^}/${PV}/${PN}-${PKGV}-source.tar.gz -> ${P}.tar.gz"
 			S="${WORKDIR%/}/${P}-source"
-			KEYWORDS="~amd64 ~x86 ~arm64"
+			: ${KEYWORDS:="~amd64 ~x86 ~arm64"}
 		;;
 		git)
 			inherit git-r3
 			EGIT_REPO_URI="https://git.code.sf.net/p/eureka-editor/git eureka-editor-git"
 			DL_TYPE="git"
+			: ${KEYWORDS:=" "}
 		;;
 	esac
 }
@@ -52,14 +53,21 @@ case "${PVR}" in
 		}
 		PATCH_VERS="r1-gentoo"
 	;;
-	1.24)
-		set_dl_type pkg
+	1.24-r1)
+		KEYWORDS="~amd64 ~x86"
+		set_dl_type git
+		EGIT_COMMIT="257a16cddddbd3adaa690a67c7088698d15ed43f"
+	;;
+	1.24-r2)
+		set_dl_type git
+		EGIT_COMMIT="00bda541f3c0680449c79a12609c6089493ae684"
 	;;
 	9999)
 		set_dl_type git
+		unset KEYWORDS
 	;;
 	*)
-		die "${PN} ebuild doesn't support the requested version of ${PVR}"
+		set_dl_type pkg
 	;;
 esac
 
