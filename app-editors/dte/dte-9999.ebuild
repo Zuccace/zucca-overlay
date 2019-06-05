@@ -85,7 +85,7 @@ src_install() {
 	emake install "${MAKE_VARS[@]}" prefix="${D%/}/usr"
 	if [ "$EGIT_REPO_URI" ]
 	then
-		V_FILE="${T%/}/version-${P}.nfo"
+		V_FILE="${T%/}/version-${PV}.nfo"
 		TAG="$(git tag | tail -n 1)"
 		REV="$(git rev-list --count "${TAG}..HEAD")"
 		COMMIT="$(git rev-parse HEAD)"
