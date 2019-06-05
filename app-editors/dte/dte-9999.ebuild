@@ -85,11 +85,11 @@ src_install() {
 	emake install "${MAKE_VARS[@]}" prefix="${D%/}/usr"
 	if [ "$EGIT_REPO_URI" ]
 	then
-		V_FILE="${T%/}/version-${PV}.nfo"
 		TAG="$(git tag | tail -n 1)"
 		REV="$(git rev-list --count "${TAG}..HEAD")"
 		COMMIT="$(git rev-parse HEAD)"
-		echo -ne "${TAG}_p${REV}\nhttps://gitlab.com/${GL_USER}/${PN}/-/archive/${COMMIT}/dte-${COMMIT}.tar.bz2" > "$V_FILE"
+		V_FILE="${T%/}/version-${TAG}_p${REV}.nfo"
+		echo -ne "${TAG}_p${REV}\nhttps://gitlab.com/${GL_USER}/${PN}/-/archive/${COMMIT}/dte-${COMMIT}.tar.bz2\n" > "$V_FILE"
 		#VERSION_STRING="${TAG}_p${REV} - ${COMMIT}"
 		git log -1 >> "$V_FILE"
 		dodoc "$V_FILE"
