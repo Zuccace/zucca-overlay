@@ -11,19 +11,30 @@ HOMEPAGE="ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/"
 # cpio created with:
 # ncftpls 'ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/*-*' | grep '\.zip$' | tac | awk '{print "url = \"ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/" $0 "\""; sub(/^.*\//,""); print "output = \"" $0 "\"\n"}' | curl --config - && find -type f -iname '*.zip' | cpio -o > fu-berlin-doom2-wads.cpio
 MY_PKG="${PN}.cpio"
-SRC_URI="http://kahvipannu.com/~zucca/doom/${MY_PKG}"
-
-LICENSE="freedist"
-SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="-raw-install +wad-symlink"
+BASE_URI="http://kahvipannu.com/~zucca/doom"
+SRC_URI="${BASE_URI}/${MY_PKG}"
 
 DEPEND="
 	app-arch/cpio
 	app-arch/unzip
 	app-misc/detox
 "
+
+if [ "$PV" != '1' ]
+then
+	deltafile="${PF}.bdelta"
+	SRC_URI="${SRC_URI} ${BASE_URI}/${deltafile}"
+	DEPEND="${DEPEND}
+	dev-util/bdelta"
+fi
+
 HDEPEND="$DEPEND"
+BDEPEND="$DEPEND"
+
+LICENSE="freedist"
+SLOT="0"
+KEYWORDS="~amd64 ~x86"
+IUSE="-raw-install +wad-symlink"
 
 RDEPEND=""
 
@@ -130,10 +141,26 @@ src_unpack() {
 
 	mkdir "$S" || die "Unable to create directory: $S"
 
+	if [ "$PV" != '1' ]
+	then
+		ebegin "Applying bdelta to '$MY_PKG'"
+		cpio_pkg="${T%/}/${PF}.cpio"
+		if bpatch "${DISTDIR%/}/${MY_PKG}" "$cpio_pkg" "${DISTDIR%/}/${deltafile}"
+		then
+			eend 0
+			elog "Created a new, temporary, cpio archive: ${cpio_pkg##*/}"
+		else
+			eend 1
+			die "Could not apply deltapatch '${deltafile}' to '${MY_PKG}'."
+		fi
+	else
+		cpio_pkg="${DISTDIR%/}/${MY_PKG}"
+	fi
+
 	mkdir "$zipdir" || die "Unable to create directory: $zipdir"
 	pushd "$zipdir" &> /dev/null || die "Unable to enter directory: $zipdir"
 		ebegin "Scanning packages"
-		cpio --list --file="${DISTDIR%/}/${MY_PKG}" 2> /dev/null | awk -v "countfile=${countfile}" '{ c++; printf "\r%s    ",c } END { printf "\r"; system("einfo Total of " c " wad packages."); print c > countfile}' && eend 0 || eend 1
+		cpio --list --file="$cpio_pkg" 2> /dev/null | awk -v "countfile=${countfile}" '{ c++; printf "\r%s    ",c } END { printf "\r"; system("einfo Total of " c " wad packages."); print c > countfile}' && eend 0 || eend 1
 		fcount="$(cat "$countfile")"
 
 		ebegin "Extracting individual zips from main cpio"
