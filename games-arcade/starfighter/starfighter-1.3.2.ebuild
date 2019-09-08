@@ -1,1 +1,1 @@
-./starfighter-9999.ebuild
+./starfighter-1.7.9999.ebuild
