@@ -9,7 +9,7 @@ LICENSE="BSD"
 SLOT="$PV"
 IUSE="+freedoom1 +freedoom2 +freedm"
 REQUIRED_USE="|| ( ${IUSE//+/} )"
-KEYWORDS="-amd64 -x86 -arm -arm64"
+KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~ppc ~ppc64"
 
 DEPEND="
 app-arch/unzip
@@ -39,11 +39,10 @@ case "$PV" in
 			;;
 			0.11.3_p195)
 				COMMIT="d3038fad309789c3add9a6ec01367794f87bef10"
-				KEYWORDS="~amd64 ~x86 ~arm ~arm64"
 			;;
 			0.11.3_p220)
 				COMMIT="d4b25ee4ea72aab47ab0dea05cbe2029d68eec2d"
-				KEYWORDS="-amd64 ~arm64"
+				KEYWORDS=""
 			;;
 			0.11.3_p233)
 				COMMIT="08664b9587433265974425085547341a884f2751"
@@ -55,7 +54,6 @@ case "$PV" in
 			;;
 			0.11.3_p274)
 				COMMIT="caa6f46a59ba1fd9d10b3bdf1fa9bc0094ba564c"
-				KEYWORDS="~amd64 ~x86 ~arm ~arm64"
 			;;
 			0.11.3_p285)
 				COMMIT="bb2fef4f0252039862e5be05af90e56903c8e8f0"
