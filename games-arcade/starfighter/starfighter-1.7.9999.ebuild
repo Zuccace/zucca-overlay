@@ -78,7 +78,7 @@ src_configure() {
 	case "$PV" in
 		*9999)
 			#MY_VERS=" commit #$(git rev-list --count HEAD): $(git rev-parse HEAD)${MY_VERS}"
-			TAG="$(git tag | tail -n 1)"
+			TAG="$(git tag --list --sort=-version:refname | tail -n 1)"
 			REV="$(git rev-list --count "${TAG:+${TAG}..}HEAD")"
 			COMMIT="$(git rev-parse HEAD)"
 			MY_VERS="${TAG:+${TAG}_p}${TAG:-Commit # ${REV}} - ${COMMIT}${MY_VERS}"
