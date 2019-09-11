@@ -14,7 +14,12 @@ app-arch/unzip"
 
 SLOTNAME="$PV"
 
-SRC_URI="https://www.dropbox.com/s/6171549kz36bfkx/D4V_v${PV}.zip?dl=1 -> ${P}.zip"
+declare -A dropbox_url_hash=(
+	[1.1]="6171549kz36bfkx"
+	[1.2]="9wpn6d0yadszmxs"
+)
+
+SRC_URI="https://www.dropbox.com/s/${dropbox_url_hash["$PV"]}/D4V_v${PV}.zip?dl=1 -> ${P}.zip"
 
 S="$WORKDIR"
 
@@ -23,12 +28,10 @@ src_compile() {
 }
 
 src_install() {
+	[[ -d "D4V_v${PV}" ]] && cd "D4V_v${PV}"
 	find . -type f -regextype egrep -iregex '^.+/[^/]+\.(dll|exe|bat)' -delete
 	rm 'put DOOM2.WAD here.txt'
 	insinto "usr/share/games/doom/doom4vanilla/${SLOTNAME}"
 	doins -r *
-}
 
-pkg_postinst() {
-	games_pkg_postinst
 }
