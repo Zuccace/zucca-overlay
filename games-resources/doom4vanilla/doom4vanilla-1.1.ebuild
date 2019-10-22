@@ -17,6 +17,7 @@ SLOTNAME="$PV"
 declare -A dropbox_url_hash=(
 	[1.1]="6171549kz36bfkx"
 	[1.2]="9wpn6d0yadszmxs"
+	[2.2]="4jy8cvykoaply47"
 )
 
 SRC_URI="https://www.dropbox.com/s/${dropbox_url_hash["$PV"]}/D4V_v${PV}.zip?dl=1 -> ${P}.zip"
@@ -30,7 +31,7 @@ src_compile() {
 src_install() {
 	[[ -d "D4V_v${PV}" ]] && cd "D4V_v${PV}"
 	find . -type f -regextype egrep -iregex '^.+/[^/]+\.(dll|exe|bat)' -delete
-	rm 'put DOOM2.WAD here.txt'
+	rm -- *'DOOM2.WAD here'*
 	insinto "usr/share/games/doom/doom4vanilla/${SLOTNAME}"
 	doins -r *
 
