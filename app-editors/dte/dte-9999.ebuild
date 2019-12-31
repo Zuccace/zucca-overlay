@@ -38,6 +38,7 @@ case "$PV" in
 	;;
 	1.8.2_p247)
 		COMMIT="0c60ba929cf1e4890a76009f06eb89a2cbec6729"
+		KEYWORDS="amd64 ~x86"
 	;;
 esac
 
