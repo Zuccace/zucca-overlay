@@ -1,4 +1,4 @@
-# Copyright 2019 Gentoo Authors
+# Copyright 2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -46,7 +46,12 @@ case "$PV" in
 	1.9.1_p193)
 		COMMIT="dcce365fe003d0e0e7ecae07b71907b61404be21"
 	;;
-
+	1.9.1_p205)
+		COMMIT="b354eb0f3385ae19bc3b0193064125dbb27c135b"
+	;;
+	1.9.1_p221)
+		COMMIT="df9619da608df44b00e2edae414a3531502f89d4"
+	;;
 esac
 
 : ${KEYWORDS:="~amd64 ~x86"}
