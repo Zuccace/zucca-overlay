@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -22,6 +22,7 @@ declare -A dropbox_url_hash=(
 	[2.4]="tw115lj8b5tcwaa"
 	[2.5]="9m670fqtdeod0vb"
 	[2.5.5]="wfhpr508umogprl"
+	[2.5.6]="epa6v1fz7fq4e5g"
 )
 
 SRC_URI="https://www.dropbox.com/s/${dropbox_url_hash["$PV"]}/D4V_v${PV}.zip?dl=1 -> ${P}.zip"
@@ -38,5 +39,4 @@ src_install() {
 	rm -- *'DOOM2.WAD here'*
 	insinto "usr/share/games/doom/doom4vanilla/${SLOTNAME}"
 	doins -r *
-
 }
