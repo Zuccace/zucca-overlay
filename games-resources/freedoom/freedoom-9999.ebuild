@@ -104,6 +104,7 @@ case "$PV" in
 				inherit python-any-r1
 				SRC_URI="https://github.com/freedoom/freedoom/archive/v${PV}.zip -> ${P}-source.zip"
 			        source_prefix="wads"
+				SLOTNAME="$PVR"
 
 			fi
 		fi
