@@ -13,17 +13,20 @@ KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~ppc ~ppc64"
 
 BEPEND="
 app-arch/unzip
-dev-python/pillow
+dev-python/pillow[python_targets_python3_6]
 >games-util/deutex-4.9999"
 
+PYTHON_COMPAT=( python3_6 )
+
 SLOTNAME="$PV"
+
 case "$PV" in
 	9999*)
 		KEYWORDS=""
-		inherit git-r3
+		inherit git-r3 python-any-r1
 		EGIT_REPO_URI="https://github.com/freedoom/freedoom.git"
 		vers_cmd() {
-			cat VERSION
+			cat VERSION 2> /dev/null
 			git describe
 			git rev-list --count HEAD
 			git rev-parse HEAD
@@ -80,20 +83,37 @@ case "$PV" in
 				;;
 			esac
 
+			inherit python-any-r1
+
 			S="${WORKDIR}/${PN}-${COMMIT}"
-			SRC_URI="https://github.com/freedoom/freedoom/archive/${COMMIT}.zip -> ${P}.zip"
+			SRC_URI="https://github.com/freedoom/freedoom/archive/${COMMIT}.zip -> ${P}-source.zip"
 			vers_cmd() {
-				cat VERSION
+				cat VERSION 2> /dev/null
 				echo "$COMMIT"
 			}
 		else
-			# Offical release
-			SRC_URI="	https://github.com/freedoom/freedoom/releases/download/v${PV}/freedoom-${PV}.zip
-					https://github.com/freedoom/freedoom/releases/download/v${PV}/freedm-${PV}.zip
-			"
+			# Offical release"
+
+			if [[ "$PR" == 'r0' ]]
+			then
+				BDEPEND="app-arch/unzip"
+				SRC_URI="	https://github.com/freedoom/freedoom/releases/download/v${PV}/freedoom-${PV}.zip
+						https://github.com/freedoom/freedoom/releases/download/v${PV}/freedm-${PV}.zip
+				"
+			else
+				inherit python-any-r1
+				SRC_URI="https://github.com/freedoom/freedoom/archive/v${PV}.zip -> ${P}-source.zip"
+			        source_prefix="wads"
+
+			fi
 		fi
 	;;
 esac
+
+src_configure() {
+	python_setup
+	default
+}
 
 src_compile() {
 	if [[ -f "Makefile" ]]
@@ -107,21 +127,27 @@ src_compile() {
 
 src_install() {
 	insinto "usr/share/games/doom/freedoom/${SLOTNAME}"
-	if [ "$COMMIT" ]
+	if [[ "$COMMIT" || "$PV" == '9999' ]]
 	then
 		vers_cmd > git_version.txt
 		source_prefix="wads"
+	elif [[ "$source_prefix" ]]
+	then
+		true
 	else
 		cd ..
 	fi
+
+	#find -name 'freedoom1.wad'
 
 	for w in free{doom{1,2},dm}
 	do
 		use "${w}" && doins "${source_prefix:-"${w%[12]}-${PV}"}/${w}.wad"
 	done
 
-	[ "$COMMIT" ] || cd "$P"
-	for d in *.txt *.html *.pdf CREDITS COPYING *.adoc
+	[[ "$source_prefix" ]] || cd "$P"
+	rm *build*.txt *wadinfo*.txt COPYING*
+	for d in *.txt *.html *.pdf CREDITS *.adoc
 	do
 		[[ -f "$d" ]] && dodoc "$d"
 	done
