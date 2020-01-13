@@ -23,6 +23,7 @@ declare -A dropbox_url_hash=(
 	[2.5]="9m670fqtdeod0vb"
 	[2.5.5]="wfhpr508umogprl"
 	[2.5.6]="epa6v1fz7fq4e5g"
+	[2.5.7]="4b6rsq3wat2xy9w"
 )
 
 SRC_URI="https://www.dropbox.com/s/${dropbox_url_hash["$PV"]}/D4V_v${PV}.zip?dl=1 -> ${P}.zip"
