@@ -14,7 +14,8 @@ MY_PKG="${PN}.cpio"
 BASE_URI="http://kahvipannu.com/~zucca/doom"
 SRC_URI="${BASE_URI}/${MY_PKG}"
 
-DEPEND="
+DEPEND=""
+BDEPEND="
 	app-arch/cpio
 	app-arch/unzip
 	app-misc/detox
@@ -24,12 +25,11 @@ if [ "$PV" != '1' ]
 then
 	deltafile="${PF}.bdelta"
 	SRC_URI="${SRC_URI} ${BASE_URI}/${deltafile}"
-	DEPEND="${DEPEND}
+	BEPEND="${BEPEND}
 	dev-util/bdelta"
 fi
 
-HDEPEND="$DEPEND"
-BDEPEND="$DEPEND"
+HDEPEND="$BDEPEND"
 
 LICENSE="freedist"
 SLOT="0"
