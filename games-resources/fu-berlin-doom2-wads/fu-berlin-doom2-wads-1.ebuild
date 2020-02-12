@@ -9,7 +9,7 @@ DESCRIPTION="A HUGE set of wads for Doom II from fu-berlin ftp site"
 HOMEPAGE="ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/"
 
 # cpio created with:
-# ncftpls 'ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/*-*' | grep '\.zip$' | tac | awk '{print "url = \"ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/" $0 "\""; sub(/^.*\//,""); print "output = \"" $0 "\"\n"}' | curl --config - && find -type f -iname '*.zip' | cpio -o > fu-berlin-doom2-wads.cpio
+# ncftpls 'ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/*-*' | awk '{print "ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/" $1}' | xargs ncftpls | grep '\.zip$' | tac | awk '{print "url = \"ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/" $0 "\""; sub(/^.*\//,""); print "output = \"" $0 "\"\n"}' | curl --config - && find -type f -iname '*.zip' | cpio -o > fu-berlin-doom2-wads.cpio
 MY_PKG="${PN}.cpio"
 BASE_URI="http://kahvipannu.com/~zucca/doom"
 SRC_URI="${BASE_URI}/${MY_PKG}"
