@@ -52,6 +52,9 @@ case "$PV" in
 	1.9.1_p221)
 		COMMIT="df9619da608df44b00e2edae414a3531502f89d4"
 	;;
+	1.9.1_p416)
+		COMMIT="5d923ff03280f62a8b619dcd6985f63e77c9ef55"
+	;;
 esac
 
 : ${KEYWORDS:="~amd64 ~x86"}
