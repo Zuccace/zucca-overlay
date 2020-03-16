@@ -22,6 +22,10 @@
 media-gfx/mandelbulber
 media-gfx/mandelbulber2
 
+# opencl-clhpp can be found from ::gentoo.
+# Please, use it.
+dev-libs/opencl-clhpp
+
 # Every version seem to create faulty patches
 # or apply the patch incorrectly.
 # See: https://github.com/kylon/Lipx/issues/3
