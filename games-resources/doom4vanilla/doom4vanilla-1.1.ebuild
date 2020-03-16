@@ -4,7 +4,7 @@
 EAPI=7
 
 DESCRIPTION="Doom 2016 the Way 1993 Did It"
-HOMEPAGE="https://www.doomworld.com/forum/topic/108725-doom-4-vanilla-v11-ms-dos-edition/"
+HOMEPAGE="https://www.doomworld.com/forum/topic/108725"
 LICENSE="freedist"
 SLOT="$PV"
 KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~ppc ~ppc64"
