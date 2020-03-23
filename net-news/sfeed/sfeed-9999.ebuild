@@ -31,6 +31,8 @@ normal_install() {
 	[[ -e "$DOCTEMP" ]] && dodoc -r "$DOCTEMP"*
 }
 
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~x86 ~hppa ~m68k ~s390 ~sh ~sparc ~riscv ~mips ~amd64-linux ~x64-cygwin ~x86-cygwin ~arm-linux ~arm64-linux ~ppc64-linux ~x86-linux"
+
 case "$PV" in
 	9999)
 		inherit git-r3
@@ -43,17 +45,15 @@ case "$PV" in
 	*_p[0-9]*)
 		# Non tagged version.
 		inherit git-r3
-		KEYWORDS="~amd64"
 		src_install() { normal_install; }
 		case "${PV}" in
 			0.9.16_p9)
+				KEYWORDS="${KEYWORDS/~amd64/amd64}"
 				EGIT_COMMIT="785a50c37c11c8e92387f8409d91bd77c41297b2"
 			;;
 		esac
 	;;
 	*)
-		KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~x86 ~hppa ~m68k ~s390 ~sh ~sparc ~riscv ~mips ~amd64-linux ~x64-cygwin ~x86-cygwin ~arm-linux ~arm64-linux ~ppc64-linux ~x86-linux"
-		#EGIT_COMMIT="$PV"
 		SRC_URI="https://codemadness.org/releases/${PN}/${PN}-${PV}.tar.gz"
 		src_install() { normal_install; }
 	;;
