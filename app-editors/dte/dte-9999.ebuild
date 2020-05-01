@@ -54,6 +54,7 @@ case "$PV" in
 	;;
 	1.9.1_p416)
 		COMMIT="5d923ff03280f62a8b619dcd6985f63e77c9ef55"
+		KEYWORDS="amd64 ~x86"
 	;;
 esac
 
