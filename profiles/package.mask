@@ -30,3 +30,6 @@ dev-libs/opencl-clhpp
 # or apply the patch incorrectly.
 # See: https://github.com/kylon/Lipx/issues/3
 dev-util/lipx
+
+# Does not compile atm.
+=games-arcade/starfighter-2.0.0.3
