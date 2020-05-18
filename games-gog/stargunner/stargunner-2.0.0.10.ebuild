@@ -9,16 +9,10 @@ DESCRIPTION="Apogee's scrolling space shooter"
 HOMEPAGE="https://www.gog.com/game/stargunner"
 RESTRICT="fetch strip"
 SRC_URI="gog_stargunner_2.0.0.10.sh"
-
 LICENSE="EULA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
-#IUSE="-system-libsdl2"
-
-#DEPEND=""
 RDEPEND="games-emulation/dosbox"
-#BDEPEND="app-misc/detox"
-
 S="$WORKDIR"
 
 sgvardir="${ROOT%/}/var/games/${PN}"
@@ -29,15 +23,10 @@ pkg_nofetch() {
 }
 
 src_unpack() {
-	# Extract files related to installing:
-	# Left here if we'd need them some day...
-	#awk '{if (p == 1) print; else if ($0 == "eval $finish; exit $res") p = 1}' "${DISTDIR%/}/$A" | tar -xzf -
-
 	# Find the byte offset where the zip file starts:
 	((zip_offset=$(grep --byte-offset --only-matching --text "$(echo -ne "\x50\x4b\x03\x04")" "${DISTDIR%/}/$A" | head -n 1 | grep -Eo '^[0-9]+')+1))
 
 	tail -c +"$zip_offset" "${DISTDIR%/}/$A" > archive.zip || die "Failed extracting zip from '${A}'"
-	#unpack "${S%/}/archive.zip"
 	unzip archive.zip 'data/noarch/data/*' 'data/noarch/dosbox_stargun.conf' 'data/noarch/docs/*.pdf' 'data/noarch/support/icon.png'
 	rm archive.zip &> /dev/null
 }
