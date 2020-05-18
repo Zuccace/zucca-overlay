@@ -21,6 +21,8 @@ RDEPEND="games-emulation/dosbox"
 
 S="$WORKDIR"
 
+sgvardir="${ROOT%/}/var/games/${PN}"
+
 pkg_nofetch() {
 	einfo "You need to download the (free!) game from gog.com. Then save the *.sh file to your distdir."
 	einfo "${HOMEPAGE}"
@@ -44,15 +46,25 @@ src_prepare() {
 	cat << EOF > stargunner
 #!/bin/bash
 sgroot="${ROOT%/}/usr/share/games/${PN}"
+sgvardir="$sgvardir"
 sgconfdir="\${XDG_CONFIG_HOME:-\${HOME%/}/.config}/${PN}"
 
 if ! [[ -d "\$sgconfdir" ]]
 then
 	mkdir -p "\$sgconfdir"
 	# Copy defaults... Needed?
-	cp "\${sgroot}/STARGUN."{CFG,HI,SAV} "\${sgconfdir}/"
+	cp "\${sgroot}/STARGUN."{CFG,SAV} "\${sgconfdir}/"
 	ln -s "\${sgroot}/"{STARGUN.{EXE,DLT},SETUP.EXE} "\$sgconfdir"/
+	ln -s "\${sgvardir%/}/STARGUN.HI" "\$sgconfdir"/
 fi
+
+dbcbn='dosbox.conf'
+for dosbox_conf in "\${sgconfdir}/\${dbcbn}" "${ROOT%/}/etc/${PN}/\${dbcbn}"
+do
+	[[ -r "\$dosbox_conf" ]] && break
+done
+
+: \${dosbox_conf:="\${sgroot}/\${dbcbn}"}
 
 case "\${0##*-}" in
 	setup)
@@ -66,7 +78,7 @@ esac
 (
 	# Drop all wayland env vars.
 	unset \$(env | awk '{ l = tolower(\$0); if (l !~ /sway/ && l ~ /wayl/) print substr(\$0,1,match(\$0,"=")-1)}')
-	dosbox -conf "\${sgroot}/dosbox_stargun.conf" -conf <(cat <<- END
+	dosbox -conf "\$dosbox_conf" -conf <(cat <<- END
 		[autoexec]
 		mount C "\${sgconfdir}/"
 		c:
@@ -78,28 +90,38 @@ esac
 )
 EOF
 
+	# Patch dosbox config file here so that it really opens as fullscreen.
+	gawk -i inplace '{if (/^\s*fullresolution=/) print "fullresolution=desktop"; else print}' data/noarch/dosbox_*.conf
+
 	default
 }
 
 src_install() {
 	insinto "/usr/share/games/${PN}"
-	doins -r data/noarch/data/* data/noarch/dosbox_*.conf
+	doins data/noarch/data/{STARGUN.{EXE,DLT,CFG,SAV},SETUP.EXE}
 
-	exeinto /usr/games/bin
-	doexe "$PN"
+	insinto "/usr/lib/${PN}"
+	newins data/noarch/dosbox_stargun.conf dosbox.conf
+
+	insinto "/etc/${PN}"
+	newins data/noarch/dosbox_stargun.conf dosbox.conf
+	
+	insinto "/var/games/${PN}"
+	doins data/noarch/data/STARGUN.HI
+	fowners -R root:gamestat "/var/games/${PN}"
+	fperms 575 "/var/games/${PN}"
+	fperms 464 "/var/games/${PN}"/*
+		dobin "$PN"
+	fowners root:gamestat "/usr/bin/${PN}"
+	fperms g=xsr "/usr/bin/${PN}"
+	fperms u-rwx "/usr/bin/${PN}"
+	fperms o=rx "/usr/bin/${PN}"
 
 	newicon data/noarch/support/icon.png "${PN}.png"
-	make_desktop_entry "/usr/games/bin/${PN}" "Stargunner" "${PN}"
-	make_desktop_entry "/usr/games/bin/${PN}-setup" "Stargunner setup" "${PN}"
+	make_desktop_entry "/usr/bin/${PN}" "Stargunner" "${PN}"
+	make_desktop_entry "/usr/bin/${PN}-setup" "Stargunner setup" "${PN}"
 
-#	detox -v -f <(cat <<-EOF
-#	sequence default {
-#		utf_8;
-#		safe;
-#	};
-#	EOF
-#	) data/noarch/docs/*.pdf
 	dodoc data/noarch/docs/*.pdf
 	
-	dosym /usr/games/bin/"$PN" /usr/games/bin/"$PN"-setup
+	dosym ./"$PN" /usr/bin/"$PN"-setup
 }
