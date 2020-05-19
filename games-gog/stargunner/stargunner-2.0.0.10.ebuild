@@ -24,7 +24,9 @@ pkg_nofetch() {
 UNZIP_LIST=('data/noarch/data/*' 'data/noarch/dosbox_stargun.conf' 'data/noarch/docs/*.pdf' 'data/noarch/support/icon.png')
 
 src_prepare() {
-	cat << EOF > stargunner
+	if ! use vanilla-install
+	then
+		cat << EOF > stargunner
 #!/bin/bash
 sgroot="${ROOT%/}/usr/share/games/${PN}"
 sgvardir="$sgvardir"
@@ -71,38 +73,48 @@ esac
 )
 EOF
 
-	# Patch dosbox config file here so that it really opens as fullscreen.
-	gawk -i inplace '{if (/^\s*fullresolution=/) print "fullresolution=desktop"; else print}' data/noarch/dosbox_*.conf || die "gawk patching failed."
+		# Patch dosbox config file here so that it really opens as fullscreen.
+		gawk -i inplace '{if (/^\s*fullresolution=/) print "fullresolution=desktop"; else print}' data/noarch/dosbox_*.conf || die "gawk patching failed."
 
-	default
+		eapply_user
+		
+	else
+		default
+	fi
 }
 
 src_install() {
-	insinto "/usr/share/games/${PN}"
-	doins data/noarch/data/{STARGUN.{EXE,DLT,CFG,SAV},SETUP.EXE}
 
-	insinto "/usr/lib/${PN}"
-	newins data/noarch/dosbox_stargun.conf dosbox.conf
+	if use vanilla-install
+	then
+		gog_vanilla_install
+	else
+		insinto "/usr/share/games/${PN}"
+		doins data/noarch/data/{STARGUN.{EXE,DLT,CFG,SAV},SETUP.EXE}
 
-	insinto "/etc/${PN}"
-	newins data/noarch/dosbox_stargun.conf dosbox.conf
-	
-	insinto "/var/games/${PN}"
-	doins data/noarch/data/STARGUN.HI
-	fowners -R root:gamestat "/var/games/${PN}"
-	fperms 575 "/var/games/${PN}"
-	fperms 464 "/var/games/${PN}"/*
-		dobin "$PN"
-	fowners root:gamestat "/usr/bin/${PN}"
-	fperms g=xsr "/usr/bin/${PN}"
-	fperms u-rwx "/usr/bin/${PN}"
-	fperms o=rx "/usr/bin/${PN}"
+		insinto "/usr/lib/${PN}"
+		newins data/noarch/dosbox_stargun.conf dosbox.conf
 
-	newicon data/noarch/support/icon.png "${PN}.png"
-	make_desktop_entry "/usr/bin/${PN}" "Stargunner" "${PN}"
-	make_desktop_entry "/usr/bin/${PN}-setup" "Stargunner setup" "${PN}"
+		insinto "/etc/${PN}"
+		newins data/noarch/dosbox_stargun.conf dosbox.conf
 
-	dodoc data/noarch/docs/*.pdf
-	
-	dosym ./"$PN" /usr/bin/"$PN"-setup
+		insinto "/var/games/${PN}"
+		doins data/noarch/data/STARGUN.HI
+		fowners -R root:gamestat "/var/games/${PN}"
+		fperms 575 "/var/games/${PN}"
+		fperms 464 "/var/games/${PN}"/*
+			dobin "$PN"
+		fowners root:gamestat "/usr/bin/${PN}"
+		fperms g=xsr "/usr/bin/${PN}"
+		fperms u-rwx "/usr/bin/${PN}"
+		fperms o=rx "/usr/bin/${PN}"
+
+		newicon data/noarch/support/icon.png "${PN}.png"
+		make_desktop_entry "/usr/bin/${PN}" "Stargunner" "${PN}"
+		make_desktop_entry "/usr/bin/${PN}-setup" "Stargunner setup" "${PN}"
+
+		dodoc data/noarch/docs/*.pdf
+
+		dosym ./"$PN" /usr/bin/"$PN"-setup
+	fi
 }

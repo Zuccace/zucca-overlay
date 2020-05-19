@@ -8,6 +8,13 @@
 
 : ${RESTRICT:="fetch strip"}
 
+IUSE+=" -vanilla-install"
+
+if [[ USE =~ "vanilla-install" ]]
+then
+	PROPERTIES="interactive"
+fi
+
 EXPORT_FUNCTIONS src_unpack pkg_nofetch
 
 # @FUNCTION: gog_pkg_unpack
@@ -15,6 +22,10 @@ EXPORT_FUNCTIONS src_unpack pkg_nofetch
 # @DESCRIPTION:
 # default unpacking function. Deals .sh files differently. 
 gog_src_unpack() {
+	if use vanilla-install
+	then
+		einfo "Will not unpack the archives as USE=\"vanilla-install\" is set"
+	else
 	# Left here if we'd need them some day...
 	#awk '{if (p == 1) print; else if ($0 == "eval $finish; exit $res") p = 1}' "${DISTDIR%/}/$A" | tar -xzf -
 
@@ -44,11 +55,11 @@ gog_src_unpack() {
 			nonfatal unpack "$src_pkg"
 		fi
 	done
+	fi
 }
 
 # @ECLASS_VARIABLE:	UNZIP_LIST
 # @DEFAULT_UNSET	YES
-# @REQUIRED		NO
 # @DESCRIPTION:
 # An array of files or file matching patterns which
 # unzip program understands.
@@ -56,7 +67,7 @@ gog_src_unpack() {
 # If left unset then all the files are unpacked using
 # internal unpack -function.
 
-# @FUNCTION: gog_pkg_unpack
+# @FUNCTION: gog_pkg_nofetch
 # @USAGE: reaplaces default function
 # @DESCRIPTION:
 # Instructs user maybe a little better?
@@ -65,3 +76,42 @@ gog_pkg_nofetch() {
 	einfo "${HOMEPAGE}"
 }
 
+# @FUNCTION: gog_vanilla_install
+# @USAGE: gog_vanilla_install [.sh installer]
+# @DESCRIPTION:
+# Performs installation of the package as-is,
+# like gog intended it to be installed.
+# With no argument gog_vanilla_install will pick
+# the fist distfile listed in "$A" that ends with ".sh".
+# This is currently WIP. Do not use it.
+gog_vanilla_install() {
+
+	local install_script installer
+
+	if [[ -z "$1" ]]
+	then
+		for install_script in $A
+		do
+			ext="${install_script##*.}"
+			if [[ "${ext,,}" == 'sh' ]]
+			then
+				run_installer "${DISTDIR%/}/${install_script}"
+				break
+			fi
+		done
+	else
+		run_installer "${DISTDIR%/}/${1}"
+	fi
+}
+
+# @FUNCTION: run_installer
+# @USAGE: run_installer <.sh installer>
+# @INTERNAL
+# @DESCRIPTION:
+# Helper function for gog_vanilla_install
+run_installer() {
+	ebegin "Running the installer '${1}'"
+	bash "$1"
+	eend "$?" "'${1}' did not exit with 0."
+	
+}
