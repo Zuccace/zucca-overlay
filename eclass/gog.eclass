@@ -111,7 +111,6 @@ gog_vanilla_install() {
 # Helper function for gog_vanilla_install
 run_installer() {
 	ebegin "Running the installer '${1}'"
-	bash "$1"
+	bash "$1" || die "Vanilla installation failed. Maybe unset vanilla-install USE-flag?"
 	eend "$?" "'${1}' did not exit with 0."
-	
 }
