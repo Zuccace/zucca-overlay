@@ -10,7 +10,7 @@
 
 IUSE+=" -vanilla-install"
 
-if [[ USE =~ "vanilla-install" ]]
+if [[ "$USE" =~ "vanilla-install" ]]
 then
 	PROPERTIES="interactive"
 fi
