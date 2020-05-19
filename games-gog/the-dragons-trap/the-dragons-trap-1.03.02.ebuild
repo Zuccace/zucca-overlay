@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit desktop
+inherit desktop gog
 
 DESCRIPTION="A remake of 'Wonder Boy III - The Dragon's Trap'"
 HOMEPAGE="http://www.thedragonstrap.com/"
@@ -25,19 +25,6 @@ MY_PN="wb-tdt"
 pkg_nofetch() {
 	einfo "You need to buy the game from gog.com. Then save the *.sh file to your distdir."
 	einfo "https://www.gog.com/game/wonder_boy_the_dragons_trap"
-}
-
-src_unpack() {
-	# Extract files related to installing:
-	# Left here if we'd need them some day...
-	#awk '{if (p == 1) print; else if ($0 == "eval $finish; exit $res") p = 1}' "${DISTDIR%/}/$A" | tar -xzf -
-
-	# Find the byte offset where the zip file starts:
-	((zip_offset=$(grep --byte-offset --only-matching --text "$(echo -ne "\x50\x4b\x03\x04")" "${DISTDIR%/}/$A" | head -n 1 | grep -Eo '^[0-9]+')+1))
-
-	tail -c +"$zip_offset" "${DISTDIR%/}/$A" > archive.zip || die "Failed extracting zip from '${A}'"
-	unpack "${S%/}/archive.zip"
-	rm archive.zip &> /dev/null
 }
 
 src_configure() {

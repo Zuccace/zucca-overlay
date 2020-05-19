@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit desktop
+inherit desktop gog
 
 DESCRIPTION="Apogee's scrolling space shooter"
 HOMEPAGE="https://www.gog.com/game/stargunner"
@@ -14,7 +14,6 @@ SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
 RDEPEND="games-emulation/dosbox"
 S="$WORKDIR"
-
 sgvardir="${ROOT%/}/var/games/${PN}"
 
 pkg_nofetch() {
@@ -22,14 +21,7 @@ pkg_nofetch() {
 	einfo "${HOMEPAGE}"
 }
 
-src_unpack() {
-	# Find the byte offset where the zip file starts:
-	((zip_offset=$(grep --byte-offset --only-matching --text "$(echo -ne "\x50\x4b\x03\x04")" "${DISTDIR%/}/$A" | head -n 1 | grep -Eo '^[0-9]+')+1))
-
-	tail -c +"$zip_offset" "${DISTDIR%/}/$A" > archive.zip || die "Failed extracting zip from '${A}'"
-	unzip archive.zip 'data/noarch/data/*' 'data/noarch/dosbox_stargun.conf' 'data/noarch/docs/*.pdf' 'data/noarch/support/icon.png'
-	rm archive.zip &> /dev/null
-}
+UNZIP_LIST=('data/noarch/data/*' 'data/noarch/dosbox_stargun.conf' 'data/noarch/docs/*.pdf' 'data/noarch/support/icon.png')
 
 src_prepare() {
 	cat << EOF > stargunner
@@ -80,7 +72,7 @@ esac
 EOF
 
 	# Patch dosbox config file here so that it really opens as fullscreen.
-	gawk -i inplace '{if (/^\s*fullresolution=/) print "fullresolution=desktop"; else print}' data/noarch/dosbox_*.conf
+	gawk -i inplace '{if (/^\s*fullresolution=/) print "fullresolution=desktop"; else print}' data/noarch/dosbox_*.conf || die "gawk patching failed."
 
 	default
 }
