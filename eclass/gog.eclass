@@ -15,7 +15,7 @@ then
 	PROPERTIES="interactive"
 fi
 
-EXPORT_FUNCTIONS src_unpack pkg_nofetch
+EXPORT_FUNCTIONS src_unpack pkg_nofetch src_compile
 
 # @FUNCTION: gog_pkg_unpack
 # @USAGE: reaplaces default function
@@ -113,4 +113,16 @@ run_installer() {
 	ebegin "Running the installer '${1}'"
 	bash "$1" || die "Vanilla installation failed. Maybe unset vanilla-install USE-flag?"
 	eend "$?" "'${1}' did not exit with 0."
+}
+
+# @FUNCTION: gog_src_compile
+# @USAGE: gog_src_compile
+# @DESCRIPTION:
+# Avoid runnin anything in compile phase.
+# This is for gog games after all. ;)
+# There shouldn't be anything to compile.
+# By using this default we avoid any
+# unexpected commands to be run on src_compile()
+gog_src_compile() {
+	einfo "No compiling needed."
 }
