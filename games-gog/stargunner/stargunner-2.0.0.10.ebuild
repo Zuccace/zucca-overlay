@@ -102,7 +102,7 @@ src_install() {
 		doins data/noarch/data/STARGUN.HI
 		fowners -R root:gamestat "/var/games/${PN}"
 		fperms 575 "/var/games/${PN}"
-		fperms 464 "/var/games/${PN}"/*
+		fperms 464 -R "/var/games/${PN}"/
 			dobin "$PN"
 		fowners root:gamestat "/usr/bin/${PN}"
 		fperms g=xsr "/usr/bin/${PN}"
