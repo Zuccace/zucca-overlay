@@ -118,7 +118,7 @@ run_installer() {
 # @FUNCTION: gog_src_compile
 # @USAGE: gog_src_compile
 # @DESCRIPTION:
-# Avoid runnin anything in compile phase.
+# Avoid running anything in compile phase.
 # This is for gog games after all. ;)
 # There shouldn't be anything to compile.
 # By using this default we avoid any
