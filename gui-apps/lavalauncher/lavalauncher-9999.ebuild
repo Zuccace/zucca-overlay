@@ -25,7 +25,7 @@ case "$PV" in
 		EGIT_REPO_URI="${HOMEPAGE}"
 		src_install() {
 			git_nfo install
-			default
+			meson_src_install
 		}
 	;;
 	*)
