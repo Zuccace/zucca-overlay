@@ -52,10 +52,10 @@ git_nfo() {
 git-extra_pkg_postinst() {
 	
 	local L
-	pushd "$S"
+	pushd "$S" &> /dev/null
 	git_nfo | while read L
 	do
 		einfo "$L"
 	done
-	popd
+	popd &> /dev/null
 }
