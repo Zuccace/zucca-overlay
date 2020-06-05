@@ -14,6 +14,12 @@ DEPEND="x11-libs/cairo
 BDEPEND="app-text/scdoc"
 
 case "$PV" in
+	1.7.1_p44)
+		# Last version without configuration file.
+		# Further versions WILL break user scripts running lavalaucher.
+		EGIT_COMMIT="8d274c17a07337ebe245a3a3230d1537cf35584e"
+		KEYWORDS="~amd64 ~x86"
+	;&
 	9999*|1.7.1_p44)
 		inherit git-extra meson
 		EGIT_REPO_URI="${HOMEPAGE}"
@@ -21,12 +27,6 @@ case "$PV" in
 			git_nfo install
 			default
 		}
-	;&
-	1.7.1_p44)
-		# Last version without configuration file.
-		# Further versions WILL break user scripts running lavalaucher.
-		EGIT_COMMIT="8d274c17a07337ebe245a3a3230d1537cf35584e"
-		KEYWORDS="~amd64 ~x86"
 	;;
 	*)
 		if ver_test -gt 1.3
