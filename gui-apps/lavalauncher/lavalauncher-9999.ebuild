@@ -24,6 +24,11 @@ setup_git() {
 }
 
 case "$PV" in
+	1.7.1_p77)
+		setup_git
+		EGIT_COMMIT="f928dfd44ebc27687084ca80c5870943beb6c68f"
+		KEYWORDS="~amd64 ~x86"
+	;;
 	1.7.1_p75)
 		setup_git
 		EGIT_COMMIT="1175426f28db227c3994afb5ecc28d6128684d15"
@@ -34,7 +39,7 @@ case "$PV" in
 		# Last version without configuration file.
 		# Further versions WILL break user scripts running lavalaucher.
 		EGIT_COMMIT="8d274c17a07337ebe245a3a3230d1537cf35584e"
-		KEYWORDS="~amd64 ~x86"
+		KEYWORDS="amd64 ~x86"
 	;;
 	9999*)
 		setup_git
