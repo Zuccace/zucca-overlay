@@ -12,18 +12,6 @@ SLOT="0"
 
 EGIT_REPO_URI="git://git.codemadness.org/sfeed"
 
-git_nfo_install() {
-	{
-		TAG="$(git tag --list --sort=-version:refname | head -n 1)"
-		echo "tag: ${TAG:-"[notag]"}"
-		CNUM="$(git rev-list --count ${TAG:+${TAG}..}HEAD)"
-		echo "commit number (since tag): ${CNUM}"
-		echo "commit: $(git rev-parse HEAD)"
-		echo "PF: ${PN}-${TAG}_p${CNUM}"
-	} > "${T%/}/git_version.nfo"
-	dodoc "${T%/}/git_version.nfo"
-}
-
 normal_install() {
 	DOCTEMP="${T%/}/docs/"
 	emake PREFIX="${ED%/}/usr" MANPREFIX="${ED%/}/usr/share/man" DOCPREFIX="$DOCTEMP" install
@@ -35,10 +23,10 @@ KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~x86 ~hppa ~m68k ~s390 ~sh
 
 case "$PV" in
 	9999)
-		inherit git-r3
+		inherit git-extra
 		KEYWORDS=""
 		src_install() {
-			git_nfo_install
+			git_nfo install
 			normal_install
 		}
 	;;
