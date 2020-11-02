@@ -24,6 +24,11 @@ setup_git() {
 }
 
 case "$PV" in
+	2.0.0_p7)
+		setup_git
+		EGIT_COMMIT="19645296b641e4dbb68365ff49eb38ca2977e8cf"
+		KEYWORDS="~amd64 ~x86"
+	;;
 	1.7.1_p77)
 		setup_git
 		EGIT_COMMIT="f928dfd44ebc27687084ca80c5870943beb6c68f"
