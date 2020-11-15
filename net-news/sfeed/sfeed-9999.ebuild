@@ -19,7 +19,7 @@ normal_install() {
 	[[ -e "$DOCTEMP" ]] && dodoc -r "$DOCTEMP"*
 }
 
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~x86 ~hppa ~m68k ~s390 ~sh ~sparc ~riscv ~mips ~amd64-linux ~x64-cygwin ~x86-cygwin ~arm-linux ~arm64-linux ~ppc64-linux ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~x86 ~hppa ~m68k ~s390 ~sparc ~riscv ~mips ~amd64-linux ~x64-cygwin ~x86-cygwin ~arm-linux ~arm64-linux ~ppc64-linux ~x86-linux"
 
 case "$PV" in
 	9999)
