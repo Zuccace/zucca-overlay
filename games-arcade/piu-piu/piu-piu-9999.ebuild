@@ -14,6 +14,10 @@ DEPEND=""
 RDEPEND=">=app-shells/bash-4.2"
 
 case "$PV" in
+	1.1)
+		COMMIT="6010c7db501e5fa90b1fe3d7668d2f08b8d81d34"
+		KEYWORDS="~amd64 ~x86 ~arm ~arm64"
+	;;
 	9999)
 		inherit git-r3
 		S="$WORKDIR/piu-piu-${PV}"
@@ -58,4 +62,5 @@ src_install() {
 	fi
 
 	dodoc "${T}/"*.txt
+	find "${S}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|nfo|me|pdf|epub)$' -exec dodoc \{\} +
 }
