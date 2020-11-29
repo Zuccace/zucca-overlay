@@ -65,12 +65,18 @@ case "$PV" in
 esac
 
 src_prepare() {
+	eapply_user
 	# Rename html documentation directory to 'html'.
 	sed -i -e 's/^\s*dist_doc_DATA = .*$/dist_doc_DATA = LICENSES/' -e 's/^\s*nobase_dist_doc_DATA = .*$/nobase_dist_doc_DATA = html\/\*/' Makefile.am
 	mv docs html 2> /dev/null
 
-	eautoreconf -fi
-	default
+	if [[ -f "./autogen.sh" ]]
+	then
+		./autogen.sh || die 'autogen.sh failed.'
+	else
+		eautoreconf -fi
+		default
+	fi
 }
 
 src_configure() {
@@ -91,9 +97,12 @@ src_configure() {
 		;;
 	esac
 	einfo "Version information: $(tee VERSION.nfo <<< "$MY_VERS")"
-
 	default
 }
+
+#src_compile() {
+#	emake
+#}
 
 src_install() {
 	default
