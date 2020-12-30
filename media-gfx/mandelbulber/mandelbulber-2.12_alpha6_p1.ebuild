@@ -1,1 +1,0 @@
-./mandelbulber-2.11_p1.ebuild
