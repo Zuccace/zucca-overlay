@@ -7,13 +7,41 @@ inherit desktop gog
 
 DESCRIPTION="A remake of 'Wonder Boy III - The Dragon's Trap'"
 HOMEPAGE="http://www.thedragonstrap.com/"
-RESTRICT="fetch strip"
-SRC_URI="wonder_boy_the_dragon_s_trap_en_1_03f_02_20817.sh"
+RESTRICT="strip bindist"
+WB_TPREFIX='http://www.thedragonstrap.com/trailers/WonderBoyTheDragonsTrap-'
+WB_EXTRAS="
+	https://www.lizardcube.com/presskit/TheDragonsTrap/images/images.zip
+	${WB_TPREFIX}LaunchTrailer.mp4
+	${WB_TPREFIX}LaunchTrailerPC.mp4
+	${WB_TPREFIX}RevealTrailer.mp4
+	${WB_TPREFIX}RetroFeature.mp4
+	${WB_TPREFIX}WonderBoyWonderGirl.mp4
+	${WB_TPREFIX}DevDiary1.mp4
+	${WB_TPREFIX}DevDiary2.mp4
+	${WB_TPREFIX}DevDiary3.mp4
+	${WB_TPREFIX}CharacterFeaturette1-Lizard.mp4
+	${WB_TPREFIX}CharacterFeaturette2-Mouse.mp4
+	${WB_TPREFIX}CharacterFeaturette3-Piranha.mp4
+	${WB_TPREFIX}CharacterFeaturette4-Lion.mp4
+	${WB_TPREFIX}CharacterFeaturette5-Hawk.mp4
+"
 
+SRC_URI="wonder_boy_the_dragon_s_trap_en_1_03f_02_20817.sh
+	media-extras? (
+		$(
+			for el in $WB_EXTRAS
+			do
+				d="${el##*/}"
+				d="${d/WonderBoyTheDragonsTrap-/}"
+				echo "${el} -> ${PN}_extra_${d}"
+			done
+		)
+	)
+"
 LICENSE="EULA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
-IUSE="-system-libsdl2"
+IUSE="-system-libsdl2 -media-extras"
 
 DEPEND=""
 RDEPEND="system-libsdl2? ( media-libs/libsdl2 )"
@@ -55,7 +83,7 @@ src_configure() {
 		fi
 		./bin/WonderBoy.bin "\$@"
 
-	EOF
+EOF
 
 	# Creating "bundled-sdl" synlink under /opt too.
 	# Not really needed but it's there for the curious ones.
@@ -78,6 +106,24 @@ src_install() {
 
 	dosym "/opt/${MY_PN}/WonderBoy" /usr/games/bin/WonderBoy
 	dosym "/opt/${MY_PN}/WonderBoy" /usr/games/bin/WonderBoy-bundled-sdl
+	
+	if use media-extras
+	then
+		ebegin "Installing media extras"
+		mediadest="${D%/}/opt/${MY_PN}/media/"
+		mkdir "$mediadest"|| die 'Failed to create directory.'
+		cp --verbose --reflink=auto --dereference "$DISTDIR"/*.mp4 "$mediadest" | while read f a d
+		do
+			einfo "Copied '${d##*/}" 
+		done || die "Failed copying media."
+		
+		cp --archive --verbose --reflink=auto "${S}/gifs" *.jpg *.png "$mediadest" | while read f a d
+		do
+			einfo "Copied '${d##*/}" 
+		done || die "Failed copying media."
+
+		eend 0
+	fi
 }
 
 pkg_postinst() {
@@ -102,7 +148,6 @@ pkg_postinst() {
 				AudioClipRoundoff = true,
 				AudioClipScaler = 1,
 
-			EOF
+EOF
 	fi
 }
-
