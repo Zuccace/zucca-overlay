@@ -7,6 +7,6 @@
 	</maintainer>
 	<use>
 		<flag name="raw-install">Perform raw installation into /opt. Raw install contains everything from the wad packages, even the exes and unknown files.</flag>
-		<flag name="wad-symlink">Create symlink of each wad file into /usr/share/games/doom. Some Doom ports don't look into subdirectories, this flags may help to solve the problem. Has no effec if USE=raw-install.</flag>
+		<flag name="wad-symlink">Create symlink of each wad file into /usr/share/games/doom. Some Doom ports don't look into subdirectories, this flags may help to solve the problem. Has no effect if USE=raw-install.</flag>
 	</use>
 </pkgmetadata>

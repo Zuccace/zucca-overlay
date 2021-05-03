@@ -1,4 +1,4 @@
-# Copyright 1999-2020
+# Copyright 1999-2021
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -75,7 +75,7 @@ safe_rename() {
 			utf_8;
 			safe;
 		};
-		EOF
+EOF
 	) -r "${clean_list[@]}" | rename_count || die "detox failed to rename files. Aborting!"
 	eend '0'
 }
