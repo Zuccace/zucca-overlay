@@ -25,7 +25,7 @@ if [ "$PV" != '1' ]
 then
 	deltafile="${PF}.bdelta"
 	SRC_URI="${SRC_URI} ${BASE_URI}/${deltafile}"
-	BEPEND="${BEPEND}
+	BDEPEND="${BDEPEND}
 	dev-util/bdelta"
 fi
 
