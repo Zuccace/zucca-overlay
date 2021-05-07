@@ -70,13 +70,15 @@ safe_rename() {
 			shift
 	done
 
-	detox -v -f <(cat <<-EOF
-		sequence default {
-			utf_8;
-			safe;
-		};
+	 {
+		detox -v -f <(cat <<-EOF
+			sequence default {
+				iso8859_1;
+				safe;
+			};
 EOF
-	) -r "${clean_list[@]}" | rename_count || die "detox failed to rename files. Aborting!"
+		) -r "${clean_list[@]}" || die "detox failed to rename files. Aborting!"
+		} | rename_count
 	eend '0'
 }
 
@@ -229,7 +231,7 @@ src_install() {
 		dodir "/usr/share/doc/${PF}"
 		pushd "$packdir" &> /dev/null || die "Unable to enter directory: ${packdir}"
 			# TODO?: this might be better dealt with rsync.
-			LC_ALL="C" find -regextype egrep \
+			find -regextype egrep \
 				\( -type f -iregex '.+((\.(txt|nfo|info|diz|me|read|md|a(scii)?doc))|readme)' -exec cp --parents -t "${DOCDIR}/" {} + -exec rm {} + \) \
 				-or \
 				\( -type f -iregex '.+\.(wad|pad|deh|lmp)' -exec cp --parents -t "${D%/}/${waddir}/" {} + -exec rm {} + \) && eend '0' || die
@@ -250,7 +252,7 @@ src_install() {
 				rm -fr "${D%/}/usr/share/doc/${PF}/${ddir}"
 			fi
 			echo
-		done < <(LC_ALL="C" find "$DOCDIR" -maxdepth 1 -mindepth 1 -type d -printf '%P\n') | percent_counter "$fcount"
+		done < <(find "$DOCDIR" -maxdepth 1 -mindepth 1 -type d -printf '%P\n') | percent_counter "$fcount"
 		check_errorfile 'Errors during doc directory symlinking.'
 
 		[ -f "${T%/}/empty_dirs" ] && elog "Some wad packages were without a proper wad. If you want to investigate what's inside them emerge with USE=raw-install."
