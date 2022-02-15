@@ -1,13 +1,13 @@
 # Copyright 2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit desktop gog
 
 DESCRIPTION="A remake of 'Wonder Boy III - The Dragon's Trap'"
 HOMEPAGE="http://www.thedragonstrap.com/"
-RESTRICT="strip bindist"
+RESTRICT="fetch strip bindist"
 WB_TPREFIX='http://www.thedragonstrap.com/trailers/WonderBoyTheDragonsTrap-'
 WB_EXTRAS="
 	https://www.lizardcube.com/presskit/TheDragonsTrap/images/images.zip
@@ -33,7 +33,7 @@ SRC_URI="wonder_boy_the_dragon_s_trap_en_1_03f_02_20817.sh
 			do
 				d="${el##*/}"
 				d="${d/WonderBoyTheDragonsTrap-/}"
-				echo "${el} -> ${PN}_extra_${d}"
+				echo "fetch+${el} -> ${PN}_extra_${d}"
 			done
 		)
 	)
