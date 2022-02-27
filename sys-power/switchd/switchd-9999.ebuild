@@ -11,3 +11,8 @@ SLOT="0"
 inherit git-extra meson
 
 EGIT_REPO_URI="$HOMEPAGE"
+
+src_install() {
+	meson_src_install
+	git_nfo install
+}
