@@ -15,6 +15,7 @@ EGIT_REPO_URI="$HOMEPAGE"
 case "$PV" in
 	0_p4)
 		EGIT_COMMIT="4d3a076e324f442d02f69eb0ee7ea6ab6b7856f0"
+		KEYWORDS="~amd64 ~x86"
 	;;
 esac
 
