@@ -6,9 +6,9 @@
 # Ilja Sara <ilja.sara@kahvipannu.com>
 # @BLURB: extra functionality to git-r3
 
-EXPORT_FUNCTIONS pkg_postinst
-
 inherit git-r3
+
+EXPORT_FUNCTIONS pkg_postinst
 
 # @FUNCTION: git_nfo
 # @USAGE: git_nfo [install [filebasename]]
