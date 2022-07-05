@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -10,13 +10,14 @@ SLOT="$PV"
 IUSE="+freedoom1 +freedoom2 +freedm"
 REQUIRED_USE="|| ( ${IUSE//+/} )"
 KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~ppc ~ppc64"
+RESTRICT="mirror"
 
 BEPEND="
 app-arch/unzip
-dev-python/pillow[python_targets_python3_6]
+dev-python/pillow[python_targets_python3_9] || dev-python/pillow[python_targets_python3_10]
 >games-util/deutex-4.9999"
 
-PYTHON_COMPAT=( python3_6 )
+PYTHON_COMPAT=( python3_9 python3_10 )
 
 SLOTNAME="$PV"
 
