@@ -6,6 +6,9 @@ EAPI=7
 DESCRIPTION="Doom 2016 the Way 1993 Did It"
 HOMEPAGE="https://www.doomworld.com/forum/topic/108725"
 LICENSE="freedist"
+RESTRICT="mirror"
+# We slot this wad.
+# This enables user to easily pick the same version as on a multiplayer server.
 SLOT="$PV"
 KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~ppc ~ppc64"
 
@@ -32,7 +35,10 @@ declare -A dropbox_url_hash=(
 	[3.2.1]="hnrwo7z7rgka5hp"
 )
 
-SRC_URI="https://www.dropbox.com/s/${dropbox_url_hash["$PV"]}/D4V_v${PV}.zip?dl=1 -> ${P}.zip"
+SRC_URI="
+	http://kahvipannu.com/~zucca/doom/${P}.zip
+	https://www.dropbox.com/s/${dropbox_url_hash["$PV"]}/D4V_v${PV}.zip?dl=1 -> ${P}.zip
+"
 
 S="$WORKDIR"
 
