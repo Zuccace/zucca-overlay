@@ -33,3 +33,9 @@ dev-util/lipx
 
 # Does not compile atm.
 =games-arcade/starfighter-2.0.0.3
+
+# doom4vanilla versions 3.0 and 3.1 vere removed from dropbox.
+# This could indicate a major bug in both versions.
+# Thus these versions are now masked. Unmask them at your own risk.
+=games-resources/doom4vanilla-3.0
+=games-resources/doom4vanilla-3.1
