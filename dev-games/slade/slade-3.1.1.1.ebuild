@@ -1,1 +1,0 @@
-slade-3.1.2_beta2.ebuild
