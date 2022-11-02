@@ -34,11 +34,22 @@ src_prepare() {
 }
 
 src_configure() {
-	cat > "${T%/}/${PN}" << ENDLAUNCHER
+	cat > "${T%/}/${PN}" <<- ENDLAUNCHER
 #!/bin/sh
 
-cd "/opt/${PN}"
-exec ./fury_nodrm.bin "\$@"
+furyhome="\${HOME%/}/.config/fury"
+
+if [ ! -d "\$furyhome" ]
+then
+	if ! mkdir -p "\$furyhome"
+	then
+		exit 1
+	fi
+fi
+
+cd "\$furyhome"
+
+exec "/opt/${PN}/fury_nodrm.bin -j '' "\$@"
 echo "Something went terribly wrong." 1>&2
 ENDLAUNCHER
 }
