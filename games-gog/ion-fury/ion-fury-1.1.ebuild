@@ -34,22 +34,57 @@ src_prepare() {
 }
 
 src_configure() {
-	cat > "${T%/}/${PN}" <<- ENDLAUNCHER
+	cat > "${T%/}/${PN}" << ENDLAUNCHER
 #!/bin/sh
 
 furyhome="\${HOME%/}/.config/fury"
+furybindir="${ROOT}/opt/${PN}"
 
-if [ ! -d "\$furyhome" ]
+if [ "\$XDG_RUNTIME_DIR" ]
 then
-	if ! mkdir -p "\$furyhome"
-	then
-		exit 1
-	fi
+	furyrundir="\${XDG_RUNTIME_DIR%/}/${PN}"
+elif [ "\$TMPDIR" ]
+then
+	furyrundir="\${TMPDIR%/}/\${USER}-fury"
+else
+	furyrundir="\$furyhome"	
 fi
 
-cd "\$furyhome"
+for d in "\$furyhome" "\$furyrundir"
+do
+	if [ ! -d "\$d" ]
+	then
+		if ! mkdir -p "\$d" && chmod 700 "\$d"
+		then
+			exit 1
+		fi
+		
+	fi
+done
 
-exec "/opt/${PN}/fury_nodrm.bin -j '' "\$@"
+# We'll create symlinks in place of cache files.
+if [ "\$furyrundir" != "\$furyhome" ]
+then
+	for f in grpfiles.cache texturecache texturecache.index
+	do
+		ff="\${furyhome}/\${f}"
+		if [ ! -L "\$ff" ]
+		then
+			if [ -e "\$ff" ]
+			then
+				rm "\$ff" || exit 1
+			fi
+			ln -s "\${furyrundir}/\${f}" "\${ff}"
+		fi
+	done
+fi
+
+# We'll run the game from the temp/cache dir.
+# fury.log will be ceated into \$PWD.
+# If this directory happens to be read only Ion-Fury will segfault.
+cd "\$furyrundir"
+
+exec "\${furybindir}/fury_nodrm.bin" -j "\${furybindir}/" "\$@"
 echo "Something went terribly wrong." 1>&2
 ENDLAUNCHER
 }
