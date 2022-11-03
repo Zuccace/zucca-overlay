@@ -13,6 +13,7 @@ LICENSE="EULA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
 RESTRICT="fetch strip bindist"
+
 S="$WORKDIR"
 
 RDEPEND="
@@ -25,20 +26,14 @@ pkg_nofetch() {
 	einfo "${HOMEPAGE}"
 }
 
-# We'll go all in and include everything from GSD.
-UNZIP_LIST=("${GSD%/}/*" 'data/noarch/support/icon.png')
-
-src_prepare() {
-	rm -v "${GSD%/}/"*.exe
-	eapply_user
-}
+UNZIP_LIST=("${GSD%/}/"{fury{.grp,.grpinfo,.def,_nodrm.bin},{gamecontrollerdb,legal}.txt} 'data/noarch/support/icon.png')
 
 src_configure() {
 	cat > "${T%/}/${PN}" << ENDLAUNCHER
 #!/bin/sh
 
 furyhome="\${HOME%/}/.config/fury"
-furybindir="${ROOT}/opt/${PN}"
+furybindir="${ROOT}/opt/gog/${PN}"
 
 if [ "\$XDG_RUNTIME_DIR" ]
 then
@@ -90,10 +85,12 @@ ENDLAUNCHER
 }
 
 src_install() {
-	exeinto "/opt/${PN}"
+	goginto 
+	#insinto "/opt/${PN}"
+	#exeinto "/opt/${PN}"
 	doexe "${GSD%/}/fury_nodrm.bin"
+	dodoc "${GSD%/}/legal.txt"
 	rm "${GSD%/}/fury_nodrm.bin"
-	insinto "/opt/${PN}"
 	doins data/noarch/game/*
 	dobin "${T%/}/${PN}"
 
