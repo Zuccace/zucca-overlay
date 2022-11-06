@@ -55,13 +55,32 @@ gog_src_unpack() {
 					((zip_offset=$(grep --byte-offset --only-matching --text "$zip_magic" "${DISTDIR%/}/${src_pkg}" | head -n 1 | grep -Eo '^[0-9]+')+1))
 					if [[ "$zip_offset" =~ ^[1-9][0-9]*$ ]]
 					then
+						ebegin "Extracting zip archive from the installer script"
 						tail -c +"$zip_offset" "${DISTDIR%/}/${src_pkg}" > "$zip_archive" || die "Failed extracting zip from '${src_pkg}'"
+						eend 0
+
+						ebegin "Unzipping the archive"			
 						if [[ "$UNZIP_LIST" ]]
 						then
-							unzip "$zip_archive" "${UNZIP_LIST[@]}" || die "Failed unzipping '${zip_archive}'"
+							#eindent
+							local action file
+							unzip "$zip_archive" "${UNZIP_LIST[@]}" 2>&1 | \
+								while read action file
+								do
+									case "$action" in
+										Archive:)
+											continue
+										;;
+										*)
+											einfo $'\t'"$action"$'\t'"$file"
+										;;
+									esac
+								done || die "Failed unzipping '${zip_archive}'"
+							#eoutdent
 						else
 							unpack "$zip_archive"
 						fi
+						eend 0
 
 						rm -f "$zip_archive"
 					else

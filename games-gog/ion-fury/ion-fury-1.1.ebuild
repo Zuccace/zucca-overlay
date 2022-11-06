@@ -1,4 +1,4 @@
-# Copyright 2019 Gentoo Authors
+# Copyright 2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -31,6 +31,16 @@ UNZIP_LIST=("${GSD%/}/"{fury{.grp,.grpinfo,.def,_nodrm.bin},{gamecontrollerdb,le
 src_configure() {
 	cat > "${T%/}/${PN}" << ENDLAUNCHER
 #!/bin/sh
+
+# Ion Fury wrapper script for Linux.
+# Version 0.1
+# (C) Ilja Sara, GPLv2
+
+# At least Ion fury (1.1) gog binary acts nasty.
+# With this wrapper we'll make it behave more nicely.
+
+# Tested only on Gentoo.
+# Should work on other Linux setups by adjusting furybindir below.
 
 furyhome="\${HOME%/}/.config/fury"
 furybindir="${ROOT}/opt/gog/${PN}"
