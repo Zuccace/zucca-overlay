@@ -6,7 +6,21 @@
 # Ilja Sara <ilja.sara@kahvipannu.com>
 # @BLURB: Helper for .sh "packages" downloaded from gog.
 
+### We'll set some defaults that match most of the games from gog. ###
+
+# Most games from gog have this license.
+: ${LICENSE:="EULA"}
+
+# Very rarely other than slot 0.
+: ${SLOT:="0"}
+
 : ${RESTRICT:="fetch strip bindist"}
+
+# By default we assume following archs are supported:
+: ${KEYWORDS:="-\* ~amd64 ~x86"}
+
+# ... and we can also guess the homepage:
+: ${HOMEPAGE:="https://www.gog.com/en/game/${PN}"}
 
 inherit multiprocessing desktop
 
@@ -70,6 +84,16 @@ gog_src_unpack() {
 									case "$action" in
 										Archive:)
 											continue
+										;;
+										caution:)
+											if [[ "$file" =~ ^(filename not matched) ]]
+											then
+												file="${file#*:}"
+												file="${file##* }"
+												ewarn $'\t'"warning:"$'\t'"'$file' in \$UNZIP_LIST doesn't match any files inside zip archive. "
+											else
+												ewarn $'\t'"$action"$'\t'"$file"
+											fi
 										;;
 										*)
 											einfo $'\t'"$action"$'\t'"$file"
@@ -192,6 +216,7 @@ gog_src_install() {
 	elif [[ "$(declare -p GOGBINS)" =~ "^declare -a" ]]
 	then
 		# GOGBINS is an array.
+		elog "Main binary: ${GOGBINS[0]#${WORKDIR}/}"
 		doexe "${GOGBINS[@]}"
 		rm "${GOGBINS[@]}"
 		mainbin="/usr/bin/$PN"
@@ -208,6 +233,7 @@ gog_src_install() {
 		# We have space seperated list of binaries...
 		local e
 		local b="${GOGBINS%% *}"
+		elog "Main binary: ${b#${WORKDIR}/}"
 		doexe "$b"
 		rm "$b"
 		GOGBINS="${GOGBINS#* }"
@@ -244,7 +270,7 @@ gog_src_install() {
 		ewarn "No desktop menu entry will be installed."
 	fi
 	
-	# Install documentation.
+	einfo "Installing documentation"
 	if [[ "$(declare -p DOCS 2> /dev/null)" =~ "^declare -a" ]]
 	then
 		# DOCS is an array
@@ -259,15 +285,17 @@ gog_src_install() {
 			rm "$d"
 		done <<< "$DOCS"
 	else
+		ebegin "Searching doc files"
 		# Going brute...
 		# Delete install and licensing documents.
-		find "${FGDD%/}" -type f \( -iname '*install*' -o -iname '*licence*' -o -iname '*license*' \) -delete
-		notempty "${FGDD%/}"  && dodoc -r "${FGDD%/}"/*
+		notempty "${FGDD%/}" && find "${FGDD%/}" -type f \( -iname '*install*' -o -iname '*licence*' -o -iname '*license*' \) -delete
+		notempty "${FGDD%/}" && dodoc -r "${FGDD%/}"/*
 
 		local tdocs="${T%/}/moved_docs"
 		mkdir -p "$tdocs"
-		find "${FGSD%/}" -type f -regextype egrep -iregex '.+((\.(txt|nfo|info|diz|me|read|md|log|(a(scii)?)?doc))|readme|changelog|log|pdf|ps|epub)' -exec cp -t "$tdocs" {} + -delete
+		find "${FGSD%/}" -type f -not -name 'gamecontrollerdb.txt' -regextype egrep -iregex '.+((\.(txt|nfo|info|diz|me|read|md|log|(a(scii)?)?doc))|readme|changelog|log|pdf|ps|epub)' -exec cp -v -t "$tdocs" {} + -delete
 		notempty "$tdocs" && dodoc "$tdocs"/*
+		eend 0
 	fi
 	
 	# Do normal install to what's left.
@@ -359,5 +387,11 @@ passbinary() {
 
 notempty() {
 	[[ "$@" ]] || die "notempty() Requires at least one directory as an argument"
+	local d
+	for d in "$@"
+	do
+		[[ -d "$@" ]] || return 1
+	done
+	
 	[[ ! -n "$(find "$@" -prune -empty -type d 2> /dev/null)" ]]
 }
