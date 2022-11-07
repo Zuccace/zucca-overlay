@@ -17,7 +17,7 @@
 : ${RESTRICT:="fetch strip bindist"}
 
 # By default we assume following archs are supported:
-: ${KEYWORDS:="-\* ~amd64 ~x86"}
+: ${KEYWORDS:="-* ~amd64 ~x86"}
 
 # ... and we can also guess the homepage:
 : ${HOMEPAGE:="https://www.gog.com/en/game/${PN}"}
@@ -293,7 +293,7 @@ gog_src_install() {
 
 		local tdocs="${T%/}/moved_docs"
 		mkdir -p "$tdocs"
-		find "${FGSD%/}" -type f -not -name 'gamecontrollerdb.txt' -regextype egrep -iregex '.+((\.(txt|nfo|info|diz|me|read|md|log|(a(scii)?)?doc))|readme|changelog|log|pdf|ps|epub)' -exec cp -v -t "$tdocs" {} + -delete
+		find "${FGSD%/}" -type f -not -name 'gamecontrollerdb.txt' -regextype egrep -iregex '.+((\.(txt|nfo|info|diz|me|read|md|log|(a(scii)?)?doc))|readme|changelog|log|pdf|ps|epub)' -exec mv -t "$tdocs" {} +
 		notempty "$tdocs" && dodoc "$tdocs"/*
 		eend 0
 	fi
