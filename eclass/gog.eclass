@@ -17,7 +17,7 @@
 : ${RESTRICT:="fetch strip bindist"}
 
 # By default we assume following archs are supported:
-: ${KEYWORDS:="-* ~amd64 ~x86"}
+: ${KEYWORDS:="\-\* ~amd64 ~x86"}
 
 # ... and we can also guess the homepage:
 : ${HOMEPAGE:="https://www.gog.com/en/game/${PN}"}
