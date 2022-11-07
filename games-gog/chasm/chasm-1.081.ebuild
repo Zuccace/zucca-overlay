@@ -19,5 +19,6 @@ pkg_nofetch() {
 	einfo "${HOMEPAGE}"
 }
 
-UNZIP_LIST=("${GSD%/}/"{Chasm,Content/\*,config.ini,gamecontrollerdb.txt} "${GDD%/}/*" 'data/noarch/support/icon.png')
+# TODO: make system-mono work
+#UNZIP_LIST=("${GSD%/}/"{Chasm,Content/\*,mono{,machine}config,config.ini,gamecontrollerdb.txt} "${GDD%/}/*" 'data/noarch/support/icon.png')
 GOGBINS=("${FGSD%/}/Chasm")
