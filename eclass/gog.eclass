@@ -35,12 +35,24 @@ IUSE+=" -vanilla-install"
 
 if [[ "$USE" =~ "vanilla-install" ]]
 then
-	PROPERTIES="interactive"
+	PROPERTIES="${PROPERTIES} interactive"
 fi
 
 S="$WORKDIR"
 
-EXPORT_FUNCTIONS src_unpack pkg_nofetch src_compile src_install
+EXPORT_FUNCTIONS pkg_pretend src_unpack pkg_nofetch src_compile src_install
+
+# @FUNCTION: gog_src_pretend
+# @USAGE: reaplaces default function
+# @DESCRIPTION:
+# Dies if trying to use vanilla-install without a gui.
+gog_pkg_pretend() {
+	if use vanilla-install
+	then
+		# TODO: Does portage support interactive gui installers?
+		die "Vaniilla installation isn't supported yet."
+	fi
+}
 
 # @FUNCTION: gog_src_unpack
 # @USAGE: reaplaces default function
@@ -106,6 +118,13 @@ gog_src_unpack() {
 						fi
 						eend 0
 
+						# Create file list (for possible later use) before removing the zip archive.
+						unzip -l "$zip_archive" | \
+							awk '($4 && substr($0,length($0)) != "/") {
+								$1=$2=$3=""
+								sub(/^[[:space:]]*/,"")
+								print
+							}' > "${T%/}/file.lst"
 						rm -f "$zip_archive"
 					else
 						# We have just a regular shell script?
@@ -171,138 +190,143 @@ goginto() {
 # Same for the found docs (but excluding some obvious ones).
 # Then remove the said files as the rest gets treated with doins -r *.
 gog_src_install() {
-
-	local name="${MY_PN:-"$PN"}"
-	local mainbin
-	goginto "$name"
-
-	if [[ -z "${GOGBINS}" ]]
+	if use vanilla-install
 	then
-		# No binaries specified.
-		ewarn "This ebuild has GOGBINS unset."
-		ewarn "Will try to locate binaries automatically..."
-		# This is rather hacky...
-		ebegin "Locating binaries"
-		local exe
-		local baseexe
-		local binsym
-		local estatus=1
-		pushd "${FGSD%/}" &> /dev/null || die "Unable to switch to directory: ${FGSD%/}"
-
-			while read -d '' exe
-			do
-				doexe "$exe"
-				baseexe="$(basename ${exe})"
-				baseexe="${baseexe,,}"
-				
-				if [[ "${baseexe}" = "${PN,,}"* || "${baseexe}" = "${name,,}"* ]]
-				then
-					binsym="/usr/bin/${baseexe}"
-				else
-					binsym="/usr/bin/${name}-${baseexe}"
-				fi
-				dosym "${GOGINSTALLDIR%/}/${exe}" "$binsym"
-				rm "$exe"
-				einfo "Found '$baseexe'. Installed as symlink: ${binsym}"
-				
-				estatus=0
-				
-			done < <(find . ./bin /exe -maxdepth 1 -type f -print0 2> /dev/null | passbinary)
-			
-		popd &> /dev/null
-		
-		eend "$estatus" 'No suitable binaries found.'
-
-	elif [[ "$(declare -p GOGBINS)" =~ "^declare -a" ]]
-	then
-		# GOGBINS is an array.
-		elog "Main binary: ${GOGBINS[0]#${WORKDIR}/}"
-		doexe "${GOGBINS[@]}"
-		rm "${GOGBINS[@]}"
-		mainbin="/usr/bin/$PN"
-		dosym "${GOGINSTALLDIR%/}/$(basename "${GOGBINS[0]}")" "$mainbin"
-
-		local numbins n basesym
-		((numbins=${#GOGBINS[@]}-1))
-		for n in $(seq '1' "$numbins")
-		do
-			basesym="$(basename "${GOGBINS[$n]}")"
-			dosym "${GOGINSTALLDIR%/}/${basesym}" "/usr/bin/${basesym}"
-		done	
+		elog "Doing vanilla installation."
+		gog_vanilla_install
 	else
-		# We have space seperated list of binaries...
-		local e
-		local b="${GOGBINS%% *}"
-		elog "Main binary: ${b#${WORKDIR}/}"
-		doexe "$b"
-		rm "$b"
-		GOGBINS="${GOGBINS#* }"
-		mainbin="/usr/bin/$PN"
-		dosym "${GOGINSTALLDIR%/}/$(basename "${b}")" "$mainbin"
+		local name="${MY_PN:-"$PN"}"
+		local mainbin
+		goginto "$name"
 
-		if [[ "${#GOGBINS}" -gt 0 ]]
+		if [[ -z "${GOGBINS}" ]]
 		then
-			while read -d ' ' e
+			# No binaries specified.
+			ewarn "This ebuild has GOGBINS unset."
+			ewarn "Will try to locate binaries automatically..."
+			# This is rather hacky...
+			ebegin "Locating binaries"
+			local exe
+			local baseexe
+			local binsym
+			local estatus=1
+			pushd "${FGSD%/}" &> /dev/null || die "Unable to switch to directory: ${FGSD%/}"
+
+				while read -d '' exe
+				do
+					doexe "$exe"
+					baseexe="$(basename ${exe})"
+					baseexe="${baseexe,,}"
+
+					if [[ "${baseexe}" = "${PN,,}"* || "${baseexe}" = "${name,,}"* ]]
+					then
+						binsym="/usr/bin/${baseexe}"
+					else
+						binsym="/usr/bin/${name}-${baseexe}"
+					fi
+					dosym "${GOGINSTALLDIR%/}/${exe}" "$binsym"
+					rm "$exe"
+					einfo "Found '$baseexe'. Installed as symlink: ${binsym}"
+
+					estatus=0
+
+				done < <(find . ./bin /exe -maxdepth 1 -type f -print0 2> /dev/null | passbinary)
+
+			popd &> /dev/null
+
+			eend "$estatus" 'No suitable binaries found.'
+
+		elif [[ "$(declare -p GOGBINS)" =~ "^declare -a" ]]
+		then
+			# GOGBINS is an array.
+			elog "Main binary: ${GOGBINS[0]#${WORKDIR}/}"
+			doexe "${GOGBINS[@]}"
+			rm "${GOGBINS[@]}"
+			mainbin="/usr/bin/$PN"
+			dosym "${GOGINSTALLDIR%/}/$(basename "${GOGBINS[0]}")" "$mainbin"
+
+			local numbins n basesym
+			((numbins=${#GOGBINS[@]}-1))
+			for n in $(seq '1' "$numbins")
 			do
-				doexe "$e"
-				rm "$e"
-			done <<< "$GOGBINS"
+				basesym="$(basename "${GOGBINS[$n]}")"
+				dosym "${GOGINSTALLDIR%/}/${basesym}" "/usr/bin/${basesym}"
+			done	
+		else
+			# We have space seperated list of binaries...
+			local e
+			local b="${GOGBINS%% *}"
+			elog "Main binary: ${b#${WORKDIR}/}"
+			doexe "$b"
+			rm "$b"
+			GOGBINS="${GOGBINS#* }"
+			mainbin="/usr/bin/$PN"
+			dosym "${GOGINSTALLDIR%/}/$(basename "${b}")" "$mainbin"
+
+			if [[ "${#GOGBINS}" -gt 0 ]]
+			then
+				while read -d ' ' e
+				do
+					doexe "$e"
+					rm "$e"
+				done <<< "$GOGBINS"
+			fi
 		fi
-	fi
 
-	# Desktop meny entry creation.
-	: ${GOGICON:="${WORKDIR%/}/data/noarch/support/icon.png"}
-	local iconext="${GOGICON##*.}"
-	nonfatal newicon "$GOGICON" "${PN}.${iconext}"
+		# Desktop menu entry creation.
+		: ${GOGICON:="${WORKDIR%/}/data/noarch/support/icon.png"}
+		local iconext="${GOGICON##*.}"
+		nonfatal newicon "$GOGICON" "${PN}.${iconext}"
 
-	if [[ "$mainbin" ]]
-	then
-		# We have a main binary.
-		make_desktop_entry "$mainbin" "$name" "$PN"
-	elif [[ -f "${ED%/}/usr/bin/${PN}" ]]
-	then
-		make_desktop_entry "/usr/bin/${PN}" "$name" "$PN"
-	elif [[ -f "${ED%/}/usr/bin/${name}" ]]
-	then
-		make_desktop_entry "/usr/bin/${name}" "$name" "$PN"
-	else
-		ewarn "Couldn't locate a possible main executable for ${name}."
-		ewarn "No desktop menu entry will be installed."
-	fi
-	
-	einfo "Installing documentation"
-	if [[ "$(declare -p DOCS 2> /dev/null)" =~ "^declare -a" ]]
-	then
-		# DOCS is an array
-		dodoc "${DOCS[@]}"
-		rm "${DOCS[@]}"
-	elif [[ "$DOCS" ]]
-	then
-		local d
-		while read -d ' ' d
-		do
-			dodoc "$d"
-			rm "$d"
-		done <<< "$DOCS"
-	else
-		ebegin "Searching doc files"
-		# Going brute...
-		# Delete install and licensing documents.
-		notempty "${FGDD%/}" && find "${FGDD%/}" -type f \( -iname '*install*' -o -iname '*licence*' -o -iname '*license*' \) -delete
-		notempty "${FGDD%/}" && dodoc -r "${FGDD%/}"/*
+		if [[ "$mainbin" ]]
+		then
+			# We have a main binary.
+			make_desktop_entry "$mainbin" "$name" "$PN"
+		elif [[ -f "${ED%/}/usr/bin/${PN}" ]]
+		then
+			make_desktop_entry "/usr/bin/${PN}" "$name" "$PN"
+		elif [[ -f "${ED%/}/usr/bin/${name}" ]]
+		then
+			make_desktop_entry "/usr/bin/${name}" "$name" "$PN"
+		else
+			ewarn "Couldn't locate a possible main executable for ${name}."
+			ewarn "No desktop menu entry will be installed."
+		fi
 
-		local tdocs="${T%/}/moved_docs"
-		mkdir -p "$tdocs"
-		find "${FGSD%/}" -type f -not -name 'gamecontrollerdb.txt' -regextype egrep -iregex '.+((\.(txt|nfo|info|diz|me|read|md|log|(a(scii)?)?doc))|readme|changelog|log|pdf|ps|epub)' -exec mv -t "$tdocs" {} +
-		notempty "$tdocs" && dodoc "$tdocs"/*
-		eend 0
+		einfo "Installing documentation"
+		if [[ "$(declare -p DOCS 2> /dev/null)" =~ "^declare -a" ]]
+		then
+			# DOCS is an array
+			dodoc "${DOCS[@]}"
+			rm "${DOCS[@]}"
+		elif [[ "$DOCS" ]]
+		then
+			local d
+			while read -d ' ' d
+			do
+				dodoc "$d"
+				rm "$d"
+			done <<< "$DOCS"
+		else
+			ebegin "Searching doc files"
+			# Going brute...
+			# Delete install and licensing documents.
+			notempty "${FGDD%/}" && find "${FGDD%/}" -type f \( -iname '*install*' -o -iname '*licence*' -o -iname '*license*' \) -delete
+			notempty "${FGDD%/}" && dodoc -r "${FGDD%/}"/*
+
+			local tdocs="${T%/}/moved_docs"
+			mkdir -p "$tdocs"
+			find "${FGSD%/}" -type f -not -name 'gamecontrollerdb.txt' -regextype egrep -iregex '.+((\.(txt|nfo|info|diz|me|read|md|log|(a(scii)?)?doc))|readme|changelog|log|pdf|ps|epub)' -exec mv -t "$tdocs" {} +
+			notempty "$tdocs" && dodoc "$tdocs"/*
+			eend 0
+		fi
+
+		# Do normal install to what's left.
+		# This is the reason we rm'd files earlier.
+		doins -r "${FGSD%/}"/*
+		# Also check if any docs were downloaded seperatedly from main game archive.
+		[[ "$src_docdir" ]] && dodoc -r "$src_docdir"/*
 	fi
-	
-	# Do normal install to what's left.
-	# This is the reason we rm'd files earlier.
-	doins -r "${FGSD%/}"/*
-	# Also check if any docs were downloaded seperatedly from main game archive.
-	[[ "$src_docdir" ]] && dodoc -r "$src_docdir"/*
 }
 
 
