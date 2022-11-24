@@ -114,7 +114,11 @@ gog_src_unpack() {
 								done || die "Failed unzipping '${zip_archive}'"
 							#eoutdent
 						else
-							unpack "$zip_archive"
+							local l
+							unpack "$zip_archive" 2>&1 | awk '{ if ($1 == ">>>") sub(/^[[:space:]]*>>>[[:space:]]*/,""); print }' | while read l
+							do
+								einfo "$l"
+							done
 						fi
 						eend 0
 
