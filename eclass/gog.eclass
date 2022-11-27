@@ -63,6 +63,7 @@ gog_src_unpack() {
 	then
 		einfo "Will not unpack the archives as USE=\"vanilla-install\" is set"
 	else
+		elog 'Performing automated unpacking provided by gog.eclass.'
 		# Left here if we'd need them some day...
 		#awk '{if (p == 1) print; else if ($0 == "eval $finish; exit $res") p = 1}' "${DISTDIR%/}/$A" | tar -xzf -
 
@@ -114,6 +115,8 @@ gog_src_unpack() {
 								done || die "Failed unzipping '${zip_archive}'"
 							#eoutdent
 						else
+							# We'll use 'unpack' to unpack...
+							# ... and make it pretty?
 							local l
 							unpack "$zip_archive" 2>&1 | awk '{ if ($1 == ">>>") sub(/^[[:space:]]*>>>[[:space:]]*/,""); print }' | while read l
 							do
@@ -139,6 +142,7 @@ gog_src_unpack() {
 				;;
 				txt|nfo|info|diz|md|log|*doc|*me|*log|pdf|ps|epub)
 					# Copy any extra documentation into $T
+					einfo "Found doc file: ${src_pkg}"
 					src_docdir="${T%/}/src_docs"
 					mkdir -p "$src_docdir" 2> /dev/null || die "Unable to create directory: ${src_docdir}"
 					cp "${DISTDIR%/}/${src_pkg}" "$src_docdir"/
@@ -147,6 +151,7 @@ gog_src_unpack() {
 					einfo "No need to unpack '$src_pkg'."
 				;;
 				*)
+					elog "Unknown file: '$src_pkg'. Trying to unpack it."
 					nonfatal unpack "$src_pkg"
 				;;
 			esac
@@ -199,6 +204,7 @@ gog_src_install() {
 		elog "Doing vanilla installation."
 		gog_vanilla_install
 	else
+		elog "Performing automated installation provided by gog.eclass."
 		local name="${MY_PN:-"$PN"}"
 		local mainbin
 		goginto "$name"
