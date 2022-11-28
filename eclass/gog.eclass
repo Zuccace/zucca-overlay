@@ -263,7 +263,7 @@ gog_src_install() {
 				dosym "${GOGINSTALLDIR%/}/${basesym}" "/usr/bin/${basesym}"
 			done	
 		else
-			# We have space seperated list of binaries...
+			# We have space separated list of binaries...
 			local e
 			local b="${GOGBINS%% *}"
 			elog "Main binary: ${b#${WORKDIR}/}"
