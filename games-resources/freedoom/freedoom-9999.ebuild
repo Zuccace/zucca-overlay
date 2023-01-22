@@ -24,7 +24,7 @@ SLOTNAME="$PV"
 case "$PV" in
 	9999*)
 		KEYWORDS=""
-		inherit git-r3 python-any-r1
+		inherit git-extra python-any-r1
 		EGIT_REPO_URI="https://github.com/freedoom/freedoom.git"
 		vers_cmd() {
 			cat VERSION 2> /dev/null
