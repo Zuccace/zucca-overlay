@@ -1,12 +1,13 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit eutils xdg
+EAPI=7
+inherit eutils desktop
 
 DESCRIPTION="A map editor for the classic DOOM games, and others such as Heretic and Hexen."
 HOMEPAGE="http://eureka-editor.sourceforge.net"
 LICENSE="GPL-2+"
+RESTRICT="mirror"
 SLOT="0"
 IUSE="xinerama"
 
@@ -23,13 +24,18 @@ set_dl_type() {
 					PKGV="${PV//./}"
 				;;
 			esac
-			SRC_URI="https://downloads.sourceforge.net/project/eureka-editor/${PN^}/${PV}/${PN}-${PKGV}-source.tar.gz -> ${P}.tar.gz"
+			SRC_URI="https://downloads.sourceforge.net/project/eureka-editor/${PN^}/${PV%[a-z]}/${PN}-${PKGV}-source.tar.gz -> ${P}.tar.gz"
 			S="${WORKDIR%/}/${P}-source"
 			: ${KEYWORDS:="~amd64 ~x86 ~arm64"}
 		;;
 		git)
-			inherit git-r3
-			EGIT_REPO_URI="https://git.code.sf.net/p/eureka-editor/git eureka-editor-git"
+			inherit git-extra
+			if ver_test '1.27' -lt "$PV"
+			then
+				EGIT_REPO_URI="https://github.com/ioan-chera/eureka-editor.git"
+			else
+				EGIT_REPO_URI="https://git.code.sf.net/p/eureka-editor/git eureka-editor-git"
+			fi
 			DL_TYPE="git"
 			: ${KEYWORDS:=" "}
 		;;
@@ -71,62 +77,97 @@ case "${PVR}" in
 	;;
 esac
 
+if ver_test "$PV" -gt '1.27'
+then
+	inherit cmake
+	export BUILD_DIR="${WORKDIR%/}/${PN}-${PV}/build"
+	export do_cmake=true
+fi
+
 [ "$EGIT_COMMIT" ] && set_dl_type git
+
+BDEPEND="
+	x11-libs/libXpm
+	>=sys-apps/gawk-4.1.0
+"
 
 RDEPEND="
 	xinerama? ( x11-libs/libXinerama )
 	sys-libs/zlib
 	media-libs/libpng:0/16
 	virtual/jpeg:*
-	x11-misc/xdg-utils
 	x11-libs/fltk
-	x11-libs/libXft"
+	x11-libs/libXft
+"
 
-DEPEND="${RDEPEND}
->=sys-apps/gawk-4.1.0"
+IDEPEND="x11-misc/xdg-utils"
 
 src_prepare() {
+ 
+	[[ "$PV" == "9999" ]] && EGIT_COMMIT="$(git rev-parse HEAD)"
 
-	[ "$PV" == "9999" ] && EGIT_COMMIT="$(git rev-parse HEAD)"
-
-	if [ "$DL_TYPE" == "git" ] && [ -z "$PATCH_VERS" ]
+	# Disabled for now
+	if [ "$DL_TYPE" == "git" ] && [ -z "$PATCH_VERS" ] && false
 	then
 		PATCH_VERS="git-p$(git rev-list --count HEAD)-gentoo-$(date --date="$(git show --pretty=%cI HEAD | head -n 1)" +%F) "
 	fi
 
-	einfo "Patching Makefile on-the-fly..."
-	# Modify PREFIX, drop lines using xdg and adjust few compiler flags.
-	gawk -i inplace -v "prefix=${D}/usr" -v "libdir=$(get_libdir)" '{if ($1 ~ "^(INSTALL_)?PREFIX=") sub(/=.+$/,"=" prefix); else if ($1 ~ /^xdg-/) next; else if ($1 ~ /^[a-z]+:$/ && seen != "1") {printf "CFLAGS  += -I/usr/include/fltk\nCXXFLAGS  += -I/usr/include/fltk\nLDFLAGS += -L/usr/" libdir "/fltk/\n\n"; seen="1"} print}' Makefile || die "gawk patching failed."
-	# Remove owner settings from install -lines.
-	gawk -i inplace '{if ($1 == "install") gsub(/[[:space:]]-o[[:space:]][^[:space:]]+/,""); print}' Makefile || die "gawk patching failed."
-	einfo "Makefile patching done."
+	if [[ -f Makefile ]]
+	then
+		einfo "Patching Makefile on-the-fly..."
+		# Modify PREFIX, drop lines using xdg and adjust few compiler flags.
+		gawk -i inplace -v "prefix=${D}/usr" -v "libdir=$(get_libdir)" '{if ($1 ~ "^(INSTALL_)?PREFIX=") sub(/=.+$/,"=" prefix); else if ($1 ~ /^xdg-/) next; else if ($1 ~ /^[a-z]+:$/ && seen != "1") {printf "CFLAGS  += -I/usr/include/fltk\nCXXFLAGS  += -I/usr/include/fltk\nLDFLAGS += -L/usr/" libdir "/fltk/\n\n"; seen="1"} print}' Makefile || die "gawk patching failed."
+		# Remove owner settings from install -lines.
+		gawk -i inplace '{if ($1 == "install") gsub(/[[:space:]]-o[[:space:]][^[:space:]]+/,""); print}' Makefile || die "gawk patching failed."
+		einfo "Makefile patching done."
+	fi
 
 	if [ "$PATCH_VERS" ]
 	then
 		einfo "Adding custom version number."
-		awk -i inplace -v "cvers=$PATCH_VERS" '{if (/^\s*#define\s+EUREKA_VERSION\s+/) {sub("\"$","",$3); $3=$3 "-" cvers "\""} print}' ./src/main.h
+		gawk -i inplace -v "cvers=$PATCH_VERS" '{if (/^\s*#define\s+EUREKA_VERSION\s+/) {sub("\"$","",$3); $3=$3 "-" cvers "\""} print}' ./src/main.h
 	fi
 
-	default
+	if [[ "$do_cmake" ]]
+	then
+		eapply_user
+		mkdir -p "$BUILD_DIR"
+		pushd "$BUILD_DIR"
+		cmake_src_prepare
+	else
+		default
+	fi
 }
 
-#src_compile() {
-#	emake FLTK_PREFIX="/usr/include/fltk"
-#}
+src_compile() {
+	if [[ "$do_cmake" ]]
+	then
+		gawk -i inplace '{
+			if ($1 == "FLAGS") {
+				gsub(/"/,"")
+				#gsub(/-Werror/,"-Wno-error")
+				if (!gsub(/-Wcast-function-type/,"-Wno-cast-function-type")) $0 = $0 " -Wno-cast-function-type"
+				$0 = $0 " -Wno-error=stringop-truncation"
+			}
+			print
+		}' "${BUILD_DIR%/}/build.ninja" || die "build.ninja patching failed."
+		cmake_src_compile
+	else
+		default
+	fi
+}
 
 src_install() {
 
 	if [ "$DL_TYPE" == "git" ] && [ "$PV" != "9999" ]
 	then
-		echo "$EGIT_COMMIT" > VERSION.nfo
+		git_nfo install
 	elif [ "$PV" == "9999" ]
 	then
 		# Cannot git describe ;(
 		#git describe --tags > VERSION.nfo
 		git rev-parse HEAD >> VERSION.nfo
 	fi
-
-	[ -f VERSION.nfo ] && echo "rev $(git rev-list --count HEAD || echo -n "-")" >> VERSION.nfo && dodoc VERSION.nfo
 
 	doicon -s 32 misc/eureka.xpm
 	domenu misc/eureka.desktop
@@ -135,7 +176,12 @@ src_install() {
 	MY_D="${usr}/share/eureka"
 	mkdir -p "$MY_D"
 	mkdir -p "${usr}/bin"
-	emake PREFIX="$usr" INSTALL_DIR="$MY_D" install
+	if [[ "$do_cmake" ]]
+	then
+		cmake_src_install
+	else
+		emake PREFIX="$usr" INSTALL_DIR="$MY_D" install
+	fi
 	dodoc "${FILESDIR%/}/cheatsheet.pdf" docs/*
 
 }
