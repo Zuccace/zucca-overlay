@@ -133,6 +133,11 @@ src_prepare() {
 		eapply_user
 		mkdir -p "$BUILD_DIR"
 		pushd "$BUILD_DIR"
+		gawk -i inplace '{
+			if ($1 == "option(ENABLE_UNIT_TESTS")
+				print "option(ENABLE_UNIT_TESTS \"Unit tests\" OFF)"
+			else print
+		}' "${BUILD_DIR%/build}/CMakeLists.txt" || die
 		cmake_src_prepare
 	else
 		default
