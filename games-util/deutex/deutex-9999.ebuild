@@ -46,9 +46,12 @@ case "${PV}" in
 	5.1.0_p167)
 		COMMIT="0c68487448317a73d30588c849ada065491b337a"
 	;;
+	5.2.2)
+		KEYWORDS="amd64 ~x86 ~arm64"
+	;;
 	5.2.2_p1)
 		COMMIT="ef1c06a62cc0eff82ecea984f58fbbe41d8a593d"
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64"
 	;;
 	9999)
 		unset KEYWORDS
