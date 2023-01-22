@@ -141,6 +141,15 @@ src_prepare() {
 		
 		cmake_src_prepare
 		
+	else
+		default
+	fi
+}
+
+src_configure() {
+	if [[ "$do_cmake" ]]
+	then
+		cmake_src_configure
 		gawk -i inplace '{
 			if ($1 == "FLAGS") {
 				gsub(/"/,"")
@@ -151,7 +160,6 @@ src_prepare() {
 			}
 			print
 		}' "${BUILD_DIR%/}/build.ninja" || die "build.ninja patching failed."
-
 	else
 		default
 	fi
