@@ -137,8 +137,21 @@ src_prepare() {
 			if ($1 == "option(ENABLE_UNIT_TESTS")
 				print "option(ENABLE_UNIT_TESTS \"Unit tests\" OFF)"
 			else print
-		}' "${BUILD_DIR%/build}/CMakeLists.txt" || die
+		}' "${BUILD_DIR%/build}/CMakeLists.txt" || die "Disabling tests failed."
+		
 		cmake_src_prepare
+		
+		gawk -i inplace '{
+			if ($1 == "FLAGS") {
+				gsub(/"/,"")
+				if (!gsub(/-Wcast-function-type/,"-Wno-cast-function-type")) $0 = $0 " -Wno-cast-function-type"
+
+				# Upstream bug? Well avoid it.
+				$0 = $0 " -Wno-error=stringop-truncation"
+			}
+			print
+		}' "${BUILD_DIR%/}/build.ninja" || die "build.ninja patching failed."
+
 	else
 		default
 	fi
@@ -147,15 +160,6 @@ src_prepare() {
 src_compile() {
 	if [[ "$do_cmake" ]]
 	then
-		gawk -i inplace '{
-			if ($1 == "FLAGS") {
-				gsub(/"/,"")
-				#gsub(/-Werror/,"-Wno-error")
-				if (!gsub(/-Wcast-function-type/,"-Wno-cast-function-type")) $0 = $0 " -Wno-cast-function-type"
-				$0 = $0 " -Wno-error=stringop-truncation"
-			}
-			print
-		}' "${BUILD_DIR%/}/build.ninja" || die "build.ninja patching failed."
 		cmake_src_compile
 	else
 		default
@@ -188,5 +192,12 @@ src_install() {
 		emake PREFIX="$usr" INSTALL_DIR="$MY_D" install
 	fi
 	dodoc "${FILESDIR%/}/cheatsheet.pdf" docs/*
+}
 
+pkg_postinst() {
+	xdg_desktop_database_update
+}
+
+pkg_postrm() {
+	xdg_desktop_database_update
 }
