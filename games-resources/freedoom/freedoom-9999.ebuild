@@ -154,7 +154,3 @@ src_install() {
 		[[ -f "$d" ]] && dodoc "$d"
 	done
 }
-
-pkg_postinst() {
-	games_pkg_postinst
-}
