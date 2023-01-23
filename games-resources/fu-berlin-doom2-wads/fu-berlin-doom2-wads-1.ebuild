@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit check-reqs
+inherit check-reqs multiprocessing
 
 DESCRIPTION="A HUGE set of wads for Doom II from fu-berlin ftp site"
 HOMEPAGE="ftp://ftp.fu-berlin.de/pc/games/idgames/levels/doom2/"
@@ -115,7 +115,7 @@ wad_symlink() {
 		export -f symlink_wad
 
 		pushd "${D%/}/${waddir}" &> /dev/null || die
-		LC_ALL="C" find . -type f -iname '*.wad' | xargs --max-args=1 --max-procs="$jobs" -I {} bash -c 'symlink_wad '"'"'{}'"'"'' | awk '{ c++; printf "\r%s    ",c } END { printf "\r"; system("einfo Total of " c " wads symlinked.")}'
+		LC_ALL="C" find . -type f -iname '*.wad' | xargs --max-procs="$jobs" -I {} bash -c 'symlink_wad '"'"'{}'"'"'' | awk '{ c++; printf "\r%s    ",c } END { printf "\r"; system("einfo Total of " c " wads symlinked.")}'
 		popd &> /dev/null || die
 		check_errorfile 'Errors encountered during wad symlink creation'
 	fi
@@ -129,7 +129,8 @@ pkg_pretend() {
 }
 
 pkg_setup() {
-	jobs="$(grep -Eo "(--jobs|-j)[ =]?[0-9]+" <<< "$MAKEOPTS" | grep -o '[0-9]*')"
+	#jobs="$(grep -Eo "(--jobs|-j)[ =]?[0-9]+" <<< "$MAKEOPTS" | grep -o '[0-9]*')"
+	jobs="$(makeopts_jobs)"
 	if [ "$jobs" ] && [ "$jobs" -gt 0 ]
 	then
 		export jobs
@@ -187,7 +188,7 @@ src_unpack() {
 		export packdir
 		export -f unpack_zip
 		ebegin "Processing all the zip files"
-		LC_ALL="C" find -type f \( -iname '*.zip' -or -iname '*.exe' \) -print0 | xargs --null --max-args=1 --max-procs="$jobs" -I {} bash -c 'unpack_zip '"'"'{}'"'"'' | percent_counter "$fcount"
+		LC_ALL="C" find -type f \( -iname '*.zip' -or -iname '*.exe' \) -print0 | xargs --null --max-procs="$jobs" -I {} bash -c 'unpack_zip '"'"'{}'"'"'' | percent_counter "$fcount"
 		safe_rename "${packdir}"
 		echo
 		eend '0'
@@ -207,7 +208,7 @@ src_configure() {
 		}
 		export errorfile
 		export -f detect_wad
-		find "${packdir}" -type f -not -iname '*.wad' -print0 | xargs --null --max-args=1 --max-procs="$jobs" -I {} bash -c 'detect_wad '"'"'{}'"'"'' | rename_count
+		find "${packdir}" -type f -not -iname '*.wad' -print0 | xargs --null --max-procs="$jobs" -I {} bash -c 'detect_wad '"'"'{}'"'"'' | rename_count
 		check_errorfile
 	fi
 }
@@ -246,7 +247,7 @@ src_install() {
 			wadpackdir="${D%/}/${waddir}/${ddir}"
 			if [ -d "$wadpackdir" ]
 			then
-				ln -s "/usr/share/doc/${PF}/${ddir}" "${wadpackdir}/docs" &> /dev/null || { ewarn "Doc symlink creation into '${wadpackdir}/docs' failed." && touch "$errorfile"; }
+				ln -s "${ROOT%/}/usr/share/doc/${PF}/${ddir}" "${wadpackdir}/docs" &> /dev/null || { ewarn "Doc symlink creation into '${wadpackdir}/docs' failed." && touch "$errorfile"; }
 			else
 				elog "No usable wads in ${ddir} -package. Removing it from installion..."
 				touch "${T%/}/empty_dirs"
