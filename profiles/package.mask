@@ -39,3 +39,9 @@ dev-util/lipx
 # Thus these versions are now masked. Unmask them at your own risk.
 =games-resources/doom4vanilla-3.0
 =games-resources/doom4vanilla-3.1
+
+# ::gentoo has vidcutter.
+media-video/vidcutter
+
+# ::gentoo has shotcut
+media-video/shotcut
