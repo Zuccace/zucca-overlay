@@ -8,20 +8,17 @@ HOMEPAGE="https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist"
 LICENSE="BSD"
 SLOT="0"
 
-HOSTS_SRC='https://hosts.ubuntu101.co.za/hosts'
+LIVE_URI="https://hosts.ubuntu101.co.za/hosts -> ${PN}.hosts"
 
 RESTRICT="strip"
-PROPERTIES="live"
+
+inherit live-fetch
 
 S="${WORKDIR}"
 
 IUSE="-to-127"
 
-sf="${T}/${PN}.hosts"
-
-src_unpack() {
-	wget -O "${sf}" "${HOSTS_SRC}"
-}
+sf="${T}/sources/${PN}.hosts"
 
 src_install() {
 	local idir="/usr/share"
