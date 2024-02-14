@@ -1,3 +1,8 @@
+# Copyright 1999-2024 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+# VERY MUCH WIP!
+# The interface/API/file locations may change.
 
 PROPERTIES+=' live'
 RESTRICT+=' fetch'
@@ -9,6 +14,19 @@ live-fetch() {
 	local URIFILE URI FILE ARROW DISTDIR="${T}/sources" FCMD="$(echo -e 'import portage\nprint(portage.settings.get("FETCHCOMMAND"))' | python -)"
 
 	mkdir "$DISTDIR" || die "Unable to create directory: ${DISTDIR}"
+
+	local FBIN FARGS
+	read FBIN FARGS <<< "$FCMD"
+	elog "Using ${FBIN} to download live sources."
+	case "${FBIN##*/}" in
+		curl)
+			# We'll inject --compressed, see 'man curl' for more info.
+			FCMD="${FBIN} --compressed ${FARGS}"
+		;;
+	esac
+
+	elog "Fetch command being used: ${FCMD}"
+	
 	while read URI ARROW FILE
 	do
 		if [[ "${ARROW}" != '->' ]]
@@ -30,7 +48,7 @@ live-fetch() {
 		else
 			if [[ -z "${FILE}" ]]
 			then
-				eqawarn "No FILE is set, but we found -> as an second argument."
+				eqawarn "No FILE is set, but found -> as an second argument."
 				die "Malformed sources list."
 			fi
 		fi
@@ -42,13 +60,16 @@ live-fetch() {
 	done <<< "$@"
 }
 
-#live-fetch_pkg_setup {
-#	live-fetch "${SRC_URI}"
-#}
-
+# It seems that many live eclasses do use src_unpack to fetch the sources.
+# So do we.
 live-fetch_src_unpack() {
-	live-fetch "${LIVE_URI}"
-	unpack "${T}/sources/"*
+	if [[ ! -z "${LIVE_URI}" ]]
+	then
+		live-fetch "${LIVE_URI}"
+		# We'll need better, more standardized place to put downloaded files. TODO!
+		unpack "${T}/sources/"*
+	fi
+	default
 }
 
 EXPORT_FUNCTIONS src_unpack
