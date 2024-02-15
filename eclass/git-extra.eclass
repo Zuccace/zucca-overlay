@@ -6,6 +6,8 @@
 # Ilja Sara <ilja.sara@kahvipannu.com>
 # @BLURB: extra functionality to git-r3
 
+#EGIT_CLONE_TYPE='mirror'
+
 inherit git-r3
 
 EXPORT_FUNCTIONS pkg_postinst
@@ -21,13 +23,18 @@ git_nfo() {
 	local git_nfo_file="${T%/}/git_version.nfo"
 	local TAG CNUM
 
+	pushd "${S}" > /dev/null || die "git_nfo(): Unable to enter directory '${S}' (\$S)."
+	
+	echo git config --add safe.directory "$S"
+	git config --add safe.directory ./
+	
         [[ ! -f "$git_nfo_file" ]] && {
-                TAG="$(git tag --list --sort=-version:refname | head -n 1)"
+                TAG="$(git tag --sort=-creatordate | head -n 1)"
                 echo "tag: ${TAG:-"[notag]"}"
                 CNUM="$(git rev-list --count ${TAG:+${TAG}..}HEAD)"
-                echo "commit number (since tag): ${CNUM}"
+                echo "commit number (since tag): ${CNUM:-"N/A"}"
                 echo "commit: $(git rev-parse HEAD)"
-                echo "PF: ${PN}-${TAG}_p${CNUM}"
+                echo "PF: ${PN}-${TAG:-tag}${CNUM:+"_p${CNUM}"}"
         } > "$git_nfo_file"
 
 	case "$1" in
@@ -43,6 +50,7 @@ git_nfo() {
 			cat "$git_nfo_file"
 		;;
 	esac
+	popd > /dev/null
 }
 
 # @FUNCTION: git-extra_pkg_postinst
