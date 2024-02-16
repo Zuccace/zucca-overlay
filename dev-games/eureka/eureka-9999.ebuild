@@ -1,8 +1,8 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
-inherit eutils desktop
+EAPI=8
+inherit xdg desktop
 
 DESCRIPTION="A map editor for the classic DOOM games, and others such as Heretic and Hexen."
 HOMEPAGE="http://eureka-editor.sourceforge.net"
@@ -30,7 +30,7 @@ set_dl_type() {
 		;;
 		git)
 			inherit git-extra
-			if ver_test '1.27' -lt "$PV"
+			if ver_test "$PV" -gt '1.26.9999'
 			then
 				EGIT_REPO_URI="https://github.com/ioan-chera/eureka-editor.git"
 			else
@@ -68,6 +68,10 @@ case "${PVR}" in
 		set_dl_type git
 		EGIT_COMMIT="00bda541f3c0680449c79a12609c6089493ae684"
 	;;
+	1.27-r1)
+		set_dl_type git
+		EGIT_COMMIT="542a1c948ef9b24300dad325e6bfe5cca6391777"
+	;;
 	9999)
 		set_dl_type git
 		unset KEYWORDS
@@ -77,7 +81,7 @@ case "${PVR}" in
 	;;
 esac
 
-if ver_test "$PV" -gt '1.27'
+if ver_test "$PV" -gt '1.26.9999'
 then
 	inherit cmake
 	export BUILD_DIR="${WORKDIR%/}/${PN}-${PV}/build"
@@ -138,8 +142,10 @@ src_prepare() {
 				print "option(ENABLE_UNIT_TESTS \"Unit tests\" OFF)"
 			else print
 		}' "${BUILD_DIR%/build}/CMakeLists.txt" || die "Disabling tests failed."
-		
+
+		pushd "${BUILD_DIR%/build}"
 		cmake_src_prepare
+		popd
 		
 	else
 		default
@@ -156,7 +162,7 @@ src_configure() {
 				if (!gsub(/-Wcast-function-type/,"-Wno-cast-function-type")) $0 = $0 " -Wno-cast-function-type"
 
 				# Upstream bug? Well avoid it.
-				$0 = $0 " -Wno-error=stringop-truncation"
+				$0 = $0 " -Wno-error=stringop-truncation -Wno-error=maybe-uninitialized"
 			}
 			print
 		}' "${BUILD_DIR%/}/build.ninja" || die "build.ninja patching failed."
@@ -176,16 +182,14 @@ src_compile() {
 
 src_install() {
 
-	if [ "$DL_TYPE" == "git" ] && [ "$PV" != "9999" ]
+	einfo "cmake: ${do_cmake}"
+	ls -lhFA
+
+	if [ "$DL_TYPE" == "git" ] || [ "$PV" != "9999" ]
 	then
 		git_nfo install
-	elif [ "$PV" == "9999" ]
-	then
-		# Cannot git describe ;(
-		#git describe --tags > VERSION.nfo
-		git rev-parse HEAD >> VERSION.nfo
 	fi
-
+	
 	doicon -s 32 misc/eureka.xpm
 	domenu misc/eureka.desktop
 
@@ -199,7 +203,7 @@ src_install() {
 	else
 		emake PREFIX="$usr" INSTALL_DIR="$MY_D" install
 	fi
-	dodoc "${FILESDIR%/}/cheatsheet.pdf" docs/*
+	dodoc "${FILESDIR%/}/cheatsheet.pdf" docs/*	
 }
 
 pkg_postinst() {
