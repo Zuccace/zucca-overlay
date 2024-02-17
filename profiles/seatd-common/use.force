@@ -1,2 +1,4 @@
 -systemd
 -elogind
+-logind
+-systemd-boot
