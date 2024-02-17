@@ -1,0 +1,8 @@
+gentoo:default/linux/amd64/17.1
+gentoo:default/linux/amd64/17.1/no-multilib
+gentoo:default/linux/amd64/17.1/musl
+
+default/linux/x86/17.0
+default/linux/x86/17.0/musl
+
+gentoo:targets/desktop
