@@ -1,0 +1,14 @@
+# No
+-sys-apps/systemd
+-sys-auth/elogind
+
+# By default make sysvinit optional
+-sys-apps/sysvinit
+
+# Yes
+*sys-auth/seatd
+# This profile is synced via git
+*dev-vcs/git
+
+# Not required
+#*gui-libs/greetd

@@ -1,0 +1,7 @@
+
+# By default we'll endorse openrc-init and no dracut
+*/* openrc openrc-init -dracut
+
+# Also pam is highly encouraged
+# (In future we'll use pam_exec to create all required XDG directories)
+*/* pam
