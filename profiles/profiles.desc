@@ -1,0 +1,7 @@
+amd64	linux/amd64/17.1/seatd			dev
+x86	linux/x86/17.1/seatd			dev
+
+amd64	linux/amd64/17.1/no-multilib/seatd	dev
+
+amd64	linux/amd64/17.1/musl/seatd		dev
+x86	linux/x86/17.1/musl/seatd		dev

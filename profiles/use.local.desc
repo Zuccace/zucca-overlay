@@ -1,0 +1,23 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using egencache *
+
+app-editors/dte:extras - Inserts more builtin configs into dte. To list them run: dte -B
+app-editors/dte:shift-select - Enable shift-select by default - select text/code by holding shift and pressing arrow keys like in GUI editors.
+app-editors/dte:terminfo - Link dte to the system terminfo/curses library. If disabled use the built-in terminal support. Disabling this flag makes it much easier to build a portable, statically linked binary. The built-in terminal support currently works with tmux, screen, st, xterm (and many other xterm-compatible terminals) and falls back to ECMA-48 mode for other terminals.
+games-arcade/DMCAs-Sky:extras - Installs a different launcher for cli. Pass '--help' for list of switches.
+games-fps/prboom+:fluidsynth - Use fluidsynth as midi backend
+games-fps/prboom+:hi-res - Support for high-resolution textures on OpenGL -mode
+games-fps/prboom+:midi - Support for midi playback
+games-fps/prboom+:multiplayer - Support for network play
+games-fps/prboom+:opengl - Also build, optional, user selectable, OpenGL renderer
+games-fps/prboom+:png - Support for (png) screenshots
+games-fps/prboom+:portmidi - Use portmidi as midi backend
+games-resources/freedoom:freedm - Compile (if needed) and install Freedm - A 32-level game designed for competitive deathmatch play.
+games-resources/freedoom:freedoom1 - Compile (if needed) and install Freedoom Phase 1 - Four chapters, nine levels each, totalling 36 levels. This game aims for compatibility with The Ultimate Doom mods, also known as plain Doom or Doom 1.
+games-resources/freedoom:freedoom2 - Compile (if needed) and install Freedoom Phase 2 - 32 levels in one long chapter, featuring extra monsters and a double-barrelled shotgun. This project aims for compatibility with Doom II mods.
+games-resources/fu-berlin-doom2-wads:raw-install - Perform raw installation into /opt. Raw install contains everything from the wad packages, even the exes and unknown files.
+games-resources/fu-berlin-doom2-wads:wad-symlink - Create symlink of each wad file into /usr/share/games/doom. Some Doom ports don't look into subdirectories, this flags may help to solve the problem. Has no effect if USE=raw-install.
+games-strategy/naev:mixer - Enables media-libs/sdl-mixer sound backend in addition to media-libs/openal one.
+media-sound/SAM:wrapper - Installs a bash wrapper for sam to gain extra functionality, like mp3 and flac output and support for longer texts.
+x11-apps/menutray:locale - Locale support

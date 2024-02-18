@@ -1,0 +1,4 @@
+# These collide with "full" seatd
+sys-apps/systemd
+sys-auth/elogind
+
