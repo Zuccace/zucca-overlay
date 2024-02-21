@@ -3,12 +3,12 @@
 <repositories xmlns="" version="1.0">
 	<repo quality="unstable" status="unofficial">
 		<name>zucca</name>
-		<description lang="en">Zucca's layout for some of your gaming needs. May contain excellent too. ;)</description>
-		<homepage>https://github.com/Zuccace/zucca-overlay</homepage>
+		<description lang="en">Mostly a personal overlay of Zucca</description>
+		<homepage>https://codeberg.org/Zucca/gentoo-overlay</homepage>
 		<owner type="person">
 			<email>ilja.sara@kahvipannu.com</email>
 			<name>Ilja Sara</name>
 		</owner>
-		<source type="git">https://github.com/Zuccace/zucca-overlay.git</source>
+		<source type="git">https://codeberg.org/Zucca/gentoo-overlay.git</source>
 	</repo>
 </repositories>
