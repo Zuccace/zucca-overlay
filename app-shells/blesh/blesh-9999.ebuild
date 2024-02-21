@@ -12,8 +12,8 @@ IUSE=""
 
 RESTRICT="mirror"
 
-BEPEND="make gawk"
 RDEPEND=">=app-shells/bash-4.0"
+BEPEND="make gawk ${RDEPEND}"
 KEYWORDS="~x86 ~amd64 ~arm ~arm64 ~riscv"
 
 case "$PV" in
@@ -28,7 +28,6 @@ case "$PV" in
 	9999)
 		unset KEYWORDS
 		inherit git-extra
-		#S="$WORKDIR/piu-piu-${PV}"
 		EGIT_REPO_URI="${HOMEPAGE}.git"
 	;;
 esac
