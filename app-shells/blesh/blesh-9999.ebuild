@@ -74,5 +74,10 @@ src_compile() {
 src_install() {
 
 	emake -C "${S}" install PREFIX=/usr DESTDIR="${ED}"
+
+	if [[ "${EGIT_REPO_URI}" ]]
+	then
+		git_nfo install
+	fi
 	#find "${S}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|nfo|me|pdf|epub)$' -exec dodoc \{\} +
 }
