@@ -79,5 +79,9 @@ src_install() {
 	then
 		git_nfo install
 	fi
+
+	insinto /etc/bash/bashrc.d/
+	doins "${FILESDIR}/init_blesh"
+	
 	#find "${S}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|nfo|me|pdf|epub)$' -exec dodoc \{\} +
 }
