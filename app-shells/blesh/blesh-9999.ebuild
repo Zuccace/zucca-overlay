@@ -73,7 +73,8 @@ src_compile() {
 
 src_install() {
 
-	emake -C "${S}" install PREFIX=/usr DESTDIR="${ED}"
+	local DOCDIR="${ED}/usr/share/doc/${PF}"
+	emake -C "${S}" install PREFIX=/usr DESTDIR="${ED}" INSDIR_DOC="${DOCDIR}" INSDIR_LICENSE="${DOCDIR}"
 
 	if [[ "${EGIT_REPO_URI}" ]]
 	then
