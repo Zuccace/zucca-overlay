@@ -6,7 +6,7 @@ EAPI=8
 DESCRIPTION="Bash Line Editor with syntax highlighting, auto suggestions, vim modes, etc."
 HOMEPAGE="https://github.com/akinomyoga/ble.sh"
 
-LICENSE="BSD-3"
+LICENSE="BSD"
 SLOT="0"
 IUSE=""
 
