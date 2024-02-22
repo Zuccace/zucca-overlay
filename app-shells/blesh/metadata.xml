@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<use>
+		<flag name="auto-load">Install a script into /etc/bash/bashrc.d to automatically source ble.sh when needed.</flag>
+	</use>
+	<longdescription>Bash Line Editor ― a line editor written in pure Bash with syntax highlighting, auto suggestions, vim modes, etc. for Bash interactive sessions.</longdescription>
+</pkgmetadata>
