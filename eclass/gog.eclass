@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: gog.eclass
@@ -17,7 +17,7 @@
 : ${RESTRICT:="fetch strip bindist"}
 
 # By default we assume following archs are supported:
-: ${KEYWORDS:="\-\* ~amd64 ~x86"}
+: ${KEYWORDS:="~amd64 ~x86"}
 
 # ... and we can also guess the homepage:
 : ${HOMEPAGE:="https://www.gog.com/en/game/${PN}"}
