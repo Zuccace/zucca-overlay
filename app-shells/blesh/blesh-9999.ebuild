@@ -17,12 +17,21 @@ BEPEND="make gawk ${RDEPEND}"
 KEYWORDS="~x86 ~amd64 ~arm ~arm64 ~riscv"
 
 case "$PV" in
-	0.4.0_p3)
+	0.4.0_rc3)
 		CONTRIB_HASH="d4f89cf01e2b1cc728958c40659152262b798c83"
 		SRC_URI="
 			https://github.com/akinomyoga/ble.sh/archive/refs/tags/v0.4.0-devel3.tar.gz -> ${PF}.tar.gz
 			https://github.com/akinomyoga/blesh-contrib/archive/${CONTRIB_HASH}.zip -> ${PN}-contrib-${PV}.zip"
 		SDIR="ble.sh-0.4.0-devel3"
+		S="${WORKDIR}/${SDIR}"
+	;;
+	0.4.0_rc3_p132)
+		CONTRIB_HASH="cbbb1360fa8db9cd04c7b60166343dca91444345"
+		BLESH_HASH="b5938192ca588267345dac494fbebc6d2d6fde6b"
+		SRC_URI="
+			https://github.com/akinomyoga/ble.sh/archive/${BLESH_HASH}.tar.gz -> ${PF}.tar.gz
+			https://github.com/akinomyoga/blesh-contrib/archive/${CONTRIB_HASH}.zip -> ${PN}-contrib-${PV}.zip"
+		SDIR="ble.sh-${BLESH_HASH}"
 		S="${WORKDIR}/${SDIR}"
 	;;
 	9999)
