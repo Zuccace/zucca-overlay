@@ -4,6 +4,8 @@
 # VERY MUCH WIP!
 # The interface/API/file locations may change.
 
+inherit envvar
+
 PROPERTIES+=' live'
 RESTRICT+=' fetch'
 
@@ -11,7 +13,7 @@ RESTRICT+=' fetch'
 # Nothing fancy. Meaning no conditionals.
 live-fetch() {
 
-	local URIFILE URI FILE ARROW DISTDIR="${T}/sources" FCMD="$(echo -e 'import portage\nprint(portage.settings.get("FETCHCOMMAND"))' | python -)"
+	local URIFILE URI FILE ARROW DISTDIR="${T}/sources" FCMD="$(envvar 'FETCHCOMMAND')"
 
 	mkdir "$DISTDIR" || die "Unable to create directory: ${DISTDIR}"
 
