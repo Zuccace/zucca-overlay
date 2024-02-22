@@ -8,7 +8,7 @@ HOMEPAGE="https://github.com/akinomyoga/ble.sh"
 
 LICENSE="BSD"
 SLOT="0"
-IUSE=""
+IUSE="+auto-load"
 
 RESTRICT="mirror"
 
@@ -90,8 +90,11 @@ src_install() {
 		git_nfo install
 	fi
 
-	insinto /etc/bash/bashrc.d/
-	doins "${FILESDIR}/blesh_init"
+	if use auto-load
+	then
+		insinto /etc/bash/bashrc.d/
+		doins "${FILESDIR}/blesh_init"
+	fi
 	
 	#find "${S}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|nfo|me|pdf|epub)$' -exec dodoc \{\} +
 }
