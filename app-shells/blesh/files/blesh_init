@@ -7,7 +7,7 @@
 # - non-root user
 # - - would be better also to parse login.defs and limit to non-system users.
 
-if [[ -z "$_ble_util_fd_stdin" ]] && [[ "${BASH##*/}" = 'bash' ]] && [[ "${SHELL##*/}" = 'bash' ]] && [[ $- = *i* ]] && tty -s && [[ $(whoami) != 'root' ]]
+if [[ -z "${BLE_ATTACHED}" ]] && [[ "${BASH##*/}" = 'bash' ]] && [[ "${SHELL##*/}" = 'bash' ]] && [[ $- = *i* ]] && tty -s && [[ "$(whoami)" != 'root' ]]
 then
 	source /usr/share/blesh/ble.sh
 fi
