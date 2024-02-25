@@ -50,7 +50,7 @@ live-fetch() {
 		else
 			if [[ -z "${FILE}" ]]
 			then
-				eqawarn "No FILE is set, but found -> as an second argument."
+				eerror "No FILE is set, but found -> as an second argument."
 				die "Malformed sources list."
 			fi
 		fi
