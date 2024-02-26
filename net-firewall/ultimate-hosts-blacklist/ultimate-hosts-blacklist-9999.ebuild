@@ -29,7 +29,7 @@ then
 	SRC_URI="https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/archive/${hash}.zip -> ${PF}.zip"
 	src_unpack() {
 		# unzip can concatenate files by using -p switch. Nice!
-		unzip -p "${DISTDIR}/${A}" "Ultimate.Hosts.Blacklist-${hash}/hosts/*" > "${PN}.hosts"
+		unzip -p "${DISTDIR}/${A}" "Ultimate.Hosts.Blacklist-${hash}/hosts/*" > "${PN}.hosts" || die "Unzipping failed."
 	}
 fi
 
@@ -41,6 +41,6 @@ src_install() {
 		doins "${PN}.hosts"
 	else
 		dodir "${idir}"
-		sed 's/^0\.0\.0\.0\s/127.0.0.1 /' "${PN}.hosts" > "${ED}/${idir#/}/${PN}.hosts"		
+		sed 's/^0\.0\.0\.0\s/127.0.0.1 /' "${PN}.hosts" > "${ED}/${idir#/}/${PN}.hosts" || die "Final installation failed performed by sed."
 	fi
 }
