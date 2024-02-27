@@ -86,14 +86,15 @@ alt-fetch() {
 
 		AGE="$((AGE*3600))"
 
-		local FFILE="${DISTDIR}/${FILE}" cfile
-		if cfile="$(find "${DISTDIR}" -type f -name "${FILE}.*")" && [[ ! -z "${cfile}" && $(wc -l <<< "${cfile}") -eq 1 ]]
+		# FFILE, full path to the source file, without compression suffix.
+		
+		local FFILE="${DISTDIR}/${FILE}" tfile
+		if ! tfile="$(find "${DISTDIR}" -type f -name "${FILE}.*")" && [[ ! -z "${tfile}" && $(wc -l <<< "${cfile}") -eq 1 ]]
 		then
-			FFILE="${cfile}"
-			FILE="${FFILE##*/}"
+			tfile="${FFILE}"
 		fi
 				
-		if [[ ! -e "${FFILE}" || "$(($(stat -c '%Y' "${FFILE}")+AGE))" -lt "${EPOCHSECONDS}" ]]
+		if [[ ! -e "${tfile}" || "$(($(stat -c '%Y' "${tfile}")+AGE))" -lt "${EPOCHSECONDS}" ]]
 		then
 			ebegin "Downloading sources: '${URI}'"
 
@@ -119,11 +120,10 @@ alt-fetch() {
 				FFILE="${DISTDIR}/${FILE}"
 			fi
 		else
-			einfo "File '${FFILE}' is recent enough, using it."
-			#${FFILE}
+			einfo "File '${tfile}' is recent enough, using it."
 		fi
 
-		ln -s "${FFILE}" "${MY_DISTDIR}/${FILE}"
+		ln -s "${tfile}" "${MY_DISTDIR}/${tfile##*/}"
 
 	done <<< "$@"
 }
