@@ -14,7 +14,10 @@ KEYWORDS="~amd64 ~arm64 ~risc-v ~x86 ~mips"
 
 case "${PV}" in
 	2.1942.2024.02.25)
-		hash="d708caa6785cc7bf3457914e8719ba02d7ea6cd5"
+		hash='d708caa6785cc7bf3457914e8719ba02d7ea6cd5'
+	;;
+	2.1944.2024.02.26)
+		hash='46e04fad604bf8e13b14599a0328894fbfad274d'
 	;;
 	9999)
 		unset KEYWORDS
