@@ -22,8 +22,10 @@ case "${PV}" in
 	9999)
 		unset KEYWORDS
 		inherit alt-fetch
-		# Re-download if the previous file is older then 23 hours
-		ALT_URI="https://hosts.ubuntu101.co.za/hosts 23 ${PN}.hosts 1"
+		# Re-download if the previous file is older than 23 hours
+		ALT_URI="
+			https://hosts.ubuntu101.co.za/hosts 23 ${PN}.hosts 1
+		"
 	;;
 esac
 
