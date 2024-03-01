@@ -19,6 +19,9 @@ case "${PV}" in
 	2.1944.2024.02.26)
 		hash='46e04fad604bf8e13b14599a0328894fbfad274d'
 	;;
+	2.1952.2024.03.01)
+		hash='6c276b998638856aa10c8f86ec344eaaef4c79c9'
+	;;
 	9999)
 		unset KEYWORDS
 		inherit alt-fetch
