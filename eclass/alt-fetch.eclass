@@ -2,7 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 # VERY MUCH WIP!
-# The interface/API/file locations may change.
+# The interface/API/file locations WILL change.
+# If you use this eclass be prepared to glue pieced together when update comes.
 # Lot's of comments are still missing, so try to read the code.
 
 inherit envvar multiprocessing
@@ -85,6 +86,9 @@ fetch_compress() {
 # Newline separetes records (files to download).
 # Fourth argument is still in development.
 # Alternative compression methods are under consideration.
+# And possibility to provide alternative (secondary) sources
+# per file will be added later.
+# That said: THE API OF THIS ECLASS WILL CHANGE.
 alt-fetch() {
 
 	local URIFILE URI FILE AGE COMPRESS lastsize \
