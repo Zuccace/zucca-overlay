@@ -33,17 +33,17 @@ needs_update() {
 	if [[ -z "${NEWEST_SOURCE}" ]]
 	then
 		# No file found
-		einfo "No cached '${1##*/}'"
+		einfo "File '${1##*/}' isn't cached yet."
 		return 0
 	elif [[ "$(($(stat -c '%Y' "${NEWEST_SOURCE}")+AGE))" -lt "${EPOCHSECONDS}" ]]
 	then
 		# File is too old
 		lastsize="$(stat -c '%s' "${NEWEST_SOURCE}")"
-		einfo "'${1##*/}' is too old."
+		einfo "File '${1##*/}' is cached, but old."
 		return 0
 	else
 		# We don't need an update
-		einfo "'${1##*/}' is new enough."
+		einfo "File '${1##*/}' is new enough."
 		return 1
 	fi
 }
