@@ -9,7 +9,7 @@ LICENSE="BSD"
 SLOT="0"
 RESTRICT="strip"
 S="${WORKDIR}"
-IUSE="-to-127"
+IUSE="-to-127 -deny-file"
 KEYWORDS="~amd64 ~arm64 ~risc-v ~x86 ~mips"
 
 case "${PV}" in
@@ -25,19 +25,28 @@ case "${PV}" in
 	9999)
 		unset KEYWORDS
 		inherit alt-fetch
-		# Re-download if the previous file is older than 23 hours
-		ALT_URI="
-			https://hosts.ubuntu101.co.za/hosts 23 ${PN}.hosts 1
-		"
+		ALT_URI="https://hosts.ubuntu101.co.za/hosts 23 ${PN}.hosts 1"
+		
+		if [[ "${USE}" =~ (^| )deny-file( |$) ]]
+		then
+			ALT_URI+="
+			https://hosts.ubuntu101.co.za/superhosts.deny 23 ${PN}.deny 1"
+		fi
 	;;
 esac
 
 if [[ "${hash}" ]]
 then
-	SRC_URI="https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/archive/${hash}.zip -> ${PF}.zip"
+	SRC_URI="
+		https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/archive/${hash}.zip -> ${PF}.zip
+	"
 	src_unpack() {
 		# unzip can concatenate files by using -p switch. Nice!
-		unzip -p "${DISTDIR}/${A}" "Ultimate.Hosts.Blacklist-${hash}/hosts/*" > "${PN}.hosts" || die "Unzipping failed."
+		unzip -p "${DISTDIR}/${A}" "Ultimate.Hosts.Blacklist-${hash}/hosts/*" > "${PN}.hosts" || die "Unzipping hosts file failed."
+		if use deny-file
+		then
+			unzip -p "${DISTDIR}/${A}" "Ultimate.Hosts.Blacklist-${hash}/superhosts.deny/*.deny" > "${PN}.deny" || die "Unzipping hosts deny file failed."
+		fi
 	}
 fi
 
@@ -47,8 +56,10 @@ src_install() {
 	then
 		insinto "${idir}"
 		doins "${PN}.hosts"
+		use deny-file && doins "${PN}.deny"
 	else
 		dodir "${idir}"
 		sed 's/^0\.0\.0\.0\s/127.0.0.1 /' "${PN}.hosts" > "${ED}/${idir#/}/${PN}.hosts" || die "Final installation failed performed by sed."
+		use deny-file && doins "${PN}.deny"
 	fi
 }
