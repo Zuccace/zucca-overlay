@@ -89,7 +89,7 @@ alt-fetch() {
 
 	local URIFILE URI FILE AGE COMPRESS lastsize \
 		ALT_DISTDIR="${PORTAGE_ACTUAL_DISTDIR}/alt-fetch/${CATEGORY}_${PN}" \
-		dage="$((24*7))" \
+		dage="$((24*7-1))" \
 		FCMD="$(envvar 'FETCHCOMMAND')" \
 		FBIN FARGS NEWEST_SOURCE
 
