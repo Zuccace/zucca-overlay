@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 # VERY MUCH WIP!
+
 # The interface/API/file locations WILL change.
 # If you use this eclass be prepared to glue pieced together when update comes.
 # Lot's of comments are still missing, so try to read the code.
@@ -33,17 +34,21 @@ needs_update() {
 	NEWEST_SOURCE="$(find_newest_source "$1")"
 	if [[ -z "${NEWEST_SOURCE}" ]]
 	then
-		# No file found
+		# No file found.
 		einfo "File '${1##*/}' isn't cached yet."
 		return 0
 	elif [[ "$(($(stat -c '%Y' "${NEWEST_SOURCE}")+AGE))" -lt "${EPOCHSECONDS}" ]]
 	then
-		# File is too old
+		# File is too old.
+		# Record the last known size of the source
+		# so that we can guestimate ETA for download
+		# if USE=verbose-download is set.
+		# TODO: not implemented yet, should we even?
 		lastsize="$(stat -c '%s' "${NEWEST_SOURCE}")"
 		einfo "File '${1##*/}' is cached, but old."
 		return 0
 	else
-		# We don't need an update
+		# We don't need an update.
 		einfo "File '${1##*/}' is new enough."
 		return 1
 	fi
