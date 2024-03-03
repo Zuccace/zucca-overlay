@@ -1,6 +1,7 @@
 = Yet another gentoo repo/overlay.
 
 Development happens at https://codeberg.org/Zucca/gentoo-overlay[Codeberg].
+
 Github repository will get updates rarely and randomly.
 I'll try to remember to push changes to github, when I feel everything's fixed and seem to be stable.
 So if you sync via github don't expect frequent updates.
