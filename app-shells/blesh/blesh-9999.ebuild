@@ -34,6 +34,16 @@ case "$PV" in
 		SDIR="ble.sh-${BLESH_HASH}"
 		S="${WORKDIR}/${SDIR}"
 	;;
+	0.4.0_rc3_p153)
+		CONTRIB_HASH="852eece1e099ba714e132009d9fc8f65bfe62792"
+		BLESH_HASH="b6344b3be1978695889371de83ac4d15352e4fee"
+		SRC_URI="
+			https://github.com/akinomyoga/ble.sh/archive/${BLESH_HASH}.tar.gz -> ${PF}.tar.gz
+			https://github.com/akinomyoga/blesh-contrib/archive/${CONTRIB_HASH}.zip -> ${PN}-contrib-${PV}.zip"
+		SDIR="ble.sh-${BLESH_HASH}"
+		S="${WORKDIR}/${SDIR}"
+	;;
+
 	9999)
 		unset KEYWORDS
 		inherit git-extra
