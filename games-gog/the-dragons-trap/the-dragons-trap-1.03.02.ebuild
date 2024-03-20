@@ -104,13 +104,13 @@ src_install() {
 	doins -r data/noarch/game/{bin{,_pc},WonderBoy{,-bundled-sdl,.png},gamecontrollerdb.txt}
 	chmod +x "${D%/}"/opt/${MY_PN}/{bin/WonderBoy.bin,WonderBoy} || die
 
-	dosym "/opt/${MY_PN}/WonderBoy" /usr/games/bin/WonderBoy
-	dosym "/opt/${MY_PN}/WonderBoy" /usr/games/bin/WonderBoy-bundled-sdl
+	dosym "/opt/${MY_PN}/WonderBoy" /usr/bin/WonderBoy
+	dosym "/opt/${MY_PN}/WonderBoy" /usr/bin/WonderBoy-bundled-sdl
 	
 	if use media-extras
 	then
 		ebegin "Installing media extras"
-		mediadest="${D%/}/opt/${MY_PN}/media/"
+		mediadest="${D%/}/usr/share/${PN}-media/"
 		mkdir "$mediadest"|| die 'Failed to create directory.'
 		cp --verbose --reflink=auto --dereference "$DISTDIR"/*.mp4 "$mediadest" | while read f a d
 		do
@@ -121,15 +121,15 @@ src_install() {
 		do
 			einfo "Copied '${d##*/}" 
 		done || die "Failed copying media."
-
 		eend 0
+		elog "Extra media installed into ${mediadest#${D%/}}"
 	fi
 }
 
 pkg_postinst() {
 	if use system-libsdl2
 	then
-		cat <<- EOF | fold -s | while read message; do einfo "$message"; done
+		cat <<- EOF | fold -s | while read message; do elog "$message"; done
 
 			== NOTE when using USE=system-libsdl2 ==
 			When using system provided libsdl2 audio might get distorted.
@@ -139,14 +139,14 @@ pkg_postinst() {
 			Note: Preserve those quotes when editing from shell. ;)
 
 			The following audio configuration has been working for the maintainer of this ebuild:
-			EOF
-			cat <<- EOF | awk '{sub(/^\s+/,"\t"); print}'
+			$(cat <<- EOF | awk '{sub(/^\s+/,"\t"); print}'
 				-- AUDIO
 				AudioSamplingRate = 48000,
 				AudioBufferSize = 5000,
 				AudioMusicSpeed = 60,
 				AudioClipRoundoff = true,
 				AudioClipScaler = 1,
+			EOF)
 
 EOF
 	fi
