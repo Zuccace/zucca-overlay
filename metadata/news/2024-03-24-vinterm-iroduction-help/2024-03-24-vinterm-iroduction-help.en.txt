@@ -1,0 +1,17 @@
+Title: Introducing vinterm
+Author: Ilja "Zucca" Sara  <ilja.sara@kahvipannu.com>
+Posted: 2024-03-24
+Revision: 1
+News-Item-Format: 2.0
+
+I've introduced a new package called vinterm.
+It's like cool-retro-term, but with way fewer dependencies.
+However, it seems that it doesn't play well with Xwayland.
+
+The ebuild isn't complete, but you can still test the vinterm.
+
+If you get it working with Xwayland, then please Open up a thread
+in "unsupported software" subforum at forums.gentoo.org and
+hit me (Zucca)with a PM.
+
+Thank you.
