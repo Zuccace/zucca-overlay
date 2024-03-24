@@ -10,8 +10,8 @@ However, it seems that it doesn't play well with Xwayland.
 
 The ebuild isn't complete, but you can still test the vinterm.
 
-If you get it working with Xwayland, then please Open up a thread
+If you get it working with Xwayland, then please open up a thread
 in "unsupported software" subforum at forums.gentoo.org and
-hit me (Zucca)with a PM.
+hit me (Zucca) with a PM.
 
 Thank you.
