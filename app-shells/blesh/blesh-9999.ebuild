@@ -28,28 +28,30 @@ case "$PV" in
 	0.4.0_rc3_p132)
 		CONTRIB_HASH="cbbb1360fa8db9cd04c7b60166343dca91444345"
 		BLESH_HASH="b5938192ca588267345dac494fbebc6d2d6fde6b"
-		SRC_URI="
-			https://github.com/akinomyoga/ble.sh/archive/${BLESH_HASH}.tar.gz -> ${PF}.tar.gz
-			https://github.com/akinomyoga/blesh-contrib/archive/${CONTRIB_HASH}.zip -> ${PN}-contrib-${PV}.zip"
-		SDIR="ble.sh-${BLESH_HASH}"
-		S="${WORKDIR}/${SDIR}"
 	;;
 	0.4.0_rc3_p153)
 		CONTRIB_HASH="852eece1e099ba714e132009d9fc8f65bfe62792"
 		BLESH_HASH="b6344b3be1978695889371de83ac4d15352e4fee"
-		SRC_URI="
-			https://github.com/akinomyoga/ble.sh/archive/${BLESH_HASH}.tar.gz -> ${PF}.tar.gz
-			https://github.com/akinomyoga/blesh-contrib/archive/${CONTRIB_HASH}.zip -> ${PN}-contrib-${PV}.zip"
-		SDIR="ble.sh-${BLESH_HASH}"
-		S="${WORKDIR}/${SDIR}"
 	;;
-
+	0.4.0_rc3_p154)
+		CONTRIB_HASH="852eece1e099ba714e132009d9fc8f65bfe62792"
+		BLESH_HASH="adf9ab8197ec3e7d52875e23374491cfd498f524"
+	;;
 	9999)
 		unset KEYWORDS
 		inherit git-extra
 		EGIT_REPO_URI="${HOMEPAGE}.git"
 	;;
 esac
+
+if [[ ! -z "$BLESH_HASH" ]]
+then
+	SRC_URI="
+		https://github.com/akinomyoga/ble.sh/archive/${BLESH_HASH}.tar.gz -> ${PF}.tar.gz
+		https://github.com/akinomyoga/blesh-contrib/archive/${CONTRIB_HASH}.zip -> ${PN}-contrib-${PV}.zip"
+	SDIR="ble.sh-${BLESH_HASH}"
+	S="${WORKDIR}/${SDIR}"
+fi
 
 src_unpack() {
 	if [ ! "${EGIT_REPO_URI}" ]
