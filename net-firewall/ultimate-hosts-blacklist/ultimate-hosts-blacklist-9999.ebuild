@@ -7,7 +7,7 @@ DESCRIPTION="Very large hosts file for ad/malware/whatnot blocking."
 HOMEPAGE="https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist"
 LICENSE="BSD"
 SLOT="0"
-RESTRICT="strip"
+RESTRICT="strip mirrors"
 S="${WORKDIR}"
 IUSE="-to-127 -deny-file"
 KEYWORDS="~amd64 ~arm64 ~risc-v ~x86 ~mips"
@@ -27,6 +27,18 @@ case "${PV}" in
 	;;
 	2.1984.2024.03.17)
 		hash='df841d34b0d2268c2c74abe6b329fe8e05a4a6ed'
+	;;
+	2.1986.2024.03.18)
+		hash='7711bc82ce95b19161d064ae31f4409d06d1c2d6'
+	;;
+	2.1988.2024.03.19)
+		hash='bc77eef8bcb3fbe3bd627ee3fde42c9469923dad'
+	;;
+	2.2000.2024.03.25)
+		hash='7e7c3aaf33e3b3549ea79a3458d55801b6e5813a'
+	;;
+	2.2024.2024.04.05)
+		hash='ad22a1d8a47d0ab662b80205deedbfd625ba171f'
 	;;
 	2.2032.2024.04.09)
 		hash='cffafedabe6e1be8e5e4b3ecf77bee7aa33a3d41'
