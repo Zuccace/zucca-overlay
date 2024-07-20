@@ -34,7 +34,7 @@ needs_update() {
 	NEWEST_SOURCE="$(find_newest_source "$1")"
 	# In some circumstance the file can exist but zero length.
 	# ... So we'll return 0 if that it so.
-	if [[ -z "${NEWEST_SOURCE}" ]] || [[ -s "${NEWEST_SOURCE}" ]]
+	if [[ -z "${NEWEST_SOURCE}" ]] || [[ ! -s "$(realpath "${NEWEST_SOURCE}")" ]]
 	then
 		# No file found.
 		einfo "File '${1##*/}' isn't cached yet."
