@@ -1,4 +1,4 @@
-= Yet another gentoo repo/overlay.
+= Yet another Gentoo repo/overlay.
 
 Development happens at https://codeberg.org/Zucca/gentoo-overlay[Codeberg].
 
