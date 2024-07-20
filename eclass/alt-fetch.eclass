@@ -14,7 +14,7 @@ PROPERTIES+=' live'
 IUSE+=" +compress-sources -verbose-fetch"
 
 BDEPEND+="
-	compress-sources?	( app-arch/plzip )
+	compress-sources?	( app-arch/plzip sys-apps/pv )
 	verbose-fetch?		( sys-apps/pv )"
 
 MY_DISTDIR="${T}/sources"
@@ -32,7 +32,9 @@ find_newest_source() {
 
 needs_update() {
 	NEWEST_SOURCE="$(find_newest_source "$1")"
-	if [[ -z "${NEWEST_SOURCE}" ]]
+	# In some circumstance the file can exist but zero length.
+	# ... So we'll return 0 if that it so.
+	if [[ -z "${NEWEST_SOURCE}" ]] || [[ -s "${NEWEST_SOURCE}" ]]
 	then
 		# No file found.
 		einfo "File '${1##*/}' isn't cached yet."
@@ -103,8 +105,6 @@ alt-fetch() {
 		FBIN FARGS NEWEST_SOURCE
 
 	mkdir -p "${MY_DISTDIR}" || die
-
-	#env | fgrep cache
 
 	read FBIN FARGS <<< "$FCMD"
 	elog "Using ${FBIN} to download live sources."
