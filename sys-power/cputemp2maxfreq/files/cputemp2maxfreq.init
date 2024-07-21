@@ -1,0 +1,21 @@
+#!/sbin/openrc-run
+# Copyright 2023 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="cputemp2maxfreq daemon"
+description="Daemon to scale scale_max_freq when CPU temperature rises"
+command=/usr/sbin/cputemp2maxfreq
+command_args="-l $LOGGER -t $TEMPERATURE $OTHER"
+
+start() {
+	ebegin "Starting $name"
+	start-stop-daemon --start --background \
+	--make-pidfile --pidfile /var/run/cputemp2maxfreq.pid \
+	--exec ${command} -- ${command_args}
+	eend $?
+}
+
+start_pre() {
+	[ "${RC_CMD}" = "restart" ] && sleep 1
+	return 0
+}
