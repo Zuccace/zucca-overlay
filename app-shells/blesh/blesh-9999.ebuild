@@ -110,7 +110,7 @@ src_install() {
 	if use auto-load
 	then
 		insinto /etc/bash/bashrc.d/
-		doins "${FILESDIR}/blesh_init"
+		doins "${FILESDIR}/blesh_init.bash"
 	fi
 	
 	#find "${S}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|nfo|me|pdf|epub)$' -exec dodoc \{\} +

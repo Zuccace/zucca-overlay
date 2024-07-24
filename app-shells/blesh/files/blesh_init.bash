@@ -1,4 +1,5 @@
-
+#!/bin/bash
+#
 # Be extra careful:
 # Require:
 # - ble.sh not sourced yet
