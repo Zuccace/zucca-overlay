@@ -70,15 +70,15 @@ then
 	pkg_post_install() {
 		git_nfo
 		einfo " "
-		einfo "ATTENTION!"
-		einfo "Lavalauncher versions never than 1.7.1_p44,"
-		einfo "which includes this version just installed,"
-		einfo "work with CONFIGURATION FILE instead of the"
-		einfo "command line arguments like the earlier versions."
-		einfo "Running lavalauncher with the old command line options"
-		einfo "won't work anymore."
-		einfo "Users are encouraged to read the documentation (man pages)"
-		einfo "and create a configuration file for lavalauncher."
+		elog "ATTENTION!"
+		elog "Lavalauncher versions never than 1.7.1_p44,"
+		elog "which includes this version just installed,"
+		elog "work with CONFIGURATION FILE instead of the"
+		elog "command line arguments like the earlier versions."
+		elog "Running lavalauncher with the old command line options"
+		elog "won't work anymore."
+		elog "Users are encouraged to read the documentation (man pages)"
+		elog "and create a configuration file for lavalauncher."
 		einfo " "
 	}
 fi
