@@ -107,11 +107,33 @@ src_install() {
 		git_nfo install
 	fi
 
-	if use auto-load
+	local blesh_init="${EROOT}/etc/bash/bashrc.d/blesh_init.bash"
+	if use auto-load && [[ ! -e "$blesh_init" ]]
 	then
 		insinto /etc/bash/bashrc.d/
 		doins "${FILESDIR}/blesh_init.bash"
+		elog "File '${blesh_init}' has been created. It'll auto load ble.sh for non-root shells."
 	fi
-	
+
 	#find "${S}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|nfo|me|pdf|epub)$' -exec dodoc \{\} +
+}
+
+pkg_postinst() {
+	local old_blesh_init="${EROOT}/etc/bash/bashrc.d/blesh_init"
+	local blesh_init="${EROOT}/etc/bash/bashrc.d/blesh_init.bash"
+
+	if [[ -f "$old_blesh_init" ]]
+	then
+		elog "Found '${old_blesh_init}'."
+		elog "This is likely the old blesh initialization script."
+		elog "If this file isn't there intentionally, it can be safely removed now."
+	fi
+
+	if ! use auto-load
+	then
+		if [[ -e "$blesh_init" ]]
+		then
+			elog "File '${blesh_init}' still exists while USE=\"auto-load\" isn't set."
+		fi
+	fi
 }
