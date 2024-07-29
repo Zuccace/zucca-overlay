@@ -79,6 +79,9 @@ then
 		elog "won't work anymore."
 		elog "Users are encouraged to read the documentation (man pages)"
 		elog "and create a configuration file for lavalauncher."
+		elog "To continue using commandline oriented lavalauncher"
+		elog "versions above 1.7.1_p44 need to be masked:"
+		elog ">gui-apps/lavalauncher-1.7.1_p44"
 		einfo " "
 	}
 fi
