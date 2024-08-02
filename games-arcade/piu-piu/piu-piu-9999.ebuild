@@ -10,7 +10,6 @@ LICENSE="MIT"
 SLOT="0"
 IUSE=""
 
-DEPEND=""
 RDEPEND=">=app-shells/bash-4.2"
 
 case "$PV" in
