@@ -56,13 +56,10 @@ fi
 src_install() {
 	dobin "${S}/piu-piu"
 
-	if [ "$EGIT_REPO_URI" ]
+	if [ -z "$EGIT_REPO_URI" ]
 	then
-		echo "$(git rev-list --count HEAD) $(git rev-parse HEAD)" > "${T}/git_version.txt"
-	else
 		echo "$COMMIT" > "${T}/git_commit.txt"
 	fi
 
-	dodoc "${T}/"*.txt
-	find "${S}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|nfo|me|pdf|epub)$' -exec dodoc \{\} +
+	find "${S}" "${T}" -maxdepth 1 -type f -regextype egrep -iregex '^.*/[^/]+\.(md|a?(scii)?doc|txt|i?nfo|me|pdf|epub)$' -exec dodoc \{\} +
 }
