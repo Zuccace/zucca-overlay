@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: git-extra.eclass
@@ -10,7 +10,7 @@
 
 inherit git-r3
 
-EXPORT_FUNCTIONS pkg_postinst
+EXPORT_FUNCTIONS src_prepare
 
 # @FUNCTION: git_nfo
 # @USAGE: git_nfo [install [filebasename]]
@@ -25,7 +25,6 @@ git_nfo() {
 
 	pushd "${S}" > /dev/null || die "git_nfo(): Unable to enter directory '${S}' (\$S)."
 	
-	echo git config --add safe.directory "$S"
 	git config --add safe.directory ./
 	
         [[ ! -f "$git_nfo_file" ]] && {
@@ -57,13 +56,15 @@ git_nfo() {
 # @USAGE: git-extra_pkg_postinst
 # @DESCRIPTION:
 # Prints out git information after installation.
-git-extra_pkg_postinst() {
+git-extra_src_prepare() {
+
+	eapply_user
 	
 	local L
 	pushd "$S" &> /dev/null
 	git_nfo | while read L
 	do
-		einfo "$L"
+		elog "$L"
 	done
 	popd &> /dev/null
 }
