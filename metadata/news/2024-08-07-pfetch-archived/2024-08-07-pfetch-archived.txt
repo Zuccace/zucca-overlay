@@ -1,0 +1,19 @@
+Title: pfetch archived
+Author: Ilja "Zucca" Sara  <ilja.sara@kahvipannu.com>
+Posted: 2024-08-07
+Revision: 1
+News-Item-Format: 2.0
+
+pfetch development has stopped and it's being removed from ::guru
+I (Zucca) have created several ebuilds for different versions of pfetch.
+
+dylanaraps has archived all his repos on github:
+"This repository has been archived by the owner
+on Apr 26, 2024. It is now read-only."
+
+And on his profile reads the following:
+"Have taken up farming."
+
+We wish all the best in the future for dylanaraps.
+He may, in fact, have escaped the Marix.
+Until then, we'll continue taking the wrong pills and keep using pfetch.
