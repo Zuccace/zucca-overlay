@@ -4,7 +4,7 @@ Posted: 2024-08-07
 Revision: 1
 News-Item-Format: 2.0
 
-pfetch development has stopped and it's being removed from ::guru
+pfetch development has stopped and it's being removed from ::guru.
 I (Zucca) have created several ebuilds for different versions of pfetch.
 
 dylanaraps has archived all his repos on github:
