@@ -5,6 +5,7 @@ EAPI=7
 
 DESCRIPTION="A pretty system information tool written in POSIX sh"
 HOMEPAGE="https://github.com/dylanaraps/pfetch"
+# https://github.com/Un1q32/pfetch This fork seems to get updates.
 RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
