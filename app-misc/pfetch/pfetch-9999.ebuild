@@ -49,9 +49,12 @@ case "${PV}" in
 		KEYWORDS="amd64 arm64 x86 ~riscv"
 	;;
 	9999)
-		KEYWORDS=""
+		true
 	;;
 	*)
-		KEYWORDS="~amd64 ~arm64 ~x86 ~riscv"
+		if [[ "${PV%%.*}" -lt '1' ]]
+		then
+			KEYWORDS="~amd64 ~arm64 ~x86 ~riscv"
+		fi
 	;;
 esac
