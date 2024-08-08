@@ -4,8 +4,7 @@
 EAPI=8
 
 DESCRIPTION="A pretty system information tool written in POSIX sh"
-HOMEPAGE="https://github.com/dylanaraps/pfetch"
-# https://github.com/Un1q32/pfetch This fork seems to get updates.
+HOMEPAGE="https://github.com/dylanaraps/pfetch https://github.com/Un1q32/pfetch"
 RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
@@ -13,7 +12,7 @@ SLOT="0"
 if [[ ${PVR} =~ ^9999 ]]
 then
 	inherit git-extra
-	EGIT_REPO_URI="${HOMEPAGE}.git"
+	EGIT_REPO_URI="${HOMEPAGE##* }.git"
 	src_install() {
 		dobin "${PN}"
 		newdoc "README.md" "README_${PN}.md"
@@ -24,6 +23,13 @@ else
 		newdoc "${DISTDIR}/README_${PF}.md" "README_${PN}.md"
 	}
 
+	if [[ "${PV%%.*}" -lt '1' ]]
+	then
+		author='dylanaraps'
+	else
+		author='Un1q32'
+	fi
+
 	case "${PVR}" in
 		0.6.0_p115)
 			V='a906ff89680c78cec9785f3ff49ca8b272a0f96b'
@@ -33,8 +39,8 @@ else
 		;;
 	esac
 	
-	SRC_URI="	https://raw.githubusercontent.com/dylanaraps/pfetch/${V}/pfetch -> ${PF}.sh
-			https://raw.githubusercontent.com/dylanaraps/pfetch/${V}/README.md -> README_${PF}.md"
+	SRC_URI="	https://raw.githubusercontent.com/${author}/pfetch/${V}/pfetch -> ${PF}.sh
+			https://raw.githubusercontent.com/${author}/pfetch/${V}/README.md -> README_${PF}.md"
 	S="${WORKDIR}"
 fi
 
