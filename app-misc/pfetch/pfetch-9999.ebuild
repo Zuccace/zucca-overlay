@@ -45,16 +45,22 @@ else
 fi
 
 case "${PV}" in
-	0.6.0)
+	0.6.0|0.6.0_p115)
 		KEYWORDS="amd64 arm64 x86 ~riscv"
 	;;
 	9999)
 		true
 	;;
 	*)
-		if [[ "${PV%%.*}" -lt '1' ]]
+		if [[ -z "$KEYWORDS" && "${PV%%.*}" -lt '1' ]]
 		then
 			KEYWORDS="~amd64 ~arm64 ~x86 ~riscv"
 		fi
 	;;
 esac
+
+pkg_postinst() {
+	elog 'pfetch version of 0.6.0_p115 is the last version from Dylan Araps github repository.'
+	elog 'Later versions are (so far) from Un1q32. See the homepages of pfetch:'
+	elog "${HOMEPAGE/ / and }"
+}
