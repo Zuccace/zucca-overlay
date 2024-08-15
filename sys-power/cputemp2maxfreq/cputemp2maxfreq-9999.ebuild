@@ -22,7 +22,7 @@ esac
 
 if [[ "$GIT_COMMIT" ]]
 then
-	KEYWORDS="amd64"
+	[[ -z "$KEYWORDS" ]] && KEYWORDS="~amd64"
 	SRC_URI="https://code.pa4wdh.nl.eu.org/tools/cputemp2maxfreq/snapshot/cputemp2maxfreq-$GIT_COMMIT.tar.gz -> ${PF}.tar.gz"
 	src_unpack() {
 		unpack "${P}.tar.gz"
