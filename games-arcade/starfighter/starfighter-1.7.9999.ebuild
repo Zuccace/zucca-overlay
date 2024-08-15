@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
 inherit autotools
 
@@ -51,7 +51,7 @@ case "$PV" in
 	;;
 	*9999)
 		unset SRC_URI KEYWORDS
-		inherit git-r3
+		inherit git-extra
 		S="${S%-src}"
 		case "$PV" in
 		1.7.9999)
@@ -111,4 +111,5 @@ src_install() {
 	einfo "Removing leftover Makefiles..."
 	find "$D" -type f -name 'Makefile*' -exec einfo "	{}" \; -exec rm {} \;
 	dodoc "VERSION.nfo"
+	[[ "$EGIT_REPO_URI" ]] && git_nfo install
 }
