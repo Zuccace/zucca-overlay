@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
 DESCRIPTION="DMCA's Sky - Help Spaceman Finn search for Princess Mango"
 HOMEPAGE="https://asmb.itch.io/dmcas-sky"
@@ -12,7 +12,7 @@ RESTRICT="mirror fetch strip"
 
 LICENSE="ASMB_Free-to-play"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS=""
 IUSE=""
 
 DEPEND="app-arch/unzip"
@@ -22,7 +22,7 @@ S="${SRC_URI%.zip}"
 S="${WORKDIR%/}/${S##*/}"
 
 pkg_nofetch() {
-	einfo "You need to download the game manually fron ${HOMEPAGE} and place the '${SRC_URI}' into '${DISTDIR}'"
+	einfo "You need to download the game manually fron ${HOMEPAGE} and place the '${SRC_URI}' into '${PORTAGE_ACTUALDISTDIR}'"
 }
 
 src_install() {

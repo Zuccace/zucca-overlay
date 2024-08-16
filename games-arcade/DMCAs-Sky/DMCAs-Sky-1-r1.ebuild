@@ -1,9 +1,9 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
-inherit eutils
+inherit desktop
 
 DESCRIPTION="DMCA's Sky - Help Spaceman Finn search for Princess Mango"
 HOMEPAGE="https://asmb.itch.io/dmcas-sky"
@@ -31,7 +31,7 @@ S="${ARCHIVE_NAME%.zip}"
 S="${WORKDIR%/}/${S##*/}"
 
 pkg_nofetch() {
-	einfo "You need to download the game manually fron ${HOMEPAGE} and place the '${ARCHIVE_NAME}' into '${DISTDIR}'"
+	einfo "You need to download the game manually fron ${HOMEPAGE} and place the '${ARCHIVE_NAME}' into '${PORTAGE_ACTUAL_DISTDIR}'"
 }
 
 src_install() {
@@ -41,6 +41,8 @@ src_install() {
 
 	exeinto "$OPTDIR"
 	insinto "$OPTDIR"
+
+	# TODO!
 	into "/usr/games/"
 
 	doexe "$BINNAME"
@@ -63,6 +65,6 @@ src_install() {
 		echo 'exit "$?"'
 	) dmcas-sky
 	dodoc readme.txt
-	doicon "${FILESDIR%/}/${ICON}"
-	make_desktop_entry dmcas-sky "DMCA's Sky" "$ICON"
+	newicon "${FILESDIR%/}/${ICON}" "${ICON%%.*}"
+	make_desktop_entry dmcas-sky "DMCA's Sky" "${ICON%%.*}"
 }
