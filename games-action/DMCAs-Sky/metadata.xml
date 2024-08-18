@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara</name>
+	</maintainer>
+	<use><flag name="extras">Installs a different launcher for cli. Pass '--help' for list of switches.</flag></use>
+	<longdescription>Help Spaceman Finn search for Princess Mango in an infinite universe (that may contain no Mangoes).
+
+Featuring crazy Moombas, An Infinite Universe, Muscle, Amazing Physics and a Radical Space Ship; DMCA's Sky is the hackneyed remake-gone-mashup you've been craving.</longdescription>
+</pkgmetadata>
