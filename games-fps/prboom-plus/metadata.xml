@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ilja.sara@kahvipannu.com</email>
+		<name>Ilja Sara (Zucca)</name>
+	</maintainer>
+	<use>
+		<flag name="opengl">Also build, optional, user selectable, OpenGL renderer</flag>
+		<flag name="fluidsynth">Use fluidsynth as midi backend</flag>
+		<flag name="portmidi">Use portmidi as midi backend</flag>
+		<flag name="hi-res">Support for high-resolution textures on OpenGL -mode</flag>
+		<flag name="midi">Support for midi playback</flag>
+		<flag name="net">Support for network play</flag>
+	</use>
+	<longdescription>PrBoom+ is a Doom source port developed from the original PrBoom project by Andrey Budko (Андрей Будько).
+
+	PrBoom+ is based on the PrBoom 2.5.x line of development. It can currently be compiled in POSIX, Windows and Mac OS X environments. The current version is 2.5.1.4, released on 2016-01-10. The project saw its first developments in 2004, starting off as an unnamed PrBoom modification, but after gaining numerous additions over PrBoom it eventually adopted the separate PrBoom+ title in 2005.
+
+In addition to all PrBoom features, PrBoom+ offers
+
+	Chasecam for demo playbacks
+	Changing the speed of the game in-game (for demo playback, recoding TAS demos, and for just playing at different speed)
+	Automatic loading of WADs necessary for playback, chosen by demo name or by information present in demo file (if recorded with PrBoom+)
+	Accurate Doom v1.2 emulation if needed during demo playback or requested by user
+	Support for DeePBSP and ZDBSP extended nodes
+	Support for the MUSINFO lump shared with Risen3D, ZDoom and GZDoom
+	MIDI output with OPL emulation, FluidSynth, PortMidi, or SDL
+	Ogg Vorbis and MP3 playback
+	Speed optimisations for very large levels, compared to PrBoom
+	Customizable HUD with the -PRBHUD- lump
+	Video capture with the -viddump parameter (requires external programs)
+	Support for jumping when not recording demos</longdescription>
+</pkgmetadata>
