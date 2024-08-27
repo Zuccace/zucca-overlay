@@ -1,7 +1,7 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 DESCRIPTION="Freedoom - Open Source Doom resources"
 HOMEPAGE="https://freedoom.github.io"
@@ -17,7 +17,7 @@ app-arch/unzip
 dev-python/pillow
 >games-util/deutex-4.9999"
 
-PYTHON_COMPAT=( python3_9 python3_10 )
+PYTHON_COMPAT=( python3_11 python3_12 python3_13 )
 
 SLOTNAME="$PV"
 
@@ -116,7 +116,7 @@ case "$PV" in
 esac
 
 src_configure() {
-	python_setup
+	#python_setup
 	default
 }
 

@@ -12,7 +12,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="png"
 
 RDEPEND="png? ( media-libs/libpng:0/16 )"
-DEPEND="sys-devel/automake app-text/asciidoc sys-apps/gawk ${RDEPEND}"
+RDEPEND="dev-build/automake app-text/asciidoc sys-apps/gawk ${RDEPEND}"
 
 pkg_info() {
 	einfo "DeuTex can do many things with Doom, Freedoom, Heretic, Hexen, and Strife "
