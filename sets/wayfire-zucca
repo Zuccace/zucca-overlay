@@ -1,4 +1,3 @@
 gui-wm/wayfire
-@wlroots
-gui-apps/sfwbar
+gui-apps/yambar
 gui-libs/wayfire-plugins-extra
