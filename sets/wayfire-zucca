@@ -1,0 +1,4 @@
+gui-wm/wayfire
+@wlroots
+gui-apps/sfwbar
+gui-libs/wayfire-plugins-extra
