@@ -15,7 +15,7 @@ RDEPEND="
 	gui-apps/foot
 	gui-apps/yambar[wayland]
 	gui-libs/wayfire-plugins-extra
-	esets/fonts
+	esets/themes
 "
 
 BDEPEND="${RDEPEND}"

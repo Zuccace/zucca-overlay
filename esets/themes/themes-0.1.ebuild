@@ -3,7 +3,7 @@
 
 EAPI=8
 
-DESCRIPTION="Meta/eset of fonts"
+DESCRIPTION="Meta/eset of themes"
 HOMEPAGE="https://wiki.gentoo.org/wiki/No_homepage"
 
 LICENSE="metapackage"
@@ -11,8 +11,11 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 
 RDEPEND="
-	media-fonts/fonts-meta[emoji,latin,ms]
-	media-fonts/terminus-font
-	media-fonts/fontawesome
-	media-fonts/symbols-nerd-font
+	x11-themes/obsidian-xcursors
+	x11-themes/obsidian-icon-theme
+	x11-themes/obsidian2-gtk-theme
+	x11-themes/wm-icons
+	x11-themes/iceicons
+	x11-themes/faenza-icon-theme
+	eset/fonts
 "
