@@ -17,5 +17,5 @@ RDEPEND="
 	x11-themes/wm-icons
 	x11-themes/iceicons
 	x11-themes/faenza-icon-theme
-	eset/fonts
+	esets/fonts
 "
