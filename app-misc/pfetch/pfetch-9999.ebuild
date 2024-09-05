@@ -132,10 +132,14 @@ case "${PV}" in
 	0.6.0|0.6.0_p115)
 		KEYWORDS="amd64 arm64 x86 ~riscv"
 	;;
+	1.4.0)
+		KEYWORDS="~amd64 ~arm64 ~x86 ~riscv"
+	;;
 	9999)
 		true
 	;;
 	*)
+		# Consider all the rest versions from dylanaraps' repo as unstable.
 		if [[ -z "$KEYWORDS" && "${PV%%.*}" -lt '1' ]]
 		then
 			KEYWORDS="~amd64 ~arm64 ~x86 ~riscv"
