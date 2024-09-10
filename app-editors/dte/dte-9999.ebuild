@@ -20,25 +20,25 @@ case "$PV" in
 	;;
 	1.7_p3398)
 		COMMIT="18db93eb577d25efca6d151cf809dd95f9e3522a"
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64 ~riscv ~mips"
 	;;
 	1.8|1.8.2)
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64 ~riscv ~mips"
 	;;
 	1.8.2_p5)
 		COMMIT="f6b39d8bb54f8a68208b212c721459d1839afa96"
 	;;
 	1.8.2_p73)
 		COMMIT="6bbe3052c2f1ec8bd6ab61864c378d7faa9c56a7"
-		KEYWORDS="~amd64 ~x86"
+		KEYWORDS="~amd64 ~x86 ~arm64 ~riscv ~mips"
 	;;
 	1.8.2_p86)
 		COMMIT="a751c7b3d74cc3d33266fae3edb940cb2105d3f5"
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64 ~riscv ~mips"
 	;;
 	1.8.2_p247)
 		COMMIT="0c60ba929cf1e4890a76009f06eb89a2cbec6729"
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64 ~riscv ~mips"
 	;;
 	1.9.1_p190)
 		COMMIT="db72bc1057d63ff1d7e697b6e0b0b41e28378214"
@@ -54,19 +54,19 @@ case "$PV" in
 	;;
 	1.9.1_p416)
 		COMMIT="5d923ff03280f62a8b619dcd6985f63e77c9ef55"
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64 ~riscv ~mips"
 	;;
 	1.9.1_p781)
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64 ~riscv ~mips"
 		COMMIT="85d61e064cb5cd27ad0d38af12d1a7c95528cba8"
 	;;
 	1.11.1_p364)
-		KEYWORDS="amd64 ~x86"
+		KEYWORDS="amd64 ~x86 ~arm64 ~riscv ~mips"
 		COMMIT="200947550a47c03f484b0abc50346f876c1b520c"
 	;;
 esac
 
-: ${KEYWORDS:="~amd64 ~x86"}
+: ${KEYWORDS:="~amd64 ~x86 ~arm64 ~riscv ~mips"}
 
 if [[ "$EGIT_COMMIT" || "$PV" == "9999" ]]
 then
