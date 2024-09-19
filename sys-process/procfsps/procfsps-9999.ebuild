@@ -21,3 +21,9 @@ case "$PV" in
 		S="${WORKDIR}/${PN}"
 	;;	
 esac
+
+case "$PV" in
+	0.2.1)
+		KEYWORDS="amd64 ~x86 ~arm arm64 ~riscv ~mips ~alpha ~ppc64 ~ppc ~sparc ~ia64"
+	;;
+esac
