@@ -1,0 +1,1 @@
+./cputemp2maxfreq-9999.ebuild

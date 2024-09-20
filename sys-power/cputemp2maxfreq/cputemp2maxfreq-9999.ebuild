@@ -18,6 +18,9 @@ case "${PVR}" in
 	0.5)
 		GIT_COMMIT="d669b9c4004a5aaeb026f399bcd3cb5ecfb69630"
 	;;
+	0.6)
+		GIT_COMMIT="cc152442f317f0509803796dd9f7b8e6e247de26"
+	;;
 esac
 
 if [[ "$GIT_COMMIT" ]]
