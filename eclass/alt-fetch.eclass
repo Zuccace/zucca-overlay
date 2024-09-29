@@ -19,6 +19,25 @@ BDEPEND+="
 
 MY_DISTDIR="${T}/sources"
 
+# Modifies FCMD if needed
+prepare_fcmd() {
+	local FBIN FARGS
+
+	if [[ -z "$FCMD" ]]
+	then
+		FCMD="$(envvar 'FETCHCOMMAND')"
+		
+		read FBIN FARGS <<< "$FCMD"
+		case "${FBIN##*/}" in
+			curl)
+				# We'll inject --compressed, see 'man curl' for more info.
+				FCMD="${FBIN} --compressed ${FARGS}"
+			;;
+		esac
+		elog "Fetch command being used for alt-fetch: ${FCMD}" 1>&2
+	fi
+}
+
 find_newest_source() {
 	# Will also match FILE.* in case we have some compressed format
 	find "${ALT_DISTDIR}" \
@@ -57,7 +76,11 @@ needs_update() {
 }
 
 fetch_file() {
-	# Expects many variables to be set
+	if [[ -z "$FCMD" ]]
+	then
+		local FCMD
+		prepare_fcmd
+	fi
 	local URI="${1}"
 	if [[ -z "${2}" ]]
 	then
@@ -65,6 +88,8 @@ fetch_file() {
 	else
 		local FILE="${2}"
 	fi
+
+	# TODO: add add hacky --referer ?
 
 	eval "${FCMD}" || die
 }
@@ -83,6 +108,26 @@ fetch_compress() {
 	fi
 }
 
+alt-unpack() {
+	local sf df
+	 : ${CJOBS:=$(get_makeopts_jobs 2)}
+
+	find "${MY_DISTDIR}" -type f,l -name '*.lz' | while read sf
+	do
+		df="${sf##*/}"
+		df="${df%.lz}"
+		plzip --keep --decompress --stdout --threads="${CJOBS}" "${sf}" > "${WORKDIR}/${df}" || die "Uncommpressing failed."
+	done
+
+	DISTDIR="${MY_DISTDIR}"
+
+	# Do we really need this?
+	find "${DISTDIR}" -type f,l -not -name '*.lz' -printf '%f\n' | while read sf
+	do
+		unpack "${sf}"
+	done
+}
+
 # Takes one of the following:
 # - 'url'
 # - 'url -> filename'
@@ -98,24 +143,14 @@ fetch_compress() {
 # That said: THE API OF THIS ECLASS WILL CHANGE.
 alt-fetch() {
 
-	local URIFILE URI FILE AGE COMPRESS lastsize \
+	local URIFILE FCMD URI FILE AGE COMPRESS lastsize \
 		ALT_DISTDIR="${PORTAGE_ACTUAL_DISTDIR}/alt-fetch/${CATEGORY}_${PN}" \
 		dage="$((24*7-1))" \
-		FCMD="$(envvar 'FETCHCOMMAND')" \
-		FBIN FARGS NEWEST_SOURCE
+		NEWEST_SOURCE
 
 	mkdir -p "${MY_DISTDIR}" || die
 
-	read FBIN FARGS <<< "$FCMD"
-	elog "Using ${FBIN} to download live sources."
-	case "${FBIN##*/}" in
-		curl)
-			# We'll inject --compressed, see 'man curl' for more info.
-			FCMD="${FBIN} --compressed ${FARGS}"
-		;;
-	esac
-
-	elog "Fetch command being used: ${FCMD}"
+	prepare_fcmd
 
 	if [[ ! -d "${ALT_DISTDIR}" ]]
 	then
@@ -205,21 +240,7 @@ alt-fetch_src_unpack() {
 	if [[ ! -z "${ALT_URI}" ]]
 	then
 		alt-fetch "${ALT_URI}"
-		local sf df
-		 : ${CJOBS:=$(get_makeopts_jobs 2)}
-
-		find "${MY_DISTDIR}" -type f,l -name '*.lz' | while read sf
-		do
-			df="${sf##*/}"
-			df="${df%.lz}"
-			plzip --keep --decompress --stdout --threads="${CJOBS}" "${sf}" > "${WORKDIR}/${df}"
-		done
-
-		DISTDIR="${MY_DISTDIR}"
-		find "${DISTDIR}" -type f,l -not -name '*.lz' -printf '%f\n' | while read sf
-		do
-			unpack "${sf}"
-		done
+		alt-unpack
 	fi
 
 	# Finally run the default unpacking.
