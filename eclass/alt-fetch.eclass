@@ -34,7 +34,7 @@ prepare_fcmd() {
 				FCMD="${FBIN} --compressed ${FARGS}"
 			;;
 		esac
-		elog "Fetch command being used for alt-fetch: ${FCMD}" 1>&2
+		einfo "Fetch command being used for alt-fetch: ${FCMD}" 1>&2
 	fi
 }
 
@@ -49,6 +49,8 @@ find_newest_source() {
 		| cut -f 2
 }
 
+# Determine if file ($1) is old enough for update
+# TODO document this better.
 needs_update() {
 	NEWEST_SOURCE="$(find_newest_source "$1")"
 	# In some circumstance the file can exist but zero length.
@@ -75,6 +77,9 @@ needs_update() {
 	fi
 }
 
+# Downloads a file $2 from url $1 using
+# FETCHCOMMAND set in make.conf (or default).
+# If $2 is unspecified then output to stdout.
 fetch_file() {
 	if [[ -z "$FCMD" ]]
 	then
