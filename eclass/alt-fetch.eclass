@@ -34,15 +34,14 @@ prepare_fcmd() {
 				FCMD="${FBIN} --compressed ${FARGS}"
 			;;
 		esac
-		einfo "Fetch command being used for alt-fetch: ${FCMD}" 1>&2
+		#einfo "Fetch command being used for alt-fetch: ${FCMD}" 1>&2
 	fi
 }
 
 find_newest_source() {
-	# Will also match FILE.* in case we have some compressed format
 	find "${ALT_DISTDIR}" \
 		\( -type f -or -type l \) \
-		\( -name "${1}" -or -name "${1}.*" \) \
+		\( -name "${1}" -or -name "${1}.lz" \) \
 		-printf '%Ts\t%p\n' \
 		| sort -nr \
 		| head -n 1 \
@@ -72,7 +71,7 @@ needs_update() {
 		return 0
 	else
 		# We don't need an update.
-		einfo "File '${1##*/}' is new enough."
+		einfo "File '${1}' is new enough."
 		return 1
 	fi
 }
@@ -81,11 +80,8 @@ needs_update() {
 # FETCHCOMMAND set in make.conf (or default).
 # If $2 is unspecified then output to stdout.
 fetch_file() {
-	if [[ -z "$FCMD" ]]
-	then
-		local FCMD
-		prepare_fcmd
-	fi
+	prepare_fcmd
+	
 	local URI="${1}"
 	if [[ -z "${2}" ]]
 	then
@@ -100,7 +96,8 @@ fetch_file() {
 }
 
 compress_cmd() {
-	plzip --best --match-length=273 --threads="${CJOBS}" --dictionary-size=32MiB --keep --stdout
+	# Yeah we'll go overkill.
+	plzip --best --match-length=273 --threads="${CJOBS}" --dictionary-size=32MiB --keep --stdout | pv -N 'lzipped out'
 }
 
 fetch_compress() {
@@ -121,7 +118,7 @@ alt-unpack() {
 	do
 		df="${sf##*/}"
 		df="${df%.lz}"
-		plzip --keep --decompress --stdout --threads="${CJOBS}" "${sf}" > "${WORKDIR}/${df}" || die "Uncommpressing failed."
+		plzip --keep --decompress --stdout --threads="${CJOBS}" "${sf}" | pv -N 'uncompressed' > "${WORKDIR}/${df}" || die "Uncommpressing failed."
 	done
 
 	DISTDIR="${MY_DISTDIR}"
