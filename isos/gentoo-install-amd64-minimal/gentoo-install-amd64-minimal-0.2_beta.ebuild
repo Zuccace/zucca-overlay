@@ -36,6 +36,13 @@ src_unpack() {
 			${baseurl}/${isobase} $((24*30*2)) ${isoname}
 			"
 		gpgverify "${T}/sources/${isoname}.asc" || die "ISO file verification failed. Files may have been tampered!"
+	else
+		if [[ -e "${isodest}.asc" ]]
+		then
+			gpgverify "${isodest}.asc"
+		else
+			ewarn "File '${isodest}.asc' is missing. Cannot verify the already installed iso image."
+		fi
 	fi
 }
 
@@ -45,10 +52,9 @@ pkg_postinst() {
 	then
 		install -d -m 755 "${isodest%/*}" || die
 		mv "$(realpath "${T}/sources/${isoname}")" "$isodest" || die
+		mv "$(realpath "${T}/sources/${isoname}").asc" "${isodest}.asc"
 		elog "ISO image stored at '${isodest}'"
 		elog "In order to save space, the iso file has been _moved_ from distfiles into '${isodest%/*}'"
 		elog "Portage does NOT track this file. iso file cleaning needs to be performed manually (for now)."
-	else
-		elog "File '${isodest}' already exists in the system."
 	fi
 }
