@@ -46,7 +46,7 @@ pkg_postinst() {
 		install -d -m 755 "${isodest%/*}" || die
 		mv "$(realpath "${T}/sources/${isoname}")" "$isodest" || die
 		elog "ISO image stored at '${isodest}'"
-		elog "In order to save space, the iso file has been _moved_ from distfiles into '${dest%/*}'"
+		elog "In order to save space, the iso file has been _moved_ from distfiles into '${isodest%/*}'"
 		elog "Portage does NOT track this file. iso file cleaning needs to be performen manually (for now)."
 	else
 		elog "File '${isodest}' already exists in the system."
