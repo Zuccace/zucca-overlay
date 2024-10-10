@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>ilja.sara@kahvipannu.com</email>
 		<name>Ilja Sara</name>
+		<description>ble.sh - Bash Line Editor - &quot;readline replacement&quot;</description>
 	</maintainer>
 	<use>
 		<flag name="auto-load">Install a script into /etc/bash/bashrc.d to automatically source ble.sh when needed.</flag>
