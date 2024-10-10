@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM 'https://www.gentoo.org/dtd/metadata.dtd'>
+<pkgmetadata>
+	<maintainer type="person">
+		<email>zucca@kahvipannu.com</email>
+		<name>Ilja &quot;Zucca&quot; Sara</name>
+		<description>Custom initramfs creation script - wrapper for cpio</description>
+	</maintainer>
+</pkgmetadata>
