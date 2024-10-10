@@ -42,6 +42,10 @@ case "$PV" in
 		CONTRIB_HASH="36c2f7d266bdfd1c256ed1a8f607b8ec177fc20f"
 		BLESH_HASH="fcbf1ed0e417433d0e56cf90cad111852115dbe2"
 	;;
+	0.4.0_rc3_p256)
+		CONTRIB_HASH="c620f527d7a021ed72e2d1bb9562e8cddcc0a2bb"
+		BLESH_HASH="32f290df78554e22d7ff779d34f1dfec271c16df"
+	;;
 	9999)
 		unset KEYWORDS
 		inherit git-extra
