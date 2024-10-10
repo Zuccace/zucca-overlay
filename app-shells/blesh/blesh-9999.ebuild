@@ -41,6 +41,7 @@ case "$PV" in
 	0.4.0_rc3_p204)
 		CONTRIB_HASH="36c2f7d266bdfd1c256ed1a8f607b8ec177fc20f"
 		BLESH_HASH="fcbf1ed0e417433d0e56cf90cad111852115dbe2"
+		KEYWORDS="x86 amd64 arm arm64 riscv"
 	;;
 	0.4.0_rc3_p256)
 		CONTRIB_HASH="c620f527d7a021ed72e2d1bb9562e8cddcc0a2bb"
