@@ -4,6 +4,6 @@
 	<maintainer type="person">
 		<email>zucca@kahvipannu.com</email>
 		<name>Ilja &quot;Zucca&quot; Sara</name>
-		<description>Custom initramfs creation script - wrapper for cpio</description>
+		<description>A tool to gather components for your custom iniramfs image</description>
 	</maintainer>
 </pkgmetadata>
