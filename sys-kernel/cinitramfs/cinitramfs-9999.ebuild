@@ -16,10 +16,13 @@ IUSE="+installkernel"
 
 src_install() {
 	if ! use installkernel
-		then
+	then
+		# A bare script
 		emake DESTDIR="${D}" install-cinitramfs
+		emake DESTDIR="${D}" install-init-script
+		
 		# Get rid of Makefile so that the default function won't perform an install.
-		rm Makefile || die
+		mv Makefile mf || die
 	fi
 
 	default
@@ -30,6 +33,13 @@ pkg_postinst() {
 	then
 		elog "USE=installkernel is set for this install of ${PN}."
 		elog "Please edit the initramfs file list at '${ROOT}/etc/kernel/initramfs.lst' for your initramfs needs."
+	fi
+
+	if ! [[ -e "${ROOT}/etc/kernel/initramfs.lst" || -e "${ROOT}/etc/kernel/init_scripts/rc" ]]
+	then
+		local mf
+		[[ -f 'mf' ]] && mf="mf"
+		make -f "${mf:-Makefile}" install-extras && elog "Installed premade list and scripts under /etc/kernel. Please review and edit them"
 	fi
 }
 
