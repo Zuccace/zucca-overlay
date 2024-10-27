@@ -1,1 +1,1 @@
-./cinitramfs-9999.ebuild
+./cinitramfs-0.0.5_beta.ebuild
