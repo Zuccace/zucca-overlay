@@ -97,7 +97,7 @@ fetch_file() {
 
 compress_cmd() {
 	# Yeah we'll go overkill.
-	plzip --best --match-length=273 --threads="${CJOBS}" --dictionary-size=32MiB --keep --stdout | pv -N 'lzipped out'
+	plzip --best --match-length=273 --threads="${CJOBS}" --dictionary-size=32MiB --keep --stdout
 }
 
 fetch_compress() {
