@@ -71,7 +71,7 @@ player_terminal() {
 }
 
 screensaver() {
-	export XENVIRONMENT="/etc/player_X.env"
+	export XENVIRONMENT="/lib/player/player_X.env"
 	rootfulX
 	#spid="$$"
 	#xwpid="$!"
