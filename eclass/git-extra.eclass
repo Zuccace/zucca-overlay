@@ -44,7 +44,7 @@ git_since_last() {
 # @FUNCTION: git_nfo
 # @USAGE: git_nfo [install [filebasename]]
 # @DESCRIPTION:
-# Returns information about currently fetched git repository.
+# Prints information about currently fetched git repository.
 # Can also install the information when given install as the first argument.
 # Then the third argument can be use to change the name of the file.
 # The installed file gets installed via dodoc or newdoc function.
