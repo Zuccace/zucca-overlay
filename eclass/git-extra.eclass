@@ -12,10 +12,39 @@ inherit git-r3
 
 EXPORT_FUNCTIONS src_prepare
 
+# @FUNCTION: git_since_last
+# @USAGE: git_since_last
+# @DESCRIPTION:
+# Prints time since last commit in human readable form.
+git_since_last() {
+	gawk '
+		BEGIN {
+			lccmd="git --no-pager log -1 --date=unix --format=\"%cd\""
+			lccmd | getline lastcommit
+			close(lccmd)
+
+			since = systime() - lastcommit
+
+			seconds = since % 60
+			since -= seconds
+			since /= 60
+			minutes = since % 60
+			since -= minutes
+			since /= 60
+			hours = since % 24
+			since -= hours
+			days = since/24
+
+			print days "d " hours "h " minutes "m " seconds "s"
+
+		}
+	'
+}
+
 # @FUNCTION: git_nfo
 # @USAGE: git_nfo [install [filebasename]]
 # @DESCRIPTION:
-# Returns information about currently fetched git repository
+# Returns information about currently fetched git repository.
 # Can also install the information when given install as the first argument.
 # Then the third argument can be use to change the name of the file.
 # The installed file gets installed via dodoc or newdoc function.
@@ -33,6 +62,7 @@ git_nfo() {
                 CNUM="$(git rev-list --count ${TAG:+${TAG}..}HEAD)"
                 echo "commit number (since tag): ${CNUM:-"N/A"}"
                 echo "commit: $(git rev-parse HEAD)"
+		echo "time since last commit: $(git_since_last)"
                 echo "PF: ${PN}-${TAG:-tag}${CNUM:+"_p${CNUM}"}"
         } > "$git_nfo_file"
 
