@@ -35,7 +35,7 @@ git_since_last() {
 			since -= hours
 			days = since/24
 
-			print days "d " hours "h " minutes "m " seconds "s"
+			print days "d " hours "h " minutes "m"
 
 		}
 	'
