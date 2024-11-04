@@ -12,18 +12,18 @@ inherit git-r3
 
 EXPORT_FUNCTIONS src_prepare
 
-# @FUNCTION: git_since_last
-# @USAGE: git_since_last
+# @FUNCTION: git_since_commit
+# @USAGE: git_since_commit
 # @DESCRIPTION:
-# Prints time since last commit in human readable form.
-git_since_last() {
+# Prints time since commit in human readable form.
+git_since_commit() {
 	gawk '
 		BEGIN {
 			lccmd="git --no-pager log -1 --date=unix --format=\"%cd\""
-			lccmd | getline lastcommit
+			lccmd | getline commitdate
 			close(lccmd)
 
-			since = systime() - lastcommit
+			since = systime() - commitdate
 
 			seconds = since % 60
 			since -= seconds
@@ -62,7 +62,7 @@ git_nfo() {
                 CNUM="$(git rev-list --count ${TAG:+${TAG}..}HEAD)"
                 echo "commit number (since tag): ${CNUM:-"N/A"}"
                 echo "commit: $(git rev-parse HEAD)"
-		echo "time since last commit: $(git_since_last)"
+		echo "time since commit: $(git_since_commit)"
                 echo "PF: ${PN}-${TAG:-tag}${CNUM:+"_p${CNUM}"}"
         } > "$git_nfo_file"
 
