@@ -23,9 +23,14 @@ case "$PV" in
 esac
 
 case "$PV" in
-	0.0.0.2.1|9999)
+	0.0.0.2.1|0.0.0.2.3)
 		RDEPEND+="
-			>=dev-libs/shlib-zucca-0.0.5
+			=dev-libs/shlib-zucca-0.0.5
+		"
+	;;
+	0.0.0.2.4|9999)
+		RDEPEND+="
+			>=dev-libs/shlib-zucca-0.0.6
 		"
 	;;
 esac
