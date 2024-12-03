@@ -28,6 +28,7 @@ install_config() {
 			print "# Have fun. ;)"
 		}
 	' "$1" > "${ED}/etc/pfetch.cfg" || die "awk failed to create the configuration file."
+	elog "${PN} config is located at ${ROOT%/}/etc/pfetch.cfg"
 }
 
 src_compile() { einfo "No compilation needed."; }
@@ -36,10 +37,6 @@ if [[ ${PVR} =~ ^9999 ]]
 then
 	inherit git-extra
 	EGIT_REPO_URI="${HOMEPAGE##* }.git"
-	src_install() {
-		emake install DESTDIR=${D} PREFIX="${EPREFIX%/}/usr"
-		install_config "README.md"
-	}
 else
 	case "${PVR}" in
 		0.6.0_p115)
@@ -55,22 +52,11 @@ else
 		author='dylanaraps'
 		SRC_URI="	https://raw.githubusercontent.com/${author}/pfetch/${V}/pfetch -> ${PF}.sh
 				https://raw.githubusercontent.com/${author}/pfetch/${V}/README.md -> README_${PF}.md"
-
 		S="${WORKDIR}"
-		src_install() {
-			newbin "${DISTDIR}/${PF}.sh" "${PN}"
-			newdoc "${DISTDIR}/README_${PF}.md" "README_${PN}.md"
-			install_config "${DISTDIR}/README_${PF}.md"
-		}
-
 	else
 		author='Un1q32'
 		SRC_URI="https://github.com/${author}/pfetch/archive/refs/tags/${V}.tar.gz -> ${PF}.tgz"
 		S="${WORKDIR%/}/${PF}"
-		src_install() {
-			emake install DESTDIR=${D} PREFIX="${EPREFIX%/}/usr"
-			install_config "./README.md"
-		}
 	fi
 fi
 
@@ -96,6 +82,19 @@ case "${PV}" in
 		fi
 	;;
 esac
+
+src_install() {
+	if [ -r 'Makefile' ]
+	then
+		emake install DESTDIR=${D} PREFIX="${EPREFIX%/}/usr"
+		install_config "./README.md"
+	else
+		newbin "${DISTDIR}/${PF}.sh" "${PN}"
+		newdoc "${DISTDIR}/README_${PF}.md" "README_${PN}.md"
+		install_config "${DISTDIR}/README_${PF}.md"
+	fi
+}
+
 
 pkg_postinst() {
 	elog "Configure your pfetch trough: ${EROOT}/etc/pfetch.cfg"
