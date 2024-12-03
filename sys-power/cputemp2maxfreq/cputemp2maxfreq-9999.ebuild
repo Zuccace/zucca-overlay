@@ -5,31 +5,14 @@ EAPI=8
 
 DESCRIPTION="Daemon to scale scale_max_freq when CPU temperature rises"
 HOMEPAGE="https://code.pa4wdh.nl.eu.org/tools/cputemp2maxfreq/about"
-case "${PVR}" in
-	0.2)
-		GIT_COMMIT="f851f21131a1aab2d9a9449e47876132c2d948c4"
-	;;
-	0.3)
-		GIT_COMMIT="beed43a886451373b3cbfb8bb2a946e74fe16d05"
-	;;
-	0.4)
-		GIT_COMMIT="5a33d25886af8f0996d901fcfc66674a3dc625db"
-	;;
-	0.5)
-		GIT_COMMIT="d669b9c4004a5aaeb026f399bcd3cb5ecfb69630"
-	;;
-	0.6)
-		GIT_COMMIT="cc152442f317f0509803796dd9f7b8e6e247de26"
-	;;
-esac
 
-if [[ "$GIT_COMMIT" ]]
+if [[ "$PV" != '9999' ]]
 then
 	[[ -z "$KEYWORDS" ]] && KEYWORDS="~amd64"
-	SRC_URI="https://code.pa4wdh.nl.eu.org/tools/cputemp2maxfreq/snapshot/cputemp2maxfreq-$GIT_COMMIT.tar.gz -> ${PF}.tar.gz"
+	SRC_URI="https://code.pa4wdh.nl.eu.org/tools/cputemp2maxfreq/snapshot/cputemp2maxfreq-${PV}.tar.bz2 -> ${PF}.tbz"
 	src_unpack() {
-		unpack "${P}.tar.gz"
-		mv "cputemp2maxfreq-$GIT_COMMIT" "${P}"
+		unpack "${PF}.tbz"
+		mv "cputemp2maxfreq-${PV}" "${P}"
 	}
 else
 	EGIT_REPO_URI='https://code.pa4wdh.nl.eu.org/tools/cputemp2maxfreq'
@@ -47,7 +30,7 @@ BDEPEND=""
 src_prepare() {
 	eapply_user
 
-	./generate_version_h.sh "${PV}" "${GIT_COMMIT:0:7}" "master" > version.h
+	./generate_version_h.sh "${PV}" "${PV}" "master" > version.h
 	mkdir .git
 	touch -d "1 minute ago" .git/index
 }
