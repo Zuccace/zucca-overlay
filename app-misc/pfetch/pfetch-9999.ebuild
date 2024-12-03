@@ -97,8 +97,6 @@ src_install() {
 
 
 pkg_postinst() {
-	elog "Configure your pfetch trough: ${EROOT}/etc/pfetch.cfg"
-	elog ""
 	elog 'pfetch version of 0.6.0_p115 is the last version from Dylan Araps github repository.'
 	elog 'Later versions are (so far) from Un1q32. See the homepages of pfetch:'
 	elog "${HOMEPAGE/ / and }"
