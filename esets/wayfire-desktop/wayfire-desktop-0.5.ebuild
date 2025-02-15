@@ -15,9 +15,13 @@ RDEPEND="
 	gui-apps/foot
 	gui-apps/yambar[wayland]
 	gui-libs/wayfire-plugins-extra
+	
 	esets/themes
 
+	gui-libs/xdg-desktop-portal-wlr
+
 	gui-apps/nwg-bar
+	gui-apps/mako
 "
 
 BDEPEND="${RDEPEND}"
