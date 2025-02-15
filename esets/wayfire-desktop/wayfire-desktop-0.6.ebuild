@@ -18,6 +18,7 @@ RDEPEND="
 	
 	esets/themes
 
+	gui-apps/startwayland
 	gui-libs/xdg-desktop-portal-wlr
 
 	gui-apps/nwg-bar
