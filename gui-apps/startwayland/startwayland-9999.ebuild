@@ -3,7 +3,7 @@ EAPI=8
 SLOT=0
 
 DESCRIPTION="The startx of wayland compositors"
-LICENSE="GPL3"
+LICENSE="GPL-3"
 HOMEPAGE='https://codeberg.org/Zucca/startwayland'
 
 # No dependencies. Every system should have
