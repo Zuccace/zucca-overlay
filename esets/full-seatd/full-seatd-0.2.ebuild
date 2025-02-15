@@ -12,7 +12,7 @@ KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 
 
 RDEPEND="
-	sys-auth/seatd
+	sys-auth/seatd[builtin,server,-systemd,-elogind]
 	!sys-apps/systemd
 	!sys-auth/elogind
 "
