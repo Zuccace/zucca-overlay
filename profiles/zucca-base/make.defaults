@@ -44,7 +44,6 @@ USE="
 	system-qemu system-quazip system-rules system-seabios system-service system-sqlite system-ssl
 	system-statistics system-webp system-wide system-zlib system-zstd
 "
-GRUB_PLATFORMS="emu efi-64 qemu"
 
 QEMU_SOFTMMU_TARGETS="x86_64 aarch64 i386 riscv32 riscv64 mips mipsel mips64 mips64el m68k"
 QEMU_USER_TARGETS="x86_64 i386 riscv64 aarch64"
