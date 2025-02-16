@@ -1,0 +1,20 @@
+Title: 17.1 profiles removal
+Author: Ilja "Zucca" Sara  <ilja.sara@kahvipannu.com>
+Posted: 2025-02-16
+Revision: 1
+News-Item-Format: 2.0
+
+If you happen to be one of those who use
+my custom 17.1 profiles, be aware that those
+are now deprecated and will be removed soon
+after new profiles (openrc-init and seatd)
+are introduced.
+
+Currently all the profile related things are a mess.
+But after a major refactoring things will start to
+move and disappear.
+
+If you don't use my profiles, there's nothing
+you need to act upon.
+
+So we'll se again after new profiles are ready. Bye!
