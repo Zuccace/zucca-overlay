@@ -12,7 +12,7 @@ USE="
 
 	-X wayland Xwayland
 
-	png jpeg jpegxl jpeg2000 jpeg2k gif webp avif heic
+	png jpeg jpegxl jpeg2000 jpeg2k gif webp avif heic heif jbig openexr svg
 	caca libcaca chafa sixel
 	amr ogg vorbis opus mp3 aiff aif
 	mp2 mpeg mpeg2 mp4 mpeg4 mkv matroska webm
@@ -21,6 +21,8 @@ USE="
 	ffmpeg hwaccel
 	amrenc bluray cdio codec2 gme gmp -iec61883 -ieee1394 firewire libass libdrm libsoxr libv4l modplug openal opencl twolame lame
 
+	jdvu postscript pdf dhri
+	
 	qemu
 
 	-pulseaudio pipewire pipewire-alsa wireplumber 
