@@ -42,5 +42,8 @@ USE="
 "
 GRUB_PLATFORMS="emu efi-64 qemu"
 
+QEMU_SOFTMMU_TARGETS="x86_64 aarch64 i386 riscv32 riscv64 mips mipsel mips64 mips64el m68k"
+QEMU_USER_TARGETS="x86_64 i386 riscv64 aarch64"
+
 PORTAGE_NICENESS="17"
 EMERGE_DEFAULT_OPTS="--nospinner --keep-going y --backtrack 100 --deep 20"
