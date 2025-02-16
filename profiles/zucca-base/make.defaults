@@ -21,7 +21,7 @@ USE="
 	vp8 vp9 av1 x264 x265 h.264 h.265 h264 h265
 	v4l libv4l
 	ffmpeg hwaccel
-	amrenc bluray cdio codec2 gme gmp -iec61883 -ieee1394 firewire libass libdrm libsoxr libv4l modplug openal opencl twolame lame
+	amrenc libplacebo bluray cdio codec2 gme gmp -iec61883 -ieee1394 firewire libass libdrm libsoxr libv4l modplug openal opencl twolame lame
 
 	jdvu postscript pdf dhri
 	
