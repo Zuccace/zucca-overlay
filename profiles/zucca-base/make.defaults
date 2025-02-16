@@ -6,6 +6,8 @@ USE="
 	seatd greetd fuse syslog pam
 	-debug -test -dev
 
+	-accessibility
+
 	bindist
 
 	-jumbo-build -lto
