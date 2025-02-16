@@ -3,7 +3,7 @@ LC_MESSAGES="C"
 
 USE="
 	-initramfs -dracut -systemd -systemd-logind -systemd-journald -logind -journald -elogind -polkit -policykit
-	seatd greetd fuse syslog pam
+	seatd greetd fuse syslog pam lvm lvm2
 	-debug -test -dev
 
 	-accessibility
@@ -51,3 +51,8 @@ QEMU_USER_TARGETS="x86_64 i386 riscv64 aarch64"
 
 PORTAGE_NICENESS="17"
 EMERGE_DEFAULT_OPTS="--nospinner --keep-going y --backtrack 100 --deep 20"
+
+# Better not change the defaults until we can BOLDLY warn users of this.
+#DISTDIR="/var/pkg/src"
+#PKGDIR="/var/pkg/bin"
+#RPMDIR="/var/pkg/rpm"
