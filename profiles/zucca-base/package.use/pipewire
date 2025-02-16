@@ -1,1 +1,1 @@
-media-video/pipewire -jack-client jack-sdk pipewire-alsa sound-server
+media-video/pipewire ffmpeg extra -jack-client jack-sdk pipewire-alsa sound-server
