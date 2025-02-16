@@ -1,0 +1,46 @@
+
+LC_MESSAGES="C"
+
+USE="
+	-initramfs -dracut -systemd -systemd-logind -systemd-journald -logind -journald -elogind -polkit -policykit
+	seatd greetd fuse syslog pam
+	-debug -test -dev
+
+	bindist
+
+	-jumbo-build -lto
+
+	-X wayland Xwayland
+
+	png jpeg jpegxl jpeg2000 jpeg2k gif webp avif heic
+	caca libcaca chafa sixel
+	amr ogg vorbis opus mp3 aiff aif
+	mp2 mpeg mpeg2 mp4 mpeg4 mkv matroska webm
+	vp8 vp9 av1 x264 x265 h.264 h.265 h264 h265
+	v4l libv4l
+	ffmpeg hwaccel
+	amrenc bluray cdio codec2 gme gmp -iec61883 -ieee1394 firewire libass libdrm libsoxr libv4l modplug openal opencl twolame lame
+
+	qemu
+
+	-pulseaudio pipewire pipewire-alsa wireplumber 
+
+	gzip bzip bzip2 lzip zlib zstd z-standard zstandard lzo lz4
+
+	zig ziglang zig-lang
+
+	-doc man
+
+	-bundled-c-zlib -bundled-jdk -bundled-libs -bundled-openssl -bundled-toluapp -bundled-toolchain -bundled-xvfb
+	system-act system-av1 system-boost system-bootstrap system-clipboard system-config-printer system-controller
+	system-crontab system-ffmpeg system-fileio system-filepath system-harfbuzz system-heimdal system-icu system-info
+	system-ipxe system-jpeg system-leveldb system-libcxx system-libevent system-librnp system-libsecp256k1
+	system-libvpx system-libyaml system-llvm system-lua system-lz4 system-man system-mathjax system-mimalloc
+	system-mitkrb5 system-mongodb system-monitor system-monitoring-center system-mspack system-png system-protoc
+	system-qemu system-quazip system-rules system-seabios system-service system-sqlite system-ssl
+	system-statistics system-webp system-wide system-zlib system-zstd
+"
+GRUB_PLATFORMS="emu efi-64 qemu"
+
+PORTAGE_NICENESS="17"
+EMERGE_DEFAULT_OPTS="--nospinner --keep-going y --backtrack 100 --deep 20"

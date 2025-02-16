@@ -1,0 +1,1 @@
+media-video/pipewire -jack-client jack-sdk pipewire-alsa sound-server

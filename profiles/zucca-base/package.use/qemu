@@ -1,0 +1,3 @@
+app-emulation/qemu alsa sdl sdl-icon -static-user ssh udev usb usbredir virgl virtfs vte vnc -xen spice pipewire nfs numa
+app-emulation/qemu QEMU_SOFTMMU_TARGETS: x86_64 aarch64 i386 riscv32 riscv64 mips mipsel mips64 mips64el m68k
+app-emulation/qemu QEMU_USER_TARGETS: x86_64 i386 riscv64 aarch64

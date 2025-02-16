@@ -1,0 +1,6 @@
+systemd
+elogind
+logind
+systemd-logind
+systemd-boot
+

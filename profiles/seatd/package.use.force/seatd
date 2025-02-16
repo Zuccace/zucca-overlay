@@ -1,0 +1,4 @@
+
+# The point of this profile is to replace logind and elogind with seatd
+# So let's enforce the following:
+sys-auth/seatd builtin server

@@ -1,0 +1,6 @@
+# Other inits are masked in openrc-init profile.
+sys-apps/systemd
+sys-apps/cinit
+sys-apps/epoch
+sys-apps/s6-linux-init
+sys-apps/sysvinit
