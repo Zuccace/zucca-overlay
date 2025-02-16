@@ -69,6 +69,11 @@ case "$PV" in
 			}
 
 		fi
+
+		if [[ "${PV}" == '0.9.19' ]]
+		then
+			KEYWORDS="alpha amd64 arm arm64 ia64 ppc ppc64 x86 hppa m68k s390 sparc riscv mips"
+		fi
 	;;
 esac
 
