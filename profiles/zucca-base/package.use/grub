@@ -1,2 +1,5 @@
 sys-boot/grub doc device-mapper efiemu mount -nls -sdl -themes -truetype
 sys-boot/grub grub_platforms_efi-64 grub_platforms_coreboot grub_platforms_emu grub_platforms_qemu
+
+# I don't like grub-mkconfig.
+sys-kernel/installkernel -grub
