@@ -2,7 +2,7 @@
 LC_MESSAGES="C"
 
 USE="
-	-initramfs -dracut -systemd -systemd-logind -systemd-journald -logind -journald -elogind -polkit -policykit
+	-initramfs -dracut -systemd -systemd-logind -systemd-journald -logind -journald -ukify -elogind -polkit -policykit
 	seatd greetd fuse syslog pam lvm lvm2
 	-debug -test -dev
 
