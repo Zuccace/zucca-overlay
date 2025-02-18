@@ -35,11 +35,14 @@ pkg_postinst() {
 		elog "Please edit the initramfs file list at '${ROOT}/etc/kernel/initramfs.lst' for your initramfs needs."
 	fi
 
+	# A way to avoid portage constantly complaining about changed config files.
+	# We intentionally leave out 'init' script, since it may be userful to track its changes.
 	if ! [[ -e "${ROOT}/etc/kernel/initramfs.lst" || -e "${ROOT}/etc/kernel/init_scripts/rc" ]]
 	then
 		local mf
 		[[ -f 'mf' ]] && mf="mf"
-		make -f "${mf:-Makefile}" install-extras && elog "Installed premade list and scripts under /etc/kernel. Please review and edit them"
+		make -f "${mf:-Makefile}" install-extras || die
+		elog "Installed premade list and scripts under /etc/kernel. Please review and edit them."
 	fi
 }
 
@@ -49,13 +52,6 @@ case "$PV" in
 		PROPERTIES="live"
 		inherit git-extra
 		EGIT_REPO_URI="${HOMEPAGE}.git"
-	;;
-	0|0.0.2.*)
-		SRC_URI="https://codeberg.org/Zucca/${PN}/archive/${PV}.tar.gz -> ${PF}.tar.gz"
-		S="${WORKDIR}/${PN}"
-		unset IUSE
-		src_install() { default; }
-		pkg_postinst() { true; }
 	;;
 	*)
 		KEYWORDS="~amd64 ~x86 ~arm64 ~mips ~riscv"
