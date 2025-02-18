@@ -1,1 +1,8 @@
 vanilla-install
+systemd
+systemd-journald
+systemd-boot
+systemd-logind
+logind
+elogind
+journald
