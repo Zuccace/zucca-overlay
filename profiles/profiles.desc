@@ -8,5 +8,6 @@ amd64	linux/amd64/17.1/no-multilib/seatd	dev
 amd64	linux/amd64/17.1/musl/seatd		dev
 x86	linux/x86/17.1/musl/seatd		dev
 
-amd64	amd64/23.0/desktop/zucca		exp
 amd64	amd64/23.0/zucca			exp
+amd64	amd64/23.0/split-usr/zucca		exp
+amd64	amd64/23.0/desktop/zucca		exp
