@@ -1,0 +1,1 @@
+USE="-X wayland wlroots -qt -qt5 -qt6 fltk gtk gtk2 gtk3"
