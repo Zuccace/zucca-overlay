@@ -18,7 +18,7 @@ USE="
 	caca libcaca chafa sixel
 	amr ogg vorbis opus mp3 aiff aif
 	mp2 mpeg mpeg2 mp4 mpeg4 mkv matroska webm
-	vp8 vp9 av1 x264 x265 h.264 h.265 h264 h265
+	vp8 vp9 vpx av1 x264 x265 h.264 h.265 h264 h265
 	v4l libv4l
 	ffmpeg hwaccel
 	amrenc libplacebo bluray cdio codec2 gme gmp -iec61883 -ieee1394 firewire libass libdrm libsoxr libv4l modplug openal opencl twolame lame
