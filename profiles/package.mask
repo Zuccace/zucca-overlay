@@ -47,4 +47,4 @@ media-video/vidcutter
 media-video/shotcut
 
 # Hangs into an infinite loop if any arguments were passed.
-dev-libs/shlib-zucca-0.0.7b
+=dev-libs/shlib-zucca-0.0.7b
