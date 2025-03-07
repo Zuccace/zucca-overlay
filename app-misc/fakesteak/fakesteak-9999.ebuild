@@ -6,7 +6,7 @@ EAPI=8
 DESCRIPTION="A lightweight Matrix Rain for your terminal"
 HOMEPAGE="https://github.com/domsson/fakesteak"
 RESTRICT="mirror"
-LICENSE="CC0"
+LICENSE="CC0-1.0"
 SLOT="0"
 
 if [[ ${PVR} =~ ^9999 ]]
