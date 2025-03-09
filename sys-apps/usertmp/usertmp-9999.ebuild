@@ -15,11 +15,23 @@ case "$PV" in
 		inherit git-extra
 		EGIT_REPO_URI="${HOMEPAGE}.git"
 	;;
-	*)
+	0.0.0.*)
 		KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~riscv ~mips ~alpha ~ppc64 ~ppc ~sparc ~ia64"
 		SRC_URI="https://codeberg.org/Zucca/${PN}.sh/archive/${PV}.tar.gz -> ${PF}.tar.gz"
 		S="${WORKDIR}/${PN}.sh"
 	;;
+	*a|*b)
+		KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~riscv ~mips ~alpha ~ppc64 ~ppc ~sparc ~ia64"
+		SRC_URI="https://codeberg.org/Zucca/${PN}.sh/archive/${PV}.tar.gz -> ${PF}.tar.gz"
+		S="${WORKDIR}/${PN}.sh"
+	;;
+
+	*)
+		KEYWORDS="amd64 x86 arm arm64 riscv mips alpha ppc64 ppc sparc ia64"
+		SRC_URI="https://codeberg.org/Zucca/${PN}.sh/archive/${PV}.tar.gz -> ${PF}.tar.gz"
+		S="${WORKDIR}/${PN}.sh"
+	;;
+
 esac
 
 case "$PV" in
