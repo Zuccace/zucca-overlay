@@ -7,6 +7,7 @@ DESCRIPTION="Script to create temp directories for users on systems where system
 
 RDEPEND="
 	sys-process/procfsps
+	>=dev-libs/shlib-zucca-0.0.7.1b
 "
 
 case "$PV" in
@@ -19,6 +20,7 @@ case "$PV" in
 		KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~riscv ~mips ~alpha ~ppc64 ~ppc ~sparc ~ia64"
 		SRC_URI="https://codeberg.org/Zucca/${PN}.sh/archive/${PV}.tar.gz -> ${PF}.tar.gz"
 		S="${WORKDIR}/${PN}.sh"
+		RDEPEND="=dev-libs/shlib-zucca-0.0.5 sys-process/procfsps"
 	;;
 	*a|*b)
 		KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~riscv ~mips ~alpha ~ppc64 ~ppc ~sparc ~ia64"
@@ -32,17 +34,4 @@ case "$PV" in
 		S="${WORKDIR}/${PN}.sh"
 	;;
 
-esac
-
-case "$PV" in
-	0.0.0.2.1|0.0.0.2.3)
-		RDEPEND+="
-			=dev-libs/shlib-zucca-0.0.5
-		"
-	;;
-	0.0.0.2.4|9999)
-		RDEPEND+="
-			>=dev-libs/shlib-zucca-0.0.6
-		"
-	;;
 esac
