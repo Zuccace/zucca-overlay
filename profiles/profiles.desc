@@ -12,3 +12,8 @@ amd64	amd64/23.0/zucca			exp
 amd64	amd64/23.0/split-usr/zucca		exp
 amd64	amd64/23.0/split-usr/no-multilib/zucca	exp
 amd64	amd64/23.0/desktop/zucca		exp
+
+amd64	amd64/23.0/seatd			exp
+amd64	amd64/23.0/split-usr/seatd		exp
+amd64	amd64/23.0/split-usr/no-multilib/seatd	exp
+amd64	amd64/23.0/desktop/seatd		exp

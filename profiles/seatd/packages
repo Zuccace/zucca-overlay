@@ -10,5 +10,8 @@
 # This profile is synced via git
 *dev-vcs/git
 
+
 # Not required
-#*gui-libs/greetd
+#gui-libs/greetd
+
+sys-apps/usertmp
