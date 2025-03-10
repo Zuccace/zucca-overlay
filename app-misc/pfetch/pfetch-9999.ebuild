@@ -64,11 +64,11 @@ case "${PV}" in
 	0.6.0|0.6.0_p115)
 		KEYWORDS="amd64 arm64 x86 ~riscv"
 	;;
-	1.4.0|1.6.0|1.7.0)
+	1.4.0|1.6.0)
 		KEYWORDS="~amd64 ~arm64 ~x86 ~riscv"
 	;;
-	1.5.0)
-		KEYWORDS="amd64 ~arm64 ~x86 ~riscv"
+	1.5.0|1.7.0)
+		KEYWORDS="amd64 arm64 ~x86 ~riscv"
 	;;
 
 	9999)
