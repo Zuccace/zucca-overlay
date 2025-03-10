@@ -48,3 +48,7 @@ media-video/shotcut
 
 # Hangs into an infinite loop if any arguments were passed.
 =dev-libs/shlib-zucca-0.0.7b
+
+# May contain unknown bugs.
+# Please use newer versions.
+<dev-libs/shlib-zucca-0.0.7.1b
