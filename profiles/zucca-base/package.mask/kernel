@@ -7,8 +7,8 @@ sys-kernel/gentoo-sources
 sys-kernel/vanilla-sources
 
 # We'll need to conduct tests before "releasing" this.
-sys-kernel/vanilla-kernel
+>=sys-kernel/vanilla-kernel-6.7
 
 # Let's stick to kernel 6.6 -series for now.
->sys-kernel/gentoo-kernel-6.7
-<sys-kernel/gentoo-kernel-6.0
+>=sys-kernel/gentoo-kernel-6.7
+<sys-kernel/gentoo-kernel-6.6
