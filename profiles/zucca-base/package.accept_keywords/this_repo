@@ -40,9 +40,7 @@ net-news/sfeed
 sys-kernel/cinitramfs
 sys-power/switchd
 sys-power/cputemp2maxfreq
-sys-process/bashtop
 sys-process/procfsps
-sys-process/bashtop
 www-client/ncsa-mosaic-ck
 www-client/ncsa-mosaic
 x11-terms/vinterm
